@@ -1,4 +1,4 @@
-package com.example.bitti
+package fi.mitja.bitti
 
 import io.flutter.embedding.android.FlutterActivity
 
