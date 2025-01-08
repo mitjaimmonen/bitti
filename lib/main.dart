@@ -1,4 +1,5 @@
 import 'package:bitti/application/configuration/injection.dart';
+import 'package:bitti/application/configuration/router.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -13,17 +14,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Bitti',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const Scaffold(
-        body: Center(
-          child: Text('Bitti'),
-        ),
-      ),
+    return MaterialApp.router(
+      routerConfig: router,
     );
   }
 }
