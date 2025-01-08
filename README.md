@@ -1,6 +1,6 @@
 # bitti
-1-bit journal
 
+1-bit journal
 
 ## The plan
 
