@@ -21,10 +21,11 @@
   - Export data
   - Import data
   - User / login / logout: Save data to the cloud
-  - Pro membership: Does nothing useful, essentially a donation
+  - Pro membership: Does nothing useful, essentially a donation in mobile store flavor
 - Flavors
-  - GPlay version: Login and cloud sync, pro membership
-  - FDroid version: No login, no cloud sync, full functionality otherwise
+  - Web version: Login and cloud sync
+  - Mobile Store version: Login and cloud sync + pro membership
+  - FOSS Mobile version: No login, no cloud sync, full functionality otherwise
 - Platforms
   - Android
   - iOS
