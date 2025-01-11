@@ -1,0 +1,74 @@
+{
+  "topics": [
+    {
+      "id": 1,
+      "name": "Topic 1",
+      "description": "Description 1",
+      "startDate": "2025-01-01",
+      "icon": "assets/icons/1.png",
+      "color": "#FF0000",
+      "type": "toggle",
+      "typeSettings": {
+        "values": [
+          {
+            "icon": "assets/icons/1.png",
+            "label": "skiing",
+            "color": "#FF0000"
+          },
+          {
+            "icon": "assets/icons/2.png",
+            "label": "running",
+            "color": "#00FF00"
+          },
+          {
+            "icon": "assets/icons/3.png",
+            "label": "swimming",
+            "color": "#0000FF"
+          }
+        ]
+      }
+    },
+    {
+      "id": 4,
+      "name": "Topic 4",
+      "description": "Description 4",
+      "type": "toggle",
+      "startDate": "2025-01-01",
+      "icon": "assets/icons/1.png",
+      "color": "#FF0000",
+      "typeSettings": {
+        "values": [
+          {
+            "color": "#FF0000"
+          }
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "name": "Topic 2",
+      "description": "Description 2",
+      "type": "number",
+      "typeSettings": {
+        "min": 0,
+        "max": 10
+      },
+      "startDate": "2025-01-01",
+      "icon": "assets/icons/2.png",
+      "color": "#00FF00"
+    },
+    {
+      "id": 3,
+      "name": "Topic 3",
+      "description": "Description 3",
+      "type": "note",
+      "typeSettings": {
+        "displayInJournal": true,
+        "displayInNotes": true
+      },
+      "startDate": "2025-01-01",
+      "icon": "assets/icons/3.png",
+      "color": "#0000FF"
+    }
+  ]
+}
