@@ -1,9 +1,10 @@
 import 'package:bitti/domain/entities/entity.dart';
-import 'package:bitti/domain/entities/topics/topic_type_settings_entity.dart';
+import 'package:bitti/domain/entities/journal_entities/journal_entry_entity.dart';
+import 'package:bitti/domain/entities/journal_entities/topic_type_settings_entity.dart';
 import 'package:bitti/domain/enums/topic_type.dart';
 import 'package:flutter/material.dart';
 
-class TopicEntity extends Entity {
+class TopicEntryEntity extends Entity {
   final int id;
   final String name;
   final String description;
@@ -12,8 +13,9 @@ class TopicEntity extends Entity {
   final Color color;
   final TopicType topicType;
   final TopicTypeSettingsEntity topicTypeSettings;
+  final List<JournalEntryEntity> journals;
 
-  TopicEntity({
+  TopicEntryEntity({
     required this.id,
     required this.name,
     required this.description,
@@ -22,5 +24,6 @@ class TopicEntity extends Entity {
     required this.color,
     required this.topicType,
     required this.topicTypeSettings,
+    required this.journals,
   });
 }

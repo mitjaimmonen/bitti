@@ -1,10 +1,10 @@
 import 'package:bitti/domain/entities/entity.dart';
 
-class NumberSettingValueEntity extends Entity {
+class TopicSettingValueNumberEntity extends Entity {
   final int min;
   final int max;
 
-  NumberSettingValueEntity({
+  TopicSettingValueNumberEntity({
     required this.min,
     required this.max,
   });

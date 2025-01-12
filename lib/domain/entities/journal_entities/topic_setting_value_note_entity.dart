@@ -1,10 +1,10 @@
 import 'package:bitti/domain/entities/entity.dart';
 
-class NoteSettingValueEntity extends Entity {
+class TopicSettingValueNoteEntity extends Entity {
   final bool displayInJournal;
   final bool displayInNotes;
 
-  NoteSettingValueEntity({
+  TopicSettingValueNoteEntity({
     required this.displayInJournal,
     required this.displayInNotes,
   });
