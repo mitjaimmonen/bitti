@@ -1,5 +1,5 @@
 import 'package:bitti/domain/entities/entity.dart';
-import 'package:bitti/domain/entities/response/topic_entities/topic_type_settings_entity_base.dart';
+import 'package:bitti/domain/entities/general/topic_entities/topic_type_settings_entity_base.dart';
 import 'package:bitti/domain/enums/topic_type.dart';
 import 'package:flutter/material.dart';
 

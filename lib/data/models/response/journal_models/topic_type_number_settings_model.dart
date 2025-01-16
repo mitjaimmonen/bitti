@@ -1,6 +1,6 @@
 import 'package:bitti/data/models/response/journal_models/topic_setting_value_number_model.dart';
 import 'package:bitti/data/models/response/journal_models/topic_type_settings_model.dart';
-import 'package:bitti/domain/entities/response/topic_entities/topic_type_number_settings_entity.dart';
+import 'package:bitti/domain/entities/general/topic_entities/topic_type_number_settings_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part '.generated/topic_type_number_settings_model.g.dart';

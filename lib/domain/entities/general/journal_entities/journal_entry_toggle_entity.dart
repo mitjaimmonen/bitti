@@ -1,4 +1,4 @@
-import 'package:bitti/domain/entities/response/journal_entities/journal_entry_entity_base.dart';
+import 'package:bitti/domain/entities/general/journal_entities/journal_entry_entity_base.dart';
 
 class JournalEntryToggleEntity extends JournalEntryEntityBase {
   final int toggleIndex;

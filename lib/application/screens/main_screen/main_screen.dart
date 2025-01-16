@@ -45,7 +45,8 @@ class MainScreen extends StatelessWidget {
         ),
         body: MultiBlocProvider(
           providers: [
-            BlocProvider.value(value: GetIt.I<JournalBloc>()),
+            BlocProvider.value(
+                value: GetIt.I<JournalBloc>()..add(const JournalLoadEvent())),
             BlocProvider.value(value: GetIt.I<NotesBloc>()),
             BlocProvider.value(value: GetIt.I<SettingsBloc>()),
             BlocProvider.value(value: GetIt.I<StatsBloc>()),

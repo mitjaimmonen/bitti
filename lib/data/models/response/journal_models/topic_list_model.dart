@@ -1,6 +1,6 @@
 import 'package:bitti/data/models/response/journal_models/topic_entry_model.dart';
 import 'package:bitti/data/models/model.dart';
-import 'package:bitti/domain/entities/response/topic_entities/topic_list_entity.dart';
+import 'package:bitti/domain/entities/response/topic_list_response_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part '.generated/topic_list_model.g.dart';

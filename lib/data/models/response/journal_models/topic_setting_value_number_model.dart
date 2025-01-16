@@ -1,5 +1,5 @@
 import 'package:bitti/data/models/model.dart';
-import 'package:bitti/domain/entities/response/topic_entities/topic_setting_value_number_entity.dart';
+import 'package:bitti/domain/entities/general/topic_entities/topic_setting_value_number_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part '.generated/topic_setting_value_number_model.g.dart';

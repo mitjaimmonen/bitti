@@ -18,6 +18,36 @@ class MainScreenJournalShell extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<JournalBloc, JournalState>(
       builder: (context, state) {
+        if (state is! JournalLoaded) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        final topicCount = state.topicList.topics.length;
+
+        if (topicCount == 0) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'No topics found',
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+                SizedBox(height: 16.0),
+                ElevatedButton(
+                  onPressed: () {
+                    final bloc = context.read<JournalBloc>();
+                    bloc.add(const JournalEditTopicsEvent());
+                  },
+                  child: const Text('Edit topics'),
+                ),
+              ],
+            ),
+          );
+        }
+
         return TableView.builder(
           diagonalDragBehavior: DiagonalDragBehavior.weightedContinuous,
           pinnedColumnCount: 1,
