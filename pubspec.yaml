@@ -21,6 +21,8 @@ dependencies:
   localstorage: ^5.0.0
   go_router: ^14.6.3
   two_dimensional_scrollables: ^0.3.3
+  bloc: ^8.1.4
+  meta: ^1.15.0
 
 dev_dependencies:
   flutter_test:
