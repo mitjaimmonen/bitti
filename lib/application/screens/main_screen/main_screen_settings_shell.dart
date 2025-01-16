@@ -1,4 +1,4 @@
-import 'package:bitti/domain/entities/screen_config_entity.dart';
+import 'package:bitti/domain/entities/general/screen_config_entity.dart';
 import 'package:flutter/material.dart';
 
 class MainScreenSettingsShell extends StatelessWidget {

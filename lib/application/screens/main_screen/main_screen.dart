@@ -2,7 +2,7 @@ import 'package:bitti/application/screens/main_screen/bloc_journal/journal_bloc.
 import 'package:bitti/application/screens/main_screen/bloc_notes/notes_bloc.dart';
 import 'package:bitti/application/screens/main_screen/bloc_settings/settings_bloc.dart';
 import 'package:bitti/application/screens/main_screen/bloc_stats/stats_bloc.dart';
-import 'package:bitti/domain/entities/screen_config_entity.dart';
+import 'package:bitti/domain/entities/general/screen_config_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
