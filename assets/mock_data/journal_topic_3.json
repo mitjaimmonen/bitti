@@ -1,0 +1,21 @@
+{
+  "topicId": 3,
+  "journals": [
+    {
+      "id": 1,
+      "date": "2025-01-01",
+      "value": {
+        "title": "title 1",
+        "content": "content 1"
+      }
+    },
+    {
+      "id": 2,
+      "date": "2025-01-10",
+      "value": {
+        "title": "title 2",
+        "content": "content 2"
+      }
+    }
+  ]
+}

@@ -26,19 +26,7 @@
             "color": "#0000FF"
           }
         ]
-      },
-      "journals": [
-        {
-          "id": 1,
-          "date": "2025-01-01",
-          "value": true
-        },
-        {
-          "id": 2,
-          "date": "2025-01-03",
-          "value": true
-        }
-      ]
+      }
     },
     {
       "id": 4,
@@ -54,19 +42,7 @@
             "color": "#FF0000"
           }
         ]
-      },
-      "journals": [
-        {
-          "id": 1,
-          "date": "2025-01-01",
-          "value": true
-        },
-        {
-          "id": 2,
-          "date": "2025-01-03",
-          "value": true
-        }
-      ]
+      }
     },
     {
       "id": 2,
@@ -79,24 +55,7 @@
       "typeSettings": {
         "min": 0,
         "max": 10
-      },
-      "journals": [
-        {
-          "id": 1,
-          "date": "2025-01-01",
-          "value": 2
-        },
-        {
-          "id": 2,
-          "date": "2025-01-02",
-          "value": 1
-        },
-        {
-          "id": 3,
-          "date": "2025-01-11",
-          "value": 1
-        }
-      ]
+      }
     },
     {
       "id": 3,
@@ -109,25 +68,7 @@
       "typeSettings": {
         "displayInJournal": true,
         "displayInNotes": true
-      },
-      "journals": [
-        {
-          "id": 1,
-          "date": "2025-01-01",
-          "value": {
-            "title": "title 1",
-            "content": "content 1"
-          }
-        },
-        {
-          "id": 2,
-          "date": "2025-01-10",
-          "value": {
-            "title": "title 2",
-            "content": "content 2"
-          }
-        }
-      ]
+      }
     }
   ]
 }
