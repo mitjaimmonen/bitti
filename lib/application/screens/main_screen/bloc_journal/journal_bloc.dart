@@ -15,6 +15,5 @@ class JournalBloc extends Bloc<JournalEvent, JournalState> {
         journalList: JournalListEntity(journals: []),
       ));
     });
-    on<JournalEditTopicsEvent>((event, emit) {});
   }
 }

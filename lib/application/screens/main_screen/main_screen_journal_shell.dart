@@ -1,6 +1,8 @@
+import 'package:bitti/application/screens/topics_screen/topics_screen.dart';
 import 'package:bitti/domain/entities/general/screen_config_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:two_dimensional_scrollables/two_dimensional_scrollables.dart';
 
 import 'bloc_journal/journal_bloc.dart';
@@ -35,11 +37,10 @@ class MainScreenJournalShell extends StatelessWidget {
                   'No topics found',
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
                 ElevatedButton(
                   onPressed: () {
-                    final bloc = context.read<JournalBloc>();
-                    bloc.add(const JournalEditTopicsEvent());
+                    GoRouter.of(context).push(TopicsScreen.config.routePath);
                   },
                   child: const Text('Edit topics'),
                 ),

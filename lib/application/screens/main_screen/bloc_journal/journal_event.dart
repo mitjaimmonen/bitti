@@ -9,10 +9,6 @@ final class JournalLoadEvent extends JournalEvent {
   const JournalLoadEvent();
 }
 
-final class JournalEditTopicsEvent extends JournalEvent {
-  const JournalEditTopicsEvent();
-}
-
 final class JournalEditJournalEvent extends JournalEvent {
   final SetJournalParamEntity setJournalParam;
 

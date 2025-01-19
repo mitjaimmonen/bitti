@@ -3,20 +3,21 @@ import 'package:bitti/application/screens/main_screen/main_screen_journal_shell.
 import 'package:bitti/application/screens/main_screen/main_screen_notes_shell.dart';
 import 'package:bitti/application/screens/main_screen/main_screen_settings_shell.dart';
 import 'package:bitti/application/screens/main_screen/main_screen_stats_shell.dart';
+import 'package:bitti/application/screens/topics_screen/topics_screen.dart';
 import 'package:bitti/domain/entities/general/screen_config_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 
-final List<ScreenShellConfigEntity> _shellConfigs = [
+final List<ScreenShellConfigEntity> _mainScreenShellConfigs = [
   MainScreenJournalShell.config,
   MainScreenNotesShell.config,
   MainScreenStatsShell.config,
   MainScreenSettingsShell.config,
 ];
 
-final List<StatefulShellBranch> _shellBranches = [
+final List<StatefulShellBranch> _mainScreenShellBranches = [
   StatefulShellBranch(
     routes: [
       GoRoute(
@@ -57,16 +58,21 @@ final List<StatefulShellBranch> _shellBranches = [
 
 final router = GoRouter(
   navigatorKey: _rootNavigatorKey,
-  initialLocation: _shellConfigs.first.routePath,
+  initialLocation: _mainScreenShellConfigs.first.routePath,
   routes: [
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
         return MainScreen(
           shell: navigationShell,
-          shellConfigs: _shellConfigs,
+          shellConfigs: _mainScreenShellConfigs,
         );
       },
-      branches: _shellBranches,
+      branches: _mainScreenShellBranches,
+    ),
+    GoRoute(
+      path: TopicsScreen.config.routePath,
+      name: TopicsScreen.config.title,
+      builder: (context, state) => const TopicsScreen(),
     ),
   ],
 );
