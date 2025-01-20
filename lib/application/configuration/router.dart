@@ -78,7 +78,10 @@ final router = GoRouter(
     GoRoute(
       path: TopicEditorScreen.config.routePath,
       name: TopicEditorScreen.config.title,
-      builder: (context, state) => const TopicEditorScreen(),
+      builder: (context, state) {
+        final extra = state.extra as TopicEditorExtraData;
+        return TopicEditorScreen(extra: extra);
+      },
     ),
   ],
 );

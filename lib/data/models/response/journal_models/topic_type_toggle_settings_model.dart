@@ -5,15 +5,15 @@ import 'package:json_annotation/json_annotation.dart';
 part '.generated/topic_type_toggle_settings_model.g.dart';
 
 @JsonSerializable()
-class TopicTypeToggleSettingsEntity extends TopicTypeSettingsEntityBase {
+class TopicTypeToggleSettingsModel extends TopicTypeSettingsEntityBase {
   final List<TopicSettingValueToggleModel> values;
 
-  const TopicTypeToggleSettingsEntity({
+  const TopicTypeToggleSettingsModel({
     required this.values,
   });
 
   Map<String, dynamic> toJson() => _$TopicTypeToggleSettingsEntityToJson(this);
 
-  factory TopicTypeToggleSettingsEntity.fromJson(Map<String, dynamic> json) =>
+  factory TopicTypeToggleSettingsModel.fromJson(Map<String, dynamic> json) =>
       _$TopicTypeToggleSettingsEntityFromJson(json);
 }

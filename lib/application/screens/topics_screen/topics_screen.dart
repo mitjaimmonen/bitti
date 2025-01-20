@@ -31,8 +31,11 @@ class TopicsScreen extends StatelessWidget {
                 children: [
                   const Text('Topics screen'),
                   ElevatedButton(
-                    onPressed: () {
-                      context.push(TopicEditorScreen.config.routePath);
+                    onPressed: () async {
+                      final data = await context.push(
+                        TopicEditorScreen.config.routePath,
+                        extra: const TopicEditorExtraData(),
+                      );
                     },
                     child: const Text('Add Topic'),
                   )
