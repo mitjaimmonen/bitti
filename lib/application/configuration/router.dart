@@ -3,9 +3,8 @@ import 'package:bitti/application/screens/main_screen/main_screen_journal_shell.
 import 'package:bitti/application/screens/main_screen/main_screen_notes_shell.dart';
 import 'package:bitti/application/screens/main_screen/main_screen_settings_shell.dart';
 import 'package:bitti/application/screens/main_screen/main_screen_stats_shell.dart';
+import 'package:bitti/application/screens/topic_editor_screen/topic_editor_screen.dart';
 import 'package:bitti/application/screens/topics_screen/topics_screen.dart';
-import 'package:bitti/application/screens/topics_screen/widgets/topic_editor_dialog.dart';
-import 'package:bitti/application/widgets/dialog_page.dart';
 import 'package:bitti/domain/entities/general/screen_config_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -77,13 +76,9 @@ final router = GoRouter(
       builder: (context, state) => const TopicsScreen(),
     ),
     GoRoute(
-      path: TopicEditorDialog.config.routePath,
-      name: TopicEditorDialog.config.title,
-      pageBuilder: (context, state) {
-        return DialogPage(
-          builder: (context) => const TopicEditorDialog(),
-        );
-      },
+      path: TopicEditorScreen.config.routePath,
+      name: TopicEditorScreen.config.title,
+      builder: (context, state) => const TopicEditorScreen(),
     ),
   ],
 );

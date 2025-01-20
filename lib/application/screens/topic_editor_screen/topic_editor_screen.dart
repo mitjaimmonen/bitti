@@ -13,30 +13,37 @@ class TopicDialogReturnData {
   });
 }
 
-class TopicEditorDialog extends StatelessWidget {
+class TopicEditorScreen extends StatelessWidget {
   final TopicEntryEntity? topicEntry;
 
-  static const config = ScreenDialogConfigEntity(
+  static const config = ScreenConfigEntity(
     title: 'Topic Editor',
     routePath: '/topic-editor',
   );
 
-  const TopicEditorDialog({
+  const TopicEditorScreen({
     super.key,
     this.topicEntry,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Dialog.fullscreen(
+    return Scaffold(
+      appBar: AppBar(
+        actions: [
+          TextButton(
+            onPressed: () {
+              context.pop();
+            },
+            child: const Text('Save'),
+          ),
+        ],
+      ),
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
+      body: Padding(
+        padding: const EdgeInsets.all(0.0),
         child: Column(
           children: [
-            Text(config.title,
-                style: Theme.of(context).textTheme.headlineMedium),
-            TextField(),
             ElevatedButton(
               onPressed: () {
                 context.pop(const TopicDialogReturnData(delete: true));

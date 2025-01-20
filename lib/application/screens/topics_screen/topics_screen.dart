@@ -1,5 +1,5 @@
+import 'package:bitti/application/screens/topic_editor_screen/topic_editor_screen.dart';
 import 'package:bitti/application/screens/topics_screen/bloc_topics/topics_bloc.dart';
-import 'package:bitti/application/screens/topics_screen/widgets/topic_editor_dialog.dart';
 import 'package:bitti/domain/entities/general/screen_config_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,7 +32,7 @@ class TopicsScreen extends StatelessWidget {
                   const Text('Topics screen'),
                   ElevatedButton(
                     onPressed: () {
-                      context.push(TopicEditorDialog.config.routePath);
+                      context.push(TopicEditorScreen.config.routePath);
                     },
                     child: const Text('Add Topic'),
                   )
