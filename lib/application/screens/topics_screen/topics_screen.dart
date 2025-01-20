@@ -1,9 +1,10 @@
 import 'package:bitti/application/screens/topics_screen/bloc_topics/topics_bloc.dart';
-import 'package:bitti/application/screens/topics_screen/widgets/topic_editor_modal.dart';
+import 'package:bitti/application/screens/topics_screen/widgets/topic_editor_dialog.dart';
 import 'package:bitti/domain/entities/general/screen_config_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 
 class TopicsScreen extends StatelessWidget {
   const TopicsScreen({super.key});
@@ -23,29 +24,20 @@ class TopicsScreen extends StatelessWidget {
         ),
         body: BlocBuilder<TopicsBloc, TopicsState>(
           builder: (context, state) {
-            return Stack(
-              children: [
-                Column(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text('Topics screen'),
-                    ElevatedButton(
-                      onPressed: () {
-                        final bloc = context.read<TopicsBloc>();
-                        bloc.add(CreateNewTopicEvent());
-                      },
-                      child: const Text('Add Topic'),
-                    )
-                  ],
-                ),
-                if (state is TopicsEditingTopic)
-                  TopicEditorModal(
-                    onDismiss: () {},
-                    onTopicEntryDeleted: () {},
-                    onTopicEntryUpdated: (topicEntry) {},
-                  ),
-              ],
+            return Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text('Topics screen'),
+                  ElevatedButton(
+                    onPressed: () {
+                      context.push(TopicEditorDialog.config.routePath);
+                    },
+                    child: const Text('Add Topic'),
+                  )
+                ],
+              ),
             );
           },
         ),

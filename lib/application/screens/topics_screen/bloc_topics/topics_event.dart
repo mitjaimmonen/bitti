@@ -3,10 +3,6 @@ part of 'topics_bloc.dart';
 @immutable
 sealed class TopicsEvent {}
 
-class CreateNewTopicEvent extends TopicsEvent {
-  CreateNewTopicEvent();
-}
-
 class ReorderTopicEvent extends TopicsEvent {
   final int oldIndex;
   final int newIndex;

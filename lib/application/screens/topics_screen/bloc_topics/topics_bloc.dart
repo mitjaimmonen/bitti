@@ -6,9 +6,5 @@ part 'topics_event.dart';
 part 'topics_state.dart';
 
 class TopicsBloc extends Bloc<TopicsEvent, TopicsState> {
-  TopicsBloc() : super(TopicsInitial()) {
-    on<CreateNewTopicEvent>((event, emit) {
-      emit(TopicsEditingTopic(topic: null));
-    });
-  }
+  TopicsBloc() : super(TopicsInitial()) {}
 }

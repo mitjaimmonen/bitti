@@ -20,3 +20,10 @@ class ScreenShellConfigEntity extends ScreenConfigEntity {
     required this.icon,
   });
 }
+
+class ScreenDialogConfigEntity extends ScreenConfigEntity {
+  const ScreenDialogConfigEntity({
+    required super.title,
+    required super.routePath,
+  });
+}
