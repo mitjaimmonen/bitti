@@ -4,7 +4,9 @@ import 'package:bitti/domain/entities/general/topic_entities/topic_setting_value
 import 'package:bitti/domain/entities/general/topic_entities/topic_type_settings_entity_base.dart';
 import 'package:bitti/domain/entities/general/topic_entities/topic_type_toggle_settings_entity.dart';
 import 'package:bitti/domain/enums/topic_type.dart';
+import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_iconpicker/flutter_iconpicker.dart';
 import 'package:go_router/go_router.dart';
 
 class TopicEditorExtraData {
@@ -128,6 +130,72 @@ class _TopicEditorScreenState extends State<TopicEditorScreen> {
                 onSaved: (value) => description = value!,
                 validator: (value) =>
                     value!.isEmpty ? 'Please enter a description' : null,
+              ),
+              Row(
+                children: [
+                  const Text('Start Date'),
+                  TextButton(
+                    onPressed: () async {
+                      final date = await showDatePicker(
+                        context: context,
+                        initialDate: startDate,
+                        firstDate: DateTime(2000),
+                        lastDate: DateTime(2100),
+                      );
+                      if (date != null) {
+                        setState(() {
+                          startDate = date;
+                        });
+                      }
+                    },
+                    child: Text(startDate.toString()),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  const Text('Icon'),
+                  IconButton(
+                    icon: Icon(icon),
+                    onPressed: () async {
+                      final newIcon = await showIconPicker(context);
+                      if (newIcon != null) {
+                        setState(() {
+                          icon = newIcon.data;
+                        });
+                      }
+                    },
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  const Text('Color'),
+                  TextButton(
+                    onPressed: () async {
+                      final newColor = await showDialog<Color>(
+                        context: context,
+                        builder: (context) => ColorPicker(
+                          onColorChanged: (Color newColor) {
+                            setState(() {
+                              color = newColor;
+                            });
+                          },
+                        ),
+                      );
+                      if (newColor != null) {
+                        setState(() {
+                          color = newColor;
+                        });
+                      }
+                    },
+                    child: Container(
+                      width: 50,
+                      height: 50,
+                      color: color,
+                    ),
+                  ),
+                ],
               ),
               if (widget.extra.topicEntry != null)
                 ElevatedButton(
