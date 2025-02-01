@@ -1,4 +1,4 @@
-import 'package:bitti/data/models/response/journal_models/topic_setting_value_toggle_model.dart';
+import 'package:bitti/data/models/general/topic_models/topic_setting_value_toggle_model.dart';
 import 'package:bitti/domain/entities/general/topic_entities/topic_type_settings_entity_base.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -12,8 +12,8 @@ class TopicTypeToggleSettingsModel extends TopicTypeSettingsEntityBase {
     required this.values,
   });
 
-  Map<String, dynamic> toJson() => _$TopicTypeToggleSettingsEntityToJson(this);
+  Map<String, dynamic> toJson() => _$TopicTypeToggleSettingsModelToJson(this);
 
   factory TopicTypeToggleSettingsModel.fromJson(Map<String, dynamic> json) =>
-      _$TopicTypeToggleSettingsEntityFromJson(json);
+      _$TopicTypeToggleSettingsModelFromJson(json);
 }

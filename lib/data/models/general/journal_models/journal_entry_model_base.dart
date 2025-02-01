@@ -2,22 +2,22 @@ import 'package:bitti/data/models/model.dart';
 import 'package:bitti/domain/entities/general/journal_entities/journal_entry_entity_base.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part '.generated/journal_entry_model.g.dart';
+part '.generated/journal_entry_model_base.g.dart';
 
 @JsonSerializable()
-abstract class JournalEntryModel<T extends JournalEntryEntityBase>
+abstract class JournalEntryModelBase<T extends JournalEntryEntityBase>
     extends Model<T> {
   final int id;
   final String date;
 
-  JournalEntryModel({
+  JournalEntryModelBase({
     required this.id,
     required this.date,
   });
 
   @override
-  Map<String, dynamic> toJson() => _$JournalEntryModelToJson(this);
+  Map<String, dynamic> toJson() => _$JournalEntryModelBaseToJson(this);
 
-  factory JournalEntryModel.fromJson(Map<String, dynamic> json) =>
-      _$JournalEntryModelFromJson(json);
+  factory JournalEntryModelBase.fromJson(Map<String, dynamic> json) =>
+      _$JournalEntryModelBaseFromJson(json);
 }

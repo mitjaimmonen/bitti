@@ -1,5 +1,5 @@
-import 'package:bitti/data/models/response/journal_models/topic_setting_value_note_model.dart';
-import 'package:bitti/data/models/response/journal_models/topic_type_settings_model.dart';
+import 'package:bitti/data/models/general/topic_models/topic_setting_value_note_model.dart';
+import 'package:bitti/data/models/general/topic_models/topic_type_settings_model.dart';
 import 'package:bitti/domain/entities/general/topic_entities/topic_type_note_settings_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 

@@ -4,3 +4,11 @@ import 'package:flutter/material.dart';
 abstract class Entity {
   const Entity();
 }
+
+abstract class ParamEntity extends Entity {
+  const ParamEntity();
+}
+
+abstract class ResponseEntity extends Entity {
+  const ResponseEntity();
+}

@@ -1,6 +1,6 @@
+import 'package:bitti/application/models/screen_config_model.dart';
 import 'package:bitti/application/screens/topic_editor_screen/topic_editor_screen.dart';
 import 'package:bitti/application/screens/topics_screen/bloc_topics/topics_bloc.dart';
-import 'package:bitti/domain/entities/general/screen_config_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -9,7 +9,7 @@ import 'package:go_router/go_router.dart';
 class TopicsScreen extends StatelessWidget {
   const TopicsScreen({super.key});
 
-  static const config = ScreenConfigEntity(
+  static const config = ScreenConfigModel(
     title: 'Topics',
     routePath: '/topics',
   );

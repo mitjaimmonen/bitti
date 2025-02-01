@@ -1,17 +1,16 @@
-import 'package:bitti/domain/entities/entity.dart';
 import 'package:flutter/cupertino.dart';
 
-class ScreenConfigEntity extends Entity {
+class ScreenConfigModel {
   final String title;
   final String routePath;
 
-  const ScreenConfigEntity({
+  const ScreenConfigModel({
     required this.title,
     required this.routePath,
   });
 }
 
-class ScreenShellConfigEntity extends ScreenConfigEntity {
+class ScreenShellConfigEntity extends ScreenConfigModel {
   final IconData icon;
 
   const ScreenShellConfigEntity({
@@ -21,7 +20,7 @@ class ScreenShellConfigEntity extends ScreenConfigEntity {
   });
 }
 
-class ScreenDialogConfigEntity extends ScreenConfigEntity {
+class ScreenDialogConfigEntity extends ScreenConfigModel {
   const ScreenDialogConfigEntity({
     required super.title,
     required super.routePath,

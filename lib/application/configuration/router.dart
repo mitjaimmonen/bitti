@@ -1,3 +1,4 @@
+import 'package:bitti/application/models/screen_config_model.dart';
 import 'package:bitti/application/screens/main_screen/main_screen.dart';
 import 'package:bitti/application/screens/main_screen/main_screen_journal_shell.dart';
 import 'package:bitti/application/screens/main_screen/main_screen_notes_shell.dart';
@@ -5,7 +6,6 @@ import 'package:bitti/application/screens/main_screen/main_screen_settings_shell
 import 'package:bitti/application/screens/main_screen/main_screen_stats_shell.dart';
 import 'package:bitti/application/screens/topic_editor_screen/topic_editor_screen.dart';
 import 'package:bitti/application/screens/topics_screen/topics_screen.dart';
-import 'package:bitti/domain/entities/general/screen_config_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

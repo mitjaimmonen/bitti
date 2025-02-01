@@ -1,5 +1,5 @@
-import 'package:bitti/data/models/response/journal_models/journal_entry_model.dart';
-import 'package:bitti/data/models/response/journal_models/topic_type_settings_model.dart';
+import 'package:bitti/data/models/general/journal_models/journal_entry_model_base.dart';
+import 'package:bitti/data/models/general/topic_models/topic_type_settings_model.dart';
 import 'package:bitti/data/models/model.dart';
 import 'package:bitti/domain/entities/general/topic_entities/topic_entry_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -16,7 +16,7 @@ class TopicEntryModel extends Model<TopicEntryEntity> {
   final int color;
   final int topicType;
   final TopicTypeSettingsModel topicTypeSettings;
-  final List<JournalEntryModel> journals;
+  final List<JournalEntryModelBase> journals;
 
   TopicEntryModel({
     required this.id,

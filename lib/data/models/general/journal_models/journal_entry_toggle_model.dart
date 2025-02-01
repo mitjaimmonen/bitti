@@ -1,4 +1,4 @@
-import 'package:bitti/data/models/response/journal_models/journal_entry_model.dart';
+import 'package:bitti/data/models/general/journal_models/journal_entry_model_base.dart';
 import 'package:bitti/domain/entities/general/journal_entities/journal_entry_toggle_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -6,7 +6,7 @@ part '.generated/journal_entry_toggle_model.g.dart';
 
 @JsonSerializable()
 class JournalEntryToggleModel
-    extends JournalEntryModel<JournalEntryToggleEntity> {
+    extends JournalEntryModelBase<JournalEntryToggleEntity> {
   final int toggleIndex;
 
   JournalEntryToggleModel({

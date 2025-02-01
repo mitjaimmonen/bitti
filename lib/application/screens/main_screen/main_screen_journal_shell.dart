@@ -1,5 +1,5 @@
+import 'package:bitti/application/models/screen_config_model.dart';
 import 'package:bitti/application/screens/topics_screen/topics_screen.dart';
-import 'package:bitti/domain/entities/general/screen_config_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';

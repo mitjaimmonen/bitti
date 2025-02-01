@@ -1,4 +1,4 @@
-import 'package:bitti/domain/entities/general/screen_config_entity.dart';
+import 'package:bitti/application/models/screen_config_model.dart';
 import 'package:bitti/domain/entities/general/topic_entities/topic_entry_entity.dart';
 import 'package:bitti/domain/entities/general/topic_entities/topic_setting_value_toggle_entity.dart';
 import 'package:bitti/domain/entities/general/topic_entities/topic_type_settings_entity_base.dart';
@@ -30,7 +30,7 @@ class TopicEditorReturnData {
 class TopicEditorScreen extends StatefulWidget {
   final TopicEditorExtraData extra;
 
-  static const config = ScreenConfigEntity(
+  static const config = ScreenConfigModel(
     title: 'Topic Editor',
     routePath: '/topic-editor',
   );

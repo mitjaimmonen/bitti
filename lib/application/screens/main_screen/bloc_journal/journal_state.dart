@@ -8,8 +8,8 @@ sealed class JournalState {
 final class JournalInitial extends JournalState {}
 
 final class JournalLoaded extends JournalState {
-  final TopicListEntity topicList;
-  final JournalListEntity journalList;
+  final TopicsResponseEntity topicList;
+  final JournalsResponseEntity journalList;
 
   const JournalLoaded({
     required this.topicList,
