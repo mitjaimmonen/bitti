@@ -75,14 +75,55 @@ class LocalJournalDataSource extends JournalDataSource {
   }
 
   @override
-  Future<JournalsResponseModel> readAll(JournalsReadParamModel params) {
-    // TODO: implement readAll
-    throw UnimplementedError();
+  Future<JournalsResponseModel> readAll(JournalsReadParamModel params) async {
+    try {
+      final journalsString = localStorage.getItem('journals${params.topicId}');
+      final List<JournalEntryModel> journalsData;
+
+      if (journalsString != null) {
+        final jsonList = jsonDecode(journalsString) as List;
+        journalsData =
+            jsonList.map((e) => JournalEntryModel.fromJson(e)).toList();
+      } else {
+        throw Exception('No journals found');
+      }
+
+      return JournalsResponseModel(journals: journalsData);
+    } catch (e) {
+      if (kDebugMode) print(e);
+      throw Exception('Failed to read journals');
+    }
   }
 
   @override
-  Future<JournalResponseModel> update(JournalUpdateParamModel params) {
-    // TODO: implement update
-    throw UnimplementedError();
+  Future<JournalResponseModel> update(JournalUpdateParamModel params) async {
+    try {
+      final journalsString = localStorage.getItem('journals${params.topicId}');
+      final List<JournalEntryModel> journalsData;
+
+      if (journalsString != null) {
+        final jsonList = jsonDecode(journalsString) as List;
+        journalsData =
+            jsonList.map((e) => JournalEntryModel.fromJson(e)).toList();
+      } else {
+        throw Exception('No journals found');
+      }
+
+      final journalIndex = journalsData
+          .indexWhere((journal) => journal.id == params.journalEntry.id);
+
+      if (journalIndex == -1) {
+        throw Exception('Journal not found');
+      }
+
+      journalsData[journalIndex] = params.journalEntry;
+      final json = journalsData.map((e) => e.toJson()).toList();
+      localStorage.setItem('journals', jsonEncode(json));
+
+      return JournalResponseModel(journal: params.journalEntry);
+    } catch (e) {
+      if (kDebugMode) print(e);
+      throw Exception('Failed to update journal');
+    }
   }
 }
