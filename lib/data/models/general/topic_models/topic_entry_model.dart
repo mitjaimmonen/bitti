@@ -1,4 +1,4 @@
-import 'package:bitti/data/models/general/journal_models/journal_entry_model_base.dart';
+import 'package:bitti/data/models/general/journal_models/journal_entry_model.dart';
 import 'package:bitti/data/models/general/topic_models/topic_type_settings_model.dart';
 import 'package:bitti/data/models/model.dart';
 import 'package:bitti/domain/entities/general/topic_entities/topic_entry_entity.dart';
@@ -16,7 +16,6 @@ class TopicEntryModel extends Model<TopicEntryEntity> {
   final int color;
   final int topicType;
   final TopicTypeSettingsModel topicTypeSettings;
-  final List<JournalEntryModelBase> journals;
 
   TopicEntryModel({
     required this.id,
@@ -27,7 +26,6 @@ class TopicEntryModel extends Model<TopicEntryEntity> {
     required this.color,
     required this.topicType,
     required this.topicTypeSettings,
-    required this.journals,
   });
 
   Map<String, dynamic> toJson() => _$TopicEntryModelToJson(this);

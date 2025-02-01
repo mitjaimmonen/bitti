@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:bitti/data/data_sources/interfaces/topic_data_source.dart';
-import 'package:bitti/data/models/general/topic_models/topic_list_model.dart';
+import 'package:bitti/data/models/general/topic_models/topic_entry_model.dart';
 import 'package:bitti/data/models/param/topic_create_param_model.dart';
 import 'package:bitti/data/models/param/topic_delete_param_model.dart';
 import 'package:bitti/data/models/param/topic_update_param_model.dart';
@@ -21,20 +21,21 @@ class LocalTopicDataSource extends TopicDataSource {
   Future<TopicResponseModel> create(TopicCreateParamModel params) async {
     try {
       final topicsString = localStorage.getItem('topics');
-      final TopicListModel topicsData;
+      final List<TopicEntryModel> topicsData;
 
       if (topicsString != null) {
-        topicsData = TopicListModel.fromJson(jsonDecode(topicsString));
+        final jsonList = jsonDecode(topicsString) as List;
+        topicsData = jsonList.map((e) => TopicEntryModel.fromJson(e)).toList();
       } else {
-        topicsData = TopicListModel(topics: []);
+        topicsData = [];
       }
 
-      if (topicsData.topics.any((topic) => topic.id == params.topic.id)) {
+      if (topicsData.any((topic) => topic.id == params.topic.id)) {
         throw Exception('Topic already exists, please update it instead');
       }
 
-      topicsData.topics.add(params.topic);
-      final json = topicsData.toJson();
+      topicsData.add(params.topic);
+      final json = topicsData.map((e) => e.toJson()).toList();
       localStorage.setItem('topics', jsonEncode(json));
 
       return TopicResponseModel(topic: params.topic);
@@ -44,19 +45,21 @@ class LocalTopicDataSource extends TopicDataSource {
     }
   }
 
+  /// Make sure to delete the journals that are associated with the topic
   @override
   Future<TopicResponseModel> delete(TopicDeleteParamModel params) async {
     try {
       final topicsString = localStorage.getItem('topics');
-      final TopicListModel topicsData;
+      final List<TopicEntryModel> topicsData;
 
       if (topicsString != null) {
-        topicsData = TopicListModel.fromJson(jsonDecode(topicsString));
+        final jsonList = jsonDecode(topicsString) as List;
+        topicsData = jsonList.map((e) => TopicEntryModel.fromJson(e)).toList();
       } else {
         throw Exception('No topics found');
       }
 
-      final topicIndex = topicsData.topics.indexWhere((topic) {
+      final topicIndex = topicsData.indexWhere((topic) {
         return topic.id == params.id;
       });
 
@@ -64,9 +67,9 @@ class LocalTopicDataSource extends TopicDataSource {
         throw Exception('Topic not found');
       }
 
-      final topicEntry = topicsData.topics[topicIndex];
-      topicsData.topics.removeAt(topicIndex);
-      final json = topicsData.toJson();
+      final topicEntry = topicsData[topicIndex];
+      topicsData.removeAt(topicIndex);
+      final json = topicsData.map((e) => e.toJson()).toList();
       localStorage.setItem('topics', jsonEncode(json));
 
       return TopicResponseModel(topic: topicEntry);
@@ -80,15 +83,16 @@ class LocalTopicDataSource extends TopicDataSource {
   Future<TopicsResponseModel> readAll(TopicsReadParamModel params) async {
     try {
       final topicsString = localStorage.getItem('topics');
-      final TopicListModel topicsData;
+      final List<TopicEntryModel> topicsData;
 
       if (topicsString != null) {
-        topicsData = TopicListModel.fromJson(jsonDecode(topicsString));
+        final jsonList = jsonDecode(topicsString) as List;
+        topicsData = jsonList.map((e) => TopicEntryModel.fromJson(e)).toList();
       } else {
         throw Exception('No topics found');
       }
 
-      return TopicsResponseModel(topics: topicsData.topics);
+      return TopicsResponseModel(topics: topicsData);
     } catch (e) {
       if (kDebugMode) print(e);
       throw Exception('Failed to read topics');
@@ -99,15 +103,16 @@ class LocalTopicDataSource extends TopicDataSource {
   Future<TopicResponseModel> update(TopicUpdateParamModel params) async {
     try {
       final topicsString = localStorage.getItem('topics');
-      final TopicListModel topicsData;
+      final List<TopicEntryModel> topicsData;
 
       if (topicsString != null) {
-        topicsData = TopicListModel.fromJson(jsonDecode(topicsString));
+        final jsonList = jsonDecode(topicsString) as List;
+        topicsData = jsonList.map((e) => TopicEntryModel.fromJson(e)).toList();
       } else {
         throw Exception('No topics found');
       }
 
-      final topicIndex = topicsData.topics.indexWhere((topic) {
+      final topicIndex = topicsData.indexWhere((topic) {
         return topic.id == params.topic.id;
       });
 
@@ -115,8 +120,8 @@ class LocalTopicDataSource extends TopicDataSource {
         throw Exception('Topic not found');
       }
 
-      topicsData.topics[topicIndex] = params.topic;
-      final json = topicsData.toJson();
+      topicsData[topicIndex] = params.topic;
+      final json = topicsData.map((e) => e.toJson()).toList();
       localStorage.setItem('topics', jsonEncode(json));
 
       return TopicResponseModel(topic: params.topic);

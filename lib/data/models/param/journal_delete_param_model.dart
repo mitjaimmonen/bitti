@@ -6,10 +6,12 @@ part '.generated/journal_delete_param_model.g.dart';
 
 @JsonSerializable(createFactory: false)
 class JournalDeleteParamModel extends ParamModel<JournalDeleteParamEntity> {
-  final int id;
+  final int topicId;
+  final int journalId;
 
   const JournalDeleteParamModel({
-    required this.id,
+    required this.topicId,
+    required this.journalId,
   });
 
   @override
