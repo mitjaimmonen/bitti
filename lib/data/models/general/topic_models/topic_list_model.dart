@@ -13,7 +13,6 @@ class TopicListModel extends Model<TopicsResponseEntity> {
     required this.topics,
   });
 
-  @override
   Map<String, dynamic> toJson() => _$TopicListModelToJson(this);
 
   factory TopicListModel.fromJson(Map<String, dynamic> json) =>

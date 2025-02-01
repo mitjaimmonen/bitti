@@ -5,8 +5,14 @@ import 'package:bitti/data/models/param/journal_update_param_model.dart';
 import 'package:bitti/data/models/param/journals_read_param_model.dart';
 import 'package:bitti/data/models/response/journal_response_model.dart';
 import 'package:bitti/data/models/response/journals_response_model.dart';
+import 'package:localstorage/localstorage.dart';
 
-class MockJournalDataSource extends JournalDataSource {
+class LocalJournalDataSource extends JournalDataSource {
+  @override
+  Future<void> open() async {
+    await initLocalStorage();
+  }
+
   @override
   Future<JournalResponseModel> create(JournalCreateParamModel params) {
     // TODO: implement create

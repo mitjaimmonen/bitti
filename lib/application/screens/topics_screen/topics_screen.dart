@@ -1,6 +1,7 @@
 import 'package:bitti/application/models/screen_config_model.dart';
 import 'package:bitti/application/screens/topic_editor_screen/topic_editor_screen.dart';
 import 'package:bitti/application/screens/topics_screen/bloc_topics/topics_bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -36,6 +37,8 @@ class TopicsScreen extends StatelessWidget {
                         TopicEditorScreen.config.routePath,
                         extra: const TopicEditorExtraData(),
                       );
+
+                      if (kDebugMode) print(data);
                     },
                     child: const Text('Add Topic'),
                   )

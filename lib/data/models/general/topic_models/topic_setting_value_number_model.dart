@@ -15,7 +15,6 @@ class TopicSettingValueNumberModel
     required this.max,
   });
 
-  @override
   Map<String, dynamic> toJson() => _$TopicSettingValueNumberModelToJson(this);
 
   factory TopicSettingValueNumberModel.fromJson(Map<String, dynamic> json) =>

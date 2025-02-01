@@ -6,10 +6,10 @@ part '.generated/topic_delete_param_model.g.dart';
 
 @JsonSerializable(createFactory: false)
 class TopicDeleteParamModel extends ParamModel<TopicDeleteParamEntity> {
-  final int topicId;
+  final int id;
 
   const TopicDeleteParamModel({
-    required this.topicId,
+    required this.id,
   });
 
   @override

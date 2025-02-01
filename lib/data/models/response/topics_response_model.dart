@@ -1,6 +1,5 @@
 import 'package:bitti/data/models/general/topic_models/topic_entry_model.dart';
 import 'package:bitti/data/models/model.dart';
-import 'package:bitti/domain/entities/entity.dart';
 import 'package:bitti/domain/entities/response/topics_response_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -15,7 +14,7 @@ class TopicsResponseModel extends ResponseModel<TopicsResponseEntity> {
   });
 
   @override
-  ResponseModel<ResponseEntity> fromJson(Map<String, dynamic> json) {
+  factory TopicsResponseModel.fromJson(Map<String, dynamic> json) {
     return _$TopicsResponseModelFromJson(json);
   }
 }

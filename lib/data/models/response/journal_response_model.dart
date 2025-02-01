@@ -1,6 +1,5 @@
 import 'package:bitti/data/models/general/journal_models/journal_entry_model_base.dart';
 import 'package:bitti/data/models/model.dart';
-import 'package:bitti/domain/entities/entity.dart';
 import 'package:bitti/domain/entities/response/journal_response_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -15,7 +14,7 @@ class JournalResponseModel extends ResponseModel<JournalResponseEntity> {
   });
 
   @override
-  ResponseModel<ResponseEntity> fromJson(Map<String, dynamic> json) {
+  factory JournalResponseModel.fromJson(Map<String, dynamic> json) {
     return _$JournalResponseModelFromJson(json);
   }
 }

@@ -41,10 +41,10 @@ class TopicEditorScreen extends StatefulWidget {
   });
 
   @override
-  _TopicEditorScreenState createState() => _TopicEditorScreenState();
+  TopicEditorScreenState createState() => TopicEditorScreenState();
 }
 
-class _TopicEditorScreenState extends State<TopicEditorScreen> {
+class TopicEditorScreenState extends State<TopicEditorScreen> {
   final _formKey = GlobalKey<FormState>();
   late int id;
   late String name;

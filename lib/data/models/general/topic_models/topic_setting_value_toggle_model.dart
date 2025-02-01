@@ -17,7 +17,6 @@ class TopicSettingValueToggleModel
     required this.color,
   });
 
-  @override
   Map<String, dynamic> toJson() => _$TopicSettingValueToggleModelToJson(this);
 
   factory TopicSettingValueToggleModel.fromJson(Map<String, dynamic> json) =>

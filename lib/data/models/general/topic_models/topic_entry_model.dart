@@ -30,7 +30,6 @@ class TopicEntryModel extends Model<TopicEntryEntity> {
     required this.journals,
   });
 
-  @override
   Map<String, dynamic> toJson() => _$TopicEntryModelToJson(this);
 
   factory TopicEntryModel.fromJson(Map<String, dynamic> json) =>

@@ -14,7 +14,6 @@ class TopicSettingValueNoteModel extends Model<TopicSettingValueNoteEntity> {
     required this.displayInNotes,
   });
 
-  @override
   Map<String, dynamic> toJson() => _$TopicSettingValueNoteModelToJson(this);
 
   factory TopicSettingValueNoteModel.fromJson(Map<String, dynamic> json) =>

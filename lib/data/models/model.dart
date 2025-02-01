@@ -13,5 +13,7 @@ abstract class ParamModel<T extends ParamEntity> extends Model<T> {
 abstract class ResponseModel<T extends ResponseEntity> extends Model<T> {
   const ResponseModel();
 
-  ResponseModel fromJson(Map<String, dynamic> json);
+  factory ResponseModel.fromJson(Map<String, dynamic> json) {
+    throw UnimplementedError();
+  }
 }

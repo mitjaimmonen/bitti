@@ -15,7 +15,6 @@ abstract class JournalEntryModelBase<T extends JournalEntryEntityBase>
     required this.date,
   });
 
-  @override
   Map<String, dynamic> toJson() => _$JournalEntryModelBaseToJson(this);
 
   factory JournalEntryModelBase.fromJson(Map<String, dynamic> json) =>
