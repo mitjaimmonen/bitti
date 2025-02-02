@@ -17,4 +17,11 @@ class JournalCreateParamModel extends ParamModel<JournalCreateParamEntity> {
 
   @override
   Map<String, dynamic> toJson() => _$JournalCreateParamModelToJson(this);
+
+  factory JournalCreateParamModel.fromEntity(JournalCreateParamEntity entity) {
+    return JournalCreateParamModel(
+      topicId: entity.topicId,
+      journal: JournalEntryModel.fromEntity(entity.journal),
+    );
+  }
 }

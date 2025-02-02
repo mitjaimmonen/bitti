@@ -17,4 +17,11 @@ class TopicResponseModel extends ResponseModel<TopicResponseEntity> {
   factory TopicResponseModel.fromJson(Map<String, dynamic> json) {
     return _$TopicResponseModelFromJson(json);
   }
+
+  @override
+  TopicResponseEntity toEntity() {
+    return TopicResponseEntity(
+      topic: topic.toEntity(),
+    );
+  }
 }

@@ -1,12 +1,11 @@
 import 'package:bitti/application/models/screen_config_model.dart';
 import 'package:bitti/domain/entities/general/topic_entities/topic_entry_entity.dart';
-import 'package:bitti/domain/entities/general/topic_entities/topic_setting_value_toggle_entity.dart';
-import 'package:bitti/domain/entities/general/topic_entities/topic_type_settings_entity_base.dart';
+import 'package:bitti/domain/entities/general/topic_entities/topic_icon_data_entity.dart';
+import 'package:bitti/domain/entities/general/topic_entities/topic_type_settings_entity.dart';
 import 'package:bitti/domain/entities/general/topic_entities/topic_type_toggle_settings_entity.dart';
 import 'package:bitti/domain/enums/topic_type.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_iconpicker/flutter_iconpicker.dart';
 import 'package:go_router/go_router.dart';
 
 class TopicEditorExtraData {
@@ -50,10 +49,10 @@ class TopicEditorScreenState extends State<TopicEditorScreen> {
   late String name;
   late String description;
   late DateTime startDate;
-  late IconData icon;
+  late TopicIconDataEntity icon;
   late Color color;
   late TopicType topicType;
-  late TopicTypeSettingsEntityBase topicTypeSettings;
+  late TopicTypeSettingsEntity topicTypeSettings;
 
   @override
   void initState() {
@@ -63,18 +62,18 @@ class TopicEditorScreenState extends State<TopicEditorScreen> {
     name = topicEntry?.name ?? '';
     description = topicEntry?.description ?? '';
     startDate = topicEntry?.startDate ?? DateTime.now();
-    icon = topicEntry?.icon ?? Icons.topic;
+    icon = topicEntry?.icon ??
+        TopicIconDataEntity(
+          assetPath: 'assets/icons/default.png',
+          color: Colors.blue,
+        );
     color = topicEntry?.color ?? Colors.blue;
     topicType = topicEntry?.topicType ?? TopicType.toggle;
     topicTypeSettings = topicEntry?.topicTypeSettings ??
-        const TopicTypeToggleSettingsEntity(
-          values: [
-            TopicSettingValueToggleEntity(
-              icon: null,
-              label: null,
-              color: Colors.blue,
-            )
-          ],
+        TopicTypeSettingsEntity(
+          noteSettings: null,
+          numberSettings: null,
+          toggleSettings: TopicTypeToggleSettingsEntity(values: []),
         );
   }
 
@@ -155,17 +154,7 @@ class TopicEditorScreenState extends State<TopicEditorScreen> {
               Row(
                 children: [
                   const Text('Icon'),
-                  IconButton(
-                    icon: Icon(icon),
-                    onPressed: () async {
-                      final newIcon = await showIconPicker(context);
-                      if (newIcon != null) {
-                        setState(() {
-                          icon = newIcon.data;
-                        });
-                      }
-                    },
-                  ),
+                  // TODO Icon picker
                 ],
               ),
               Row(

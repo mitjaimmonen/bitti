@@ -17,4 +17,9 @@ class JournalResponseModel extends ResponseModel<JournalResponseEntity> {
   factory JournalResponseModel.fromJson(Map<String, dynamic> json) {
     return _$JournalResponseModelFromJson(json);
   }
+
+  @override
+  JournalResponseEntity toEntity() {
+    return JournalResponseEntity(journal: journal.toEntity());
+  }
 }

@@ -6,11 +6,15 @@ import 'package:bitti/domain/entities/general/journal_entities/journal_entry_tog
 /// In order for data models json conversion to work, each type of entry must be
 /// defined explicitly.
 class JournalEntryEntity extends Entity {
+  final int id;
+  final DateTime date;
   final JournalEntryNoteEntity? journalNote;
   final JournalEntryNumberEntity? journalNumber;
   final JournalEntryToggleEntity? journalToggle;
 
   const JournalEntryEntity({
+    required this.id,
+    required this.date,
     required this.journalNote,
     required this.journalNumber,
     required this.journalToggle,

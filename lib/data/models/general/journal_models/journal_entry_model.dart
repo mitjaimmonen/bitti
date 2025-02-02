@@ -28,4 +28,30 @@ class JournalEntryModel extends Model<JournalEntryEntity> {
 
   factory JournalEntryModel.fromJson(Map<String, dynamic> json) =>
       _$JournalEntryModelFromJson(json);
+
+  JournalEntryEntity toEntity() {
+    return JournalEntryEntity(
+      id: id,
+      date: DateTime.parse(date),
+      journalNote: note?.toEntity(),
+      journalNumber: number?.toEntity(),
+      journalToggle: toggle?.toEntity(),
+    );
+  }
+
+  factory JournalEntryModel.fromEntity(JournalEntryEntity entity) {
+    return JournalEntryModel(
+      id: entity.id,
+      date: entity.date.toIso8601String(),
+      note: entity.journalNote != null
+          ? JournalEntryNoteModel.fromEntity(entity.journalNote!)
+          : null,
+      number: entity.journalNumber != null
+          ? JournalEntryNumberModel.fromEntity(entity.journalNumber!)
+          : null,
+      toggle: entity.journalToggle != null
+          ? JournalEntryToggleModel.fromEntity(entity.journalToggle!)
+          : null,
+    );
+  }
 }

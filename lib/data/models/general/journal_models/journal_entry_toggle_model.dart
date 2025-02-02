@@ -16,4 +16,16 @@ class JournalEntryToggleModel extends Model<JournalEntryToggleEntity> {
 
   factory JournalEntryToggleModel.fromJson(Map<String, dynamic> json) =>
       _$JournalEntryToggleModelFromJson(json);
+
+  JournalEntryToggleEntity toEntity() {
+    return JournalEntryToggleEntity(
+      toggleIndex: toggleIndex,
+    );
+  }
+
+  factory JournalEntryToggleModel.fromEntity(JournalEntryToggleEntity entity) {
+    return JournalEntryToggleModel(
+      toggleIndex: entity.toggleIndex,
+    );
+  }
 }

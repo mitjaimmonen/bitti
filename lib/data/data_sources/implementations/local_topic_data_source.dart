@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:bitti/data/data_sources/interfaces/topic_data_source.dart';
+import 'package:bitti/data/exceptions/exceptions.dart';
 import 'package:bitti/data/models/general/topic_models/topic_entry_model.dart';
 import 'package:bitti/data/models/param/topic_create_param_model.dart';
 import 'package:bitti/data/models/param/topic_delete_param_model.dart';
@@ -31,7 +32,8 @@ class LocalTopicDataSource extends TopicDataSource {
       }
 
       if (topicsData.any((topic) => topic.id == params.topic.id)) {
-        throw Exception('Topic already exists, please update it instead');
+        throw BadRequestException(
+            'Topic already exists, please update it instead');
       }
 
       topicsData.add(params.topic);
@@ -41,7 +43,7 @@ class LocalTopicDataSource extends TopicDataSource {
       return TopicResponseModel(topic: params.topic);
     } catch (e) {
       if (kDebugMode) print(e);
-      throw Exception('Failed to create topic');
+      throw DataSourceException('Failed to create topic');
     }
   }
 
@@ -56,7 +58,7 @@ class LocalTopicDataSource extends TopicDataSource {
         final jsonList = jsonDecode(topicsString) as List;
         topicsData = jsonList.map((e) => TopicEntryModel.fromJson(e)).toList();
       } else {
-        throw Exception('No topics found');
+        throw NotFoundException('No topics found');
       }
 
       final topicIndex = topicsData.indexWhere((topic) {
@@ -64,7 +66,7 @@ class LocalTopicDataSource extends TopicDataSource {
       });
 
       if (topicIndex == -1) {
-        throw Exception('Topic not found');
+        throw NotFoundException('Topic not found');
       }
 
       final topicEntry = topicsData[topicIndex];
@@ -75,7 +77,7 @@ class LocalTopicDataSource extends TopicDataSource {
       return TopicResponseModel(topic: topicEntry);
     } catch (e) {
       if (kDebugMode) print(e);
-      throw Exception('Failed to delete topic');
+      throw DataSourceException('Failed to delete topic');
     }
   }
 
@@ -89,13 +91,13 @@ class LocalTopicDataSource extends TopicDataSource {
         final jsonList = jsonDecode(topicsString) as List;
         topicsData = jsonList.map((e) => TopicEntryModel.fromJson(e)).toList();
       } else {
-        throw Exception('No topics found');
+        throw NotFoundException('No topics found');
       }
 
       return TopicsResponseModel(topics: topicsData);
     } catch (e) {
       if (kDebugMode) print(e);
-      throw Exception('Failed to read topics');
+      throw DataSourceException('Failed to read topics');
     }
   }
 
@@ -109,7 +111,7 @@ class LocalTopicDataSource extends TopicDataSource {
         final jsonList = jsonDecode(topicsString) as List;
         topicsData = jsonList.map((e) => TopicEntryModel.fromJson(e)).toList();
       } else {
-        throw Exception('No topics found');
+        throw NotFoundException('No topics found');
       }
 
       final topicIndex = topicsData.indexWhere((topic) {
@@ -117,7 +119,7 @@ class LocalTopicDataSource extends TopicDataSource {
       });
 
       if (topicIndex == -1) {
-        throw Exception('Topic not found');
+        throw NotFoundException('Topic not found');
       }
 
       topicsData[topicIndex] = params.topic;
@@ -127,7 +129,7 @@ class LocalTopicDataSource extends TopicDataSource {
       return TopicResponseModel(topic: params.topic);
     } catch (e) {
       if (kDebugMode) print(e);
-      throw Exception('Failed to update topic');
+      throw DataSourceException('Failed to update topic');
     }
   }
 }

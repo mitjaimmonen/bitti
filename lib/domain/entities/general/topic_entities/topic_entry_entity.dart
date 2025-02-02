@@ -1,5 +1,6 @@
 import 'package:bitti/domain/entities/entity.dart';
-import 'package:bitti/domain/entities/general/topic_entities/topic_type_settings_entity_base.dart';
+import 'package:bitti/domain/entities/general/topic_entities/topic_icon_data_entity.dart';
+import 'package:bitti/domain/entities/general/topic_entities/topic_type_settings_entity.dart';
 import 'package:bitti/domain/enums/topic_type.dart';
 import 'package:flutter/material.dart';
 
@@ -8,10 +9,10 @@ class TopicEntryEntity extends Entity {
   final String name;
   final String description;
   final DateTime startDate;
-  final IconData icon;
+  final TopicIconDataEntity icon;
   final Color color;
   final TopicType topicType;
-  final TopicTypeSettingsEntityBase topicTypeSettings;
+  final TopicTypeSettingsEntity topicTypeSettings;
 
   const TopicEntryEntity({
     required this.id,

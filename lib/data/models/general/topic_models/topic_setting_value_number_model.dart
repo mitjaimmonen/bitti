@@ -19,4 +19,19 @@ class TopicSettingValueNumberModel
 
   factory TopicSettingValueNumberModel.fromJson(Map<String, dynamic> json) =>
       _$TopicSettingValueNumberModelFromJson(json);
+
+  TopicSettingValueNumberEntity toEntity() {
+    return TopicSettingValueNumberEntity(
+      min: min,
+      max: max,
+    );
+  }
+
+  factory TopicSettingValueNumberModel.fromEntity(
+      TopicSettingValueNumberEntity entity) {
+    return TopicSettingValueNumberModel(
+      min: entity.min,
+      max: entity.max,
+    );
+  }
 }

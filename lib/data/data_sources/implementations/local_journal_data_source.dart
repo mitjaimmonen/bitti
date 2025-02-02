@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:bitti/data/data_sources/interfaces/journal_data_source.dart';
+import 'package:bitti/data/exceptions/exceptions.dart';
 import 'package:bitti/data/models/general/journal_models/journal_entry_model.dart';
 import 'package:bitti/data/models/param/journal_create_param_model.dart';
 import 'package:bitti/data/models/param/journal_delete_param_model.dart';
@@ -28,7 +29,7 @@ class LocalJournalDataSource extends JournalDataSource {
         journalsData =
             jsonList.map((e) => JournalEntryModel.fromJson(e)).toList();
       } else {
-        throw Exception('No journals found');
+        journalsData = [];
       }
 
       journalsData.add(params.journal);
@@ -38,7 +39,7 @@ class LocalJournalDataSource extends JournalDataSource {
       return JournalResponseModel(journal: params.journal);
     } catch (e) {
       if (kDebugMode) print(e);
-      throw Exception('Failed to create journal');
+      throw DataSourceException('Failed to create journal');
     }
   }
 
@@ -53,14 +54,14 @@ class LocalJournalDataSource extends JournalDataSource {
         journalsData =
             jsonList.map((e) => JournalEntryModel.fromJson(e)).toList();
       } else {
-        throw Exception('No journals found');
+        throw NotFoundException('No journals found');
       }
 
       final journalIndex =
           journalsData.indexWhere((journal) => journal.id == params.journalId);
 
       if (journalIndex == -1) {
-        throw Exception('Journal not found');
+        throw NotFoundException('Journal not found');
       }
 
       final journal = journalsData.removeAt(journalIndex);
@@ -70,7 +71,7 @@ class LocalJournalDataSource extends JournalDataSource {
       return JournalResponseModel(journal: journal);
     } catch (e) {
       if (kDebugMode) print(e);
-      throw Exception('Failed to delete journal');
+      throw DataSourceException('Failed to delete journal');
     }
   }
 
@@ -85,13 +86,13 @@ class LocalJournalDataSource extends JournalDataSource {
         journalsData =
             jsonList.map((e) => JournalEntryModel.fromJson(e)).toList();
       } else {
-        throw Exception('No journals found');
+        throw NotFoundException('No journals found');
       }
 
       return JournalsResponseModel(journals: journalsData);
     } catch (e) {
       if (kDebugMode) print(e);
-      throw Exception('Failed to read journals');
+      throw DataSourceException('Failed to read journals');
     }
   }
 
@@ -106,14 +107,14 @@ class LocalJournalDataSource extends JournalDataSource {
         journalsData =
             jsonList.map((e) => JournalEntryModel.fromJson(e)).toList();
       } else {
-        throw Exception('No journals found');
+        throw NotFoundException('No journals found');
       }
 
       final journalIndex = journalsData
           .indexWhere((journal) => journal.id == params.journalEntry.id);
 
       if (journalIndex == -1) {
-        throw Exception('Journal not found');
+        throw NotFoundException('Journal not found');
       }
 
       journalsData[journalIndex] = params.journalEntry;
@@ -123,7 +124,7 @@ class LocalJournalDataSource extends JournalDataSource {
       return JournalResponseModel(journal: params.journalEntry);
     } catch (e) {
       if (kDebugMode) print(e);
-      throw Exception('Failed to update journal');
+      throw DataSourceException('Failed to update journal');
     }
   }
 }

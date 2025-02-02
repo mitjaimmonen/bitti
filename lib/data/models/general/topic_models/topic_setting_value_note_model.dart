@@ -18,4 +18,19 @@ class TopicSettingValueNoteModel extends Model<TopicSettingValueNoteEntity> {
 
   factory TopicSettingValueNoteModel.fromJson(Map<String, dynamic> json) =>
       _$TopicSettingValueNoteModelFromJson(json);
+
+  TopicSettingValueNoteEntity toEntity() {
+    return TopicSettingValueNoteEntity(
+      displayInJournal: displayInJournal,
+      displayInNotes: displayInNotes,
+    );
+  }
+
+  factory TopicSettingValueNoteModel.fromEntity(
+      TopicSettingValueNoteEntity entity) {
+    return TopicSettingValueNoteModel(
+      displayInJournal: entity.displayInJournal,
+      displayInNotes: entity.displayInNotes,
+    );
+  }
 }

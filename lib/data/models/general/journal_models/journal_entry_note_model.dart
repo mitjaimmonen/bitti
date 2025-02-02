@@ -18,4 +18,18 @@ class JournalEntryNoteModel extends Model<JournalEntryNoteEntity> {
 
   factory JournalEntryNoteModel.fromJson(Map<String, dynamic> json) =>
       _$JournalEntryNoteModelFromJson(json);
+
+  JournalEntryNoteEntity toEntity() {
+    return JournalEntryNoteEntity(
+      title: title,
+      content: content,
+    );
+  }
+
+  factory JournalEntryNoteModel.fromEntity(JournalEntryNoteEntity entity) {
+    return JournalEntryNoteModel(
+      title: entity.title,
+      content: entity.content,
+    );
+  }
 }

@@ -1,12 +1,10 @@
-import 'package:bitti/domain/entities/general/journal_entities/journal_entry_entity_base.dart';
+import 'package:bitti/domain/entities/entity.dart';
 
-class JournalEntryNoteEntity extends JournalEntryEntityBase {
+class JournalEntryNoteEntity extends Entity {
   final String title;
   final String content;
 
   const JournalEntryNoteEntity({
-    required super.id,
-    required super.date,
     required this.title,
     required this.content,
   });

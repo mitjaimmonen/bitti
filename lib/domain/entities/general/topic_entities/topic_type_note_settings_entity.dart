@@ -1,7 +1,7 @@
+import 'package:bitti/domain/entities/entity.dart';
 import 'package:bitti/domain/entities/general/topic_entities/topic_setting_value_note_entity.dart';
-import 'package:bitti/domain/entities/general/topic_entities/topic_type_settings_entity_base.dart';
 
-class TopicTypeNoteSettingsEntity extends TopicTypeSettingsEntityBase {
+class TopicTypeNoteSettingsEntity extends Entity {
   final List<TopicSettingValueNoteEntity> values;
 
   const TopicTypeNoteSettingsEntity({

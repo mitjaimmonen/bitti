@@ -16,4 +16,6 @@ abstract class ResponseModel<T extends ResponseEntity> extends Model<T> {
   factory ResponseModel.fromJson(Map<String, dynamic> json) {
     throw UnimplementedError();
   }
+
+  T toEntity();
 }

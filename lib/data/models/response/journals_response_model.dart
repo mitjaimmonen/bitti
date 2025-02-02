@@ -17,4 +17,11 @@ class JournalsResponseModel extends ResponseModel<JournalsResponseEntity> {
   factory JournalsResponseModel.fromJson(Map<String, dynamic> json) {
     return _$JournalsResponseModelFromJson(json);
   }
+
+  @override
+  JournalsResponseEntity toEntity() {
+    return JournalsResponseEntity(
+      journals: journals.map((journal) => journal.toEntity()).toList(),
+    );
+  }
 }

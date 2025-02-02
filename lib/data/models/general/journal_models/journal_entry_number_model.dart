@@ -16,4 +16,16 @@ class JournalEntryNumberModel extends Model<JournalEntryNumberEntity> {
 
   factory JournalEntryNumberModel.fromJson(Map<String, dynamic> json) =>
       _$JournalEntryNumberModelFromJson(json);
+
+  JournalEntryNumberEntity toEntity() {
+    return JournalEntryNumberEntity(
+      number: number,
+    );
+  }
+
+  factory JournalEntryNumberModel.fromEntity(JournalEntryNumberEntity entity) {
+    return JournalEntryNumberModel(
+      number: entity.number,
+    );
+  }
 }

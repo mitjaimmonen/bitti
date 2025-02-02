@@ -1,5 +1,11 @@
 abstract class Failure {}
 
+class GeneralFailure extends Failure {
+  final String message;
+
+  GeneralFailure({required this.message});
+}
+
 class ServerFailure extends Failure {
   final String message;
 
@@ -18,8 +24,14 @@ class NetworkFailure extends Failure {
   NetworkFailure({required this.message});
 }
 
-class DatabaseFailure extends Failure {
+class DataSourceFailure extends Failure {
   final String message;
 
-  DatabaseFailure({required this.message});
+  DataSourceFailure({required this.message});
+}
+
+class NotFoundFailure extends Failure {
+  final String message;
+
+  NotFoundFailure({required this.message});
 }
