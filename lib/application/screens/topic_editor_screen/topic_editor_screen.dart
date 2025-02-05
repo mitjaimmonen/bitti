@@ -1,4 +1,5 @@
 import 'package:bitti/application/models/screen_config_model.dart';
+import 'package:bitti/application/widget/sketch_container.dart';
 import 'package:bitti/domain/entities/general/topic_entities/topic_entry_entity.dart';
 import 'package:bitti/domain/entities/general/topic_entities/topic_type_settings_entity.dart';
 import 'package:bitti/domain/entities/general/topic_entities/topic_type_toggle_settings_entity.dart';
@@ -111,12 +112,15 @@ class TopicEditorScreenState extends State<TopicEditorScreen> {
           key: _formKey,
           child: Column(
             children: [
-              TextFormField(
-                initialValue: name,
-                decoration: const InputDecoration(labelText: 'Name'),
-                onSaved: (value) => name = value!,
-                validator: (value) =>
-                    value!.isEmpty ? 'Please enter a name' : null,
+              SketchContainer(
+                padding: const EdgeInsets.all(8),
+                child: TextFormField(
+                  initialValue: name,
+                  decoration: const InputDecoration(labelText: 'Name'),
+                  onSaved: (value) => name = value!,
+                  validator: (value) =>
+                      value!.isEmpty ? 'Please enter a name' : null,
+                ),
               ),
               TextFormField(
                 initialValue: description,
