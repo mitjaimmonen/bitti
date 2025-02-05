@@ -1,7 +1,6 @@
 import 'dart:ui';
 
-import 'package:bitti/data/models/general/journal_models/journal_entry_model.dart';
-import 'package:bitti/data/models/general/topic_models/topic_icon_data_model.dart';
+import 'package:bitti/data/models/general/asset_icon_data_model.dart';
 import 'package:bitti/data/models/general/topic_models/topic_type_settings_model.dart';
 import 'package:bitti/data/models/model.dart';
 import 'package:bitti/domain/entities/general/topic_entities/topic_entry_entity.dart';
@@ -16,7 +15,7 @@ class TopicEntryModel extends Model<TopicEntryEntity> {
   final String name;
   final String description;
   final String startDate;
-  final TopicIconDataModel icon;
+  final AssetIconDataModel icon;
   final int color;
   final int topicType;
   final TopicTypeSettingsModel topicTypeSettings;
@@ -56,7 +55,7 @@ class TopicEntryModel extends Model<TopicEntryEntity> {
       name: entity.name,
       description: entity.description,
       startDate: entity.startDate.toIso8601String(),
-      icon: TopicIconDataModel.fromEntity(entity.icon),
+      icon: AssetIconDataModel.fromEntity(entity.icon),
       color: entity.color.toARGB32(),
       topicType: entity.topicType.value,
       topicTypeSettings:

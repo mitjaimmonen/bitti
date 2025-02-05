@@ -1,6 +1,6 @@
 import 'package:bitti/application/models/screen_config_model.dart';
+import 'package:bitti/domain/entities/general/asset_icon_data_entity.dart';
 import 'package:bitti/domain/entities/general/topic_entities/topic_entry_entity.dart';
-import 'package:bitti/domain/entities/general/topic_entities/topic_icon_data_entity.dart';
 import 'package:bitti/domain/entities/general/topic_entities/topic_type_settings_entity.dart';
 import 'package:bitti/domain/entities/general/topic_entities/topic_type_toggle_settings_entity.dart';
 import 'package:bitti/domain/enums/topic_type.dart';
@@ -49,7 +49,7 @@ class TopicEditorScreenState extends State<TopicEditorScreen> {
   late String name;
   late String description;
   late DateTime startDate;
-  late TopicIconDataEntity icon;
+  late AssetIconDataEntity icon;
   late Color color;
   late TopicType topicType;
   late TopicTypeSettingsEntity topicTypeSettings;
@@ -63,7 +63,7 @@ class TopicEditorScreenState extends State<TopicEditorScreen> {
     description = topicEntry?.description ?? '';
     startDate = topicEntry?.startDate ?? DateTime.now();
     icon = topicEntry?.icon ??
-        TopicIconDataEntity(
+        AssetIconDataEntity(
           assetPath: 'assets/icons/default.png',
           color: Colors.blue,
         );
