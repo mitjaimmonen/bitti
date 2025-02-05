@@ -1,6 +1,6 @@
 import 'package:bitti/data/data_sources/interfaces/icon_data_source.dart';
+import 'package:bitti/data/mappers/icon_info_data_mapper.dart';
 import 'package:bitti/data/models/general/icon_entry_model.dart';
-import 'package:bitti/data/models/icon_info_data_model.dart';
 import 'package:bitti/data/models/param/icon_read_param_model.dart';
 import 'package:bitti/data/models/param/icons_search_param_model.dart';
 import 'package:bitti/data/models/response/icon_response_model.dart';
