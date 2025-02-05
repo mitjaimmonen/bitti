@@ -1,5 +1,7 @@
 import 'package:bitti/domain/entities/entity.dart';
+import 'package:flutter/cupertino.dart';
 
+@immutable
 abstract class Model<T extends Entity> {
   const Model();
 }

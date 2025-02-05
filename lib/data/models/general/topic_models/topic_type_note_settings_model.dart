@@ -7,9 +7,9 @@ part '.generated/topic_type_note_settings_model.g.dart';
 
 @JsonSerializable()
 class TopicTypeNoteSettingsModel extends Model<TopicTypeNoteSettingsEntity> {
-  List<TopicSettingValueNoteModel> values;
+  final List<TopicSettingValueNoteModel> values;
 
-  TopicTypeNoteSettingsModel({
+  const TopicTypeNoteSettingsModel({
     required this.values,
   });
 

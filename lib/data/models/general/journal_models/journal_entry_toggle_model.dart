@@ -8,7 +8,7 @@ part '.generated/journal_entry_toggle_model.g.dart';
 class JournalEntryToggleModel extends Model<JournalEntryToggleEntity> {
   final int toggleIndex;
 
-  JournalEntryToggleModel({
+  const JournalEntryToggleModel({
     required this.toggleIndex,
   });
 

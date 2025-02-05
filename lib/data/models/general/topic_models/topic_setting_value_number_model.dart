@@ -10,7 +10,7 @@ class TopicSettingValueNumberModel
   final int min;
   final int max;
 
-  TopicSettingValueNumberModel({
+  const TopicSettingValueNumberModel({
     required this.min,
     required this.max,
   });

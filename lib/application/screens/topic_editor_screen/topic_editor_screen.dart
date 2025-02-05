@@ -1,5 +1,4 @@
 import 'package:bitti/application/models/screen_config_model.dart';
-import 'package:bitti/domain/entities/general/asset_icon_data_entity.dart';
 import 'package:bitti/domain/entities/general/topic_entities/topic_entry_entity.dart';
 import 'package:bitti/domain/entities/general/topic_entities/topic_type_settings_entity.dart';
 import 'package:bitti/domain/entities/general/topic_entities/topic_type_toggle_settings_entity.dart';
@@ -49,7 +48,7 @@ class TopicEditorScreenState extends State<TopicEditorScreen> {
   late String name;
   late String description;
   late DateTime startDate;
-  late AssetIconDataEntity icon;
+  late String iconName;
   late Color color;
   late TopicType topicType;
   late TopicTypeSettingsEntity topicTypeSettings;
@@ -62,11 +61,7 @@ class TopicEditorScreenState extends State<TopicEditorScreen> {
     name = topicEntry?.name ?? '';
     description = topicEntry?.description ?? '';
     startDate = topicEntry?.startDate ?? DateTime.now();
-    icon = topicEntry?.icon ??
-        AssetIconDataEntity(
-          assetPath: 'assets/icons/default.png',
-          color: Colors.blue,
-        );
+    iconName = topicEntry?.iconName ?? 'default';
     color = topicEntry?.color ?? Colors.blue;
     topicType = topicEntry?.topicType ?? TopicType.toggle;
     topicTypeSettings = topicEntry?.topicTypeSettings ??
@@ -85,7 +80,7 @@ class TopicEditorScreenState extends State<TopicEditorScreen> {
         name: name,
         description: description,
         startDate: startDate,
-        icon: icon,
+        iconName: iconName,
         color: color,
         topicType: topicType,
         topicTypeSettings: topicTypeSettings,

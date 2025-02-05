@@ -9,7 +9,7 @@ class TopicSettingValueNoteModel extends Model<TopicSettingValueNoteEntity> {
   final bool displayInJournal;
   final bool displayInNotes;
 
-  TopicSettingValueNoteModel({
+  const TopicSettingValueNoteModel({
     required this.displayInJournal,
     required this.displayInNotes,
   });

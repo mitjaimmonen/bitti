@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:bitti/data/models/general/asset_icon_data_model.dart';
 import 'package:bitti/data/models/model.dart';
 import 'package:bitti/domain/entities/general/topic_entities/topic_setting_value_toggle_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -10,12 +9,12 @@ part '.generated/topic_setting_value_toggle_model.g.dart';
 @JsonSerializable()
 class TopicSettingValueToggleModel
     extends Model<TopicSettingValueToggleEntity> {
-  final AssetIconDataModel? icon;
+  final String? iconName;
   final String? label;
   final int color;
 
-  TopicSettingValueToggleModel({
-    required this.icon,
+  const TopicSettingValueToggleModel({
+    required this.iconName,
     required this.label,
     required this.color,
   });
@@ -27,7 +26,7 @@ class TopicSettingValueToggleModel
 
   TopicSettingValueToggleEntity toEntity() {
     return TopicSettingValueToggleEntity(
-      icon: icon?.toEntity(),
+      iconName: iconName,
       label: label,
       color: Color(color),
     );
@@ -36,9 +35,7 @@ class TopicSettingValueToggleModel
   factory TopicSettingValueToggleModel.fromEntity(
       TopicSettingValueToggleEntity entity) {
     return TopicSettingValueToggleModel(
-      icon: entity.icon != null
-          ? AssetIconDataModel.fromEntity(entity.icon!)
-          : null,
+      iconName: entity.iconName,
       label: entity.label,
       color: entity.color.toARGB32(),
     );

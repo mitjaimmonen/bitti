@@ -8,7 +8,7 @@ part '.generated/journal_entry_number_model.g.dart';
 class JournalEntryNumberModel extends Model<JournalEntryNumberEntity> {
   final int number;
 
-  JournalEntryNumberModel({
+  const JournalEntryNumberModel({
     required this.number,
   });
 

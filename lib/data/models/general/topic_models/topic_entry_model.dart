@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:bitti/data/models/general/asset_icon_data_model.dart';
 import 'package:bitti/data/models/general/topic_models/topic_type_settings_model.dart';
 import 'package:bitti/data/models/model.dart';
 import 'package:bitti/domain/entities/general/topic_entities/topic_entry_entity.dart';
@@ -15,17 +14,17 @@ class TopicEntryModel extends Model<TopicEntryEntity> {
   final String name;
   final String description;
   final String startDate;
-  final AssetIconDataModel icon;
+  final String iconName;
   final int color;
   final int topicType;
   final TopicTypeSettingsModel topicTypeSettings;
 
-  TopicEntryModel({
+  const TopicEntryModel({
     required this.id,
     required this.name,
     required this.description,
     required this.startDate,
-    required this.icon,
+    required this.iconName,
     required this.color,
     required this.topicType,
     required this.topicTypeSettings,
@@ -42,7 +41,7 @@ class TopicEntryModel extends Model<TopicEntryEntity> {
       name: name,
       description: description,
       startDate: DateTime.parse(startDate),
-      icon: icon.toEntity(),
+      iconName: iconName,
       color: Color(color),
       topicType: TopicType.fromValue(topicType),
       topicTypeSettings: topicTypeSettings.toEntity(),
@@ -55,7 +54,7 @@ class TopicEntryModel extends Model<TopicEntryEntity> {
       name: entity.name,
       description: entity.description,
       startDate: entity.startDate.toIso8601String(),
-      icon: AssetIconDataModel.fromEntity(entity.icon),
+      iconName: entity.iconName,
       color: entity.color.toARGB32(),
       topicType: entity.topicType.value,
       topicTypeSettings:

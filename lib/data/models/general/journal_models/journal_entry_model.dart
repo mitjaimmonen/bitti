@@ -16,7 +16,7 @@ class JournalEntryModel extends Model<JournalEntryEntity> {
   final JournalEntryNumberModel? number;
   final JournalEntryToggleModel? toggle;
 
-  JournalEntryModel({
+  const JournalEntryModel({
     required this.id,
     required this.date,
     required this.note,

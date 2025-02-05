@@ -9,7 +9,7 @@ class JournalEntryNoteModel extends Model<JournalEntryNoteEntity> {
   final String title;
   final String content;
 
-  JournalEntryNoteModel({
+  const JournalEntryNoteModel({
     required this.title,
     required this.content,
   });

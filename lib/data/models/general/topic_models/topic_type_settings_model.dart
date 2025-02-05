@@ -13,7 +13,7 @@ class TopicTypeSettingsModel extends Model<TopicTypeSettingsEntity> {
   final TopicTypeNumberSettingsModel? numberSettings;
   final TopicTypeToggleSettingsModel? toggleSettings;
 
-  TopicTypeSettingsModel({
+  const TopicTypeSettingsModel({
     required this.noteSettings,
     required this.numberSettings,
     required this.toggleSettings,
