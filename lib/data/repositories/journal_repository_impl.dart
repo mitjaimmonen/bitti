@@ -12,18 +12,18 @@ import 'package:bitti/domain/repositories/journal_repository.dart';
 import 'package:either_dart/either.dart';
 
 class JournalRepositoryImpl extends JournalRepository {
-  final JournalDataSource journalDataSource;
+  final JournalDataSource dataSource;
 
   const JournalRepositoryImpl({
-    required this.journalDataSource,
+    required this.dataSource,
   });
 
   @override
   Future<Either<Failure, JournalResponseEntity>> createJournal(
       JournalCreateParamEntity params) async {
     try {
-      final response = await journalDataSource
-          .create(JournalCreateParamModel.fromEntity(params));
+      final response =
+          await dataSource.create(JournalCreateParamModel.fromEntity(params));
       return Right(response.toEntity());
     } on DataSourceException catch (e) {
       return Left(DataSourceFailure(message: e.message));

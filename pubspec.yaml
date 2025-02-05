@@ -10,7 +10,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.8
   flutter_bloc: ^9.0.0
   json_annotation: ^4.9.0
   flex_color_picker: ^3.7.0
@@ -21,7 +20,6 @@ dependencies:
   two_dimensional_scrollables: ^0.3.3
   bloc: ^9.0.0
   meta: ^1.15.0
-  flutter_iconpicker: ^4.0.1
   supabase_flutter: ^2.8.3
 
 dev_dependencies:

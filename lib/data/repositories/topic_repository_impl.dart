@@ -10,10 +10,10 @@ import 'package:bitti/domain/repositories/topic_repository.dart';
 import 'package:either_dart/either.dart';
 
 class TopicRepositoryImpl implements TopicRepository {
-  final TopicDataSource topicDataSource;
+  final TopicDataSource dataSource;
 
   TopicRepositoryImpl({
-    required this.topicDataSource,
+    required this.dataSource,
   });
 
   @override
