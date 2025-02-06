@@ -157,16 +157,18 @@ class TopicEditorScreenState extends State<TopicEditorScreen> {
                             return SketchDialog(
                               title: 'Select Date',
                               children: [
-                                DatePickerTheme(
-                                  data: DatePickerThemeData(),
-                                  child: CalendarDatePicker(
-                                    initialDate: startDate,
-                                    firstDate: DateTime(2000),
-                                    lastDate: DateTime.now()
-                                        .add(const Duration(seconds: 1)),
-                                    onDateChanged: (date) {
-                                      output = date;
-                                    },
+                                Material(
+                                  child: DatePickerTheme(
+                                    data: DatePickerThemeData(),
+                                    child: CalendarDatePicker(
+                                      initialDate: startDate,
+                                      firstDate: DateTime(2000),
+                                      lastDate: DateTime.now()
+                                          .add(const Duration(seconds: 1)),
+                                      onDateChanged: (date) {
+                                        output = date;
+                                      },
+                                    ),
                                   ),
                                 ),
                                 TextButton(
