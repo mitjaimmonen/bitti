@@ -23,11 +23,13 @@ class SketchContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomPaint(
       painter: SketchPainterRectangleFill(
+        key: UniqueKey(),
         color: fillColor ?? Theme.of(context).colorScheme.surfaceContainer,
         isDashed: dashedBackground,
       ),
       child: CustomPaint(
         painter: SketchPainterRectangleStroke(
+          key: UniqueKey(),
           color: strokeColor ?? Theme.of(context).colorScheme.outline,
         ),
         child: Padding(

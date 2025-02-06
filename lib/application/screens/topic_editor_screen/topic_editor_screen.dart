@@ -113,7 +113,9 @@ class TopicEditorScreenState extends State<TopicEditorScreen> {
           child: Column(
             children: [
               SketchContainer(
-                padding: const EdgeInsets.all(8),
+                fillColor: Theme.of(context).colorScheme.primaryContainer,
+                dashedBackground: true,
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: TextFormField(
                   initialValue: name,
                   decoration: const InputDecoration(labelText: 'Name'),
@@ -122,12 +124,17 @@ class TopicEditorScreenState extends State<TopicEditorScreen> {
                       value!.isEmpty ? 'Please enter a name' : null,
                 ),
               ),
-              TextFormField(
-                initialValue: description,
-                decoration: const InputDecoration(labelText: 'Description'),
-                onSaved: (value) => description = value!,
-                validator: (value) =>
-                    value!.isEmpty ? 'Please enter a description' : null,
+              SizedBox(height: 16),
+              SketchContainer(
+                fillColor: Theme.of(context).colorScheme.primaryContainer,
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: TextFormField(
+                  initialValue: description,
+                  decoration: const InputDecoration(labelText: 'Description'),
+                  onSaved: (value) => description = value!,
+                  validator: (value) =>
+                      value!.isEmpty ? 'Please enter a description' : null,
+                ),
               ),
               Row(
                 children: [
