@@ -145,6 +145,42 @@ class TopicEditorScreenState extends State<TopicEditorScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  const Text('Type'),
+                  SketchContainer(
+                    embossSize: 6,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: DropdownButton<TopicType>(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        value: topicType,
+                        onChanged: (value) {
+                          setState(() {
+                            topicType = value!;
+                          });
+                        },
+                        items: [
+                          DropdownMenuItem(
+                            value: TopicType.toggle,
+                            child: Text('Toggle'),
+                          ),
+                          DropdownMenuItem(
+                            value: TopicType.number,
+                            child: Text('Number'),
+                          ),
+                          DropdownMenuItem(
+                            value: TopicType.note,
+                            child: Text('Note'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
                   const Text('Start Date'),
                   SketchContainer(
                     embossSize: 6,
