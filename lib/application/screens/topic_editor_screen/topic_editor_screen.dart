@@ -1,10 +1,11 @@
 import 'package:bitti/application/models/screen_config_model.dart';
+import 'package:bitti/application/widget/dialog_widgets/sketch_color_picker_dialog.dart';
+import 'package:bitti/application/widget/dialog_widgets/sketch_dialog.dart';
 import 'package:bitti/application/widget/sketch_container.dart';
 import 'package:bitti/domain/entities/general/topic_entities/topic_entry_entity.dart';
 import 'package:bitti/domain/entities/general/topic_entities/topic_type_settings_entity.dart';
 import 'package:bitti/domain/entities/general/topic_entities/topic_type_toggle_settings_entity.dart';
 import 'package:bitti/domain/enums/topic_type.dart';
-import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -149,12 +150,34 @@ class TopicEditorScreenState extends State<TopicEditorScreen> {
                     embossSize: 6,
                     child: TextButton(
                       onPressed: () async {
-                        final date = await showDatePicker(
+                        final date = await showDialog(
                           context: context,
-                          initialDate: startDate,
-                          firstDate: DateTime(2000),
-                          lastDate:
-                              DateTime.now().add(const Duration(seconds: 1)),
+                          builder: (context) {
+                            DateTime output = startDate;
+                            return SketchDialog(
+                              title: 'Select Date',
+                              children: [
+                                DatePickerTheme(
+                                  data: DatePickerThemeData(),
+                                  child: CalendarDatePicker(
+                                    initialDate: startDate,
+                                    firstDate: DateTime(2000),
+                                    lastDate: DateTime.now()
+                                        .add(const Duration(seconds: 1)),
+                                    onDateChanged: (date) {
+                                      output = date;
+                                    },
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context, output);
+                                  },
+                                  child: const Text('OK'),
+                                ),
+                              ],
+                            );
+                          },
                         );
                         if (date != null) {
                           setState(() {
@@ -178,12 +201,12 @@ class TopicEditorScreenState extends State<TopicEditorScreen> {
                   const Text('Icon'),
                   SketchContainer(
                     embossSize: 6,
-                    child: TextButton(
+                    child: IconButton(
                       onPressed: () async {
                         final newIconName = await showDialog<String>(
                           context: context,
-                          builder: (context) => SimpleDialog(
-                            title: const Text('Select Icon'),
+                          builder: (context) => SketchDialog(
+                            title: 'Select Icon',
                             children: [
                               for (var iconName in [
                                 'default',
@@ -205,7 +228,7 @@ class TopicEditorScreenState extends State<TopicEditorScreen> {
                           });
                         }
                       },
-                      child: Icon(Icons.ac_unit),
+                      icon: Icon(Icons.ac_unit),
                     ),
                   ),
                 ],
@@ -215,28 +238,30 @@ class TopicEditorScreenState extends State<TopicEditorScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text('Color'),
-                  TextButton(
-                    onPressed: () async {
-                      final newColor = await showDialog<Color>(
-                        context: context,
-                        builder: (context) => ColorPicker(
-                          onColorChanged: (Color newColor) {
-                            setState(() {
-                              color = newColor;
-                            });
-                          },
-                        ),
-                      );
-                      if (newColor != null) {
-                        setState(() {
-                          color = newColor;
-                        });
-                      }
-                    },
-                    child: SketchContainer(
-                      fillColor: color,
-                      embossSize: 6,
-                      child: const SizedBox(width: 32, height: 32),
+                  SketchContainer(
+                    fillColor: color,
+                    embossSize: 6,
+                    child: IconButton(
+                      onPressed: () async {
+                        final newColor = await showDialog<Color>(
+                          context: context,
+                          builder: (context) => SketchColorPickerDialog(
+                            color: color,
+                            onDismiss: () {
+                              Navigator.pop(context);
+                            },
+                            onColorChanged: (newColor) {
+                              Navigator.pop(context, newColor);
+                            },
+                          ),
+                        );
+                        if (newColor != null) {
+                          setState(() {
+                            color = newColor;
+                          });
+                        }
+                      },
+                      icon: const SizedBox(),
                     ),
                   ),
                 ],
