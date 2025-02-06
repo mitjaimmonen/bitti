@@ -68,21 +68,25 @@ class SketchPainterRectangleFill extends CustomPainter {
         ...addPointsAlongPath(
           rectanglePoints[0],
           rectanglePoints[1],
+          randomRange: 1,
           pointInterval: 3,
         ),
         ...addPointsAlongPath(
           rectanglePoints[1],
           rectanglePoints[2],
+          randomRange: 1,
           pointInterval: 3,
         ),
         ...addPointsAlongPath(
           rectanglePoints[2],
           rectanglePoints[3],
+          randomRange: 1,
           pointInterval: 3,
         ),
         ...addPointsAlongPath(
           rectanglePoints[3],
           rectanglePoints[0],
+          randomRange: 1,
           pointInterval: 3,
         ),
       ];
@@ -98,7 +102,7 @@ class SketchPainterRectangleFill extends CustomPainter {
       }
 
       if (embossSize > 0) {
-        embossPaint.strokeWidth = 0.5;
+        embossPaint.strokeWidth = 0.2;
         embossPaint.strokeCap = StrokeCap.round;
         embossPaint.style = PaintingStyle.stroke;
 

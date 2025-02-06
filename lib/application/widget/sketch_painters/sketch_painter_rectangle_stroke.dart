@@ -20,7 +20,7 @@ class SketchPainterRectangleStroke extends CustomPainter {
     final paint = Paint()
       ..style = PaintingStyle.stroke
       ..color = color
-      ..strokeWidth = 1.2
+      ..strokeWidth = 1
       ..strokeCap = StrokeCap.round;
 
     final path = Path()..moveTo(0, 0);
@@ -96,8 +96,8 @@ class SketchPainterRectangleStroke extends CustomPainter {
       final t = i * step;
       final x = start.dx + (end.dx - start.dx) * t;
       final y = start.dy + (end.dy - start.dy) * t;
-      final randomX = (random.nextDouble() - 0.5) * 4 + x;
-      final randomY = (random.nextDouble() - 0.5) * 4 + y;
+      final randomX = (random.nextDouble() * 2 - 1) * 1.5 + x;
+      final randomY = (random.nextDouble() * 2 - 1) * 1.5 + y;
       points.add(Offset(randomX, randomY));
     }
 
