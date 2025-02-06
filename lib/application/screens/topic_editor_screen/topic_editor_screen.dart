@@ -7,6 +7,7 @@ import 'package:bitti/domain/enums/topic_type.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 
 class TopicEditorExtraData {
   final TopicEntryEntity? topicEntry;
@@ -113,27 +114,29 @@ class TopicEditorScreenState extends State<TopicEditorScreen> {
           child: Column(
             children: [
               SketchContainer(
-                fillColor: Theme.of(context).colorScheme.primaryContainer,
-                dashedBackground: true,
+                lineFilledBackground: true,
                 padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: TextFormField(
-                  initialValue: name,
-                  decoration: const InputDecoration(labelText: 'Name'),
-                  onSaved: (value) => name = value!,
-                  validator: (value) =>
-                      value!.isEmpty ? 'Please enter a name' : null,
+                child: TextField(
+                  decoration: const InputDecoration(
+                    labelText: 'Name',
+                    hintText: 'For example: "Cooking at home"',
+                    border: InputBorder.none,
+                  ),
+                  onSubmitted: (value) => name = value,
                 ),
               ),
               SizedBox(height: 16),
               SketchContainer(
-                fillColor: Theme.of(context).colorScheme.primaryContainer,
                 padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: TextFormField(
-                  initialValue: description,
-                  decoration: const InputDecoration(labelText: 'Description'),
-                  onSaved: (value) => description = value!,
-                  validator: (value) =>
-                      value!.isEmpty ? 'Please enter a description' : null,
+                child: TextField(
+                  minLines: 1,
+                  maxLines: 4,
+                  decoration: const InputDecoration(
+                    labelText: 'Description',
+                    hintText: 'A reminder for what you track and why.',
+                    border: InputBorder.none,
+                  ),
+                  onSubmitted: (value) => description = value,
                 ),
               ),
               Row(
@@ -153,7 +156,11 @@ class TopicEditorScreenState extends State<TopicEditorScreen> {
                         });
                       }
                     },
-                    child: Text(startDate.toString()),
+                    child: Builder(builder: (context) {
+                      String locale =
+                          Localizations.localeOf(context).languageCode;
+                      return Text(DateFormat.yMd(locale).format(startDate));
+                    }),
                   ),
                 ],
               ),

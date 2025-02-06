@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 class SketchPainterRectangleStroke extends CustomPainter {
   final Key key;
   final Color color;
+  final double embossSize;
 
   SketchPainterRectangleStroke({
     required this.key,
     required this.color,
-  });
+    double? boxEmbossSize,
+  }) : embossSize = boxEmbossSize ?? 0;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -21,11 +23,57 @@ class SketchPainterRectangleStroke extends CustomPainter {
 
     final path = Path()..moveTo(0, 0);
 
-    for (int i = 0; i < 2; i++) {
-      sketchLine(Offset(0, 0), Offset(size.width, 0), path);
-      sketchLine(Offset(size.width, 0), Offset(size.width, size.height), path);
-      sketchLine(Offset(size.width, size.height), Offset(0, size.height), path);
-      sketchLine(Offset(0, size.height), Offset(0, 0), path);
+    for (int i = 0; i < 1; i++) {
+      sketchLine(
+        Offset(0, 0),
+        Offset(size.width - embossSize, 0),
+        path,
+      );
+      sketchLine(
+        Offset(size.width - embossSize, 0),
+        Offset(size.width - embossSize, size.height - embossSize),
+        path,
+      );
+      sketchLine(
+        Offset(size.width - embossSize, size.height - embossSize),
+        Offset(0, size.height - embossSize),
+        path,
+      );
+      sketchLine(
+        Offset(0, size.height - embossSize),
+        Offset(0, 0),
+        path,
+      );
+    }
+
+    if (embossSize > 0) {
+      path.moveTo(size.width - embossSize, 0);
+      sketchLine(
+        Offset(size.width - embossSize, 0),
+        Offset(size.width, embossSize),
+        path,
+      );
+      sketchLine(
+        Offset(size.width, embossSize),
+        Offset(size.width, size.height),
+        path,
+      );
+      path.moveTo(size.width - embossSize, size.height - embossSize);
+      sketchLine(
+        Offset(size.width - embossSize, size.height - embossSize),
+        Offset(size.width, size.height),
+        path,
+      );
+      sketchLine(
+        Offset(size.width, size.height),
+        Offset(embossSize, size.height),
+        path,
+      );
+      sketchLine(
+        Offset(embossSize, size.height),
+        Offset(0, size.height - embossSize),
+        path,
+      );
     }
 
     canvas.drawPath(path, paint);
@@ -49,6 +97,8 @@ class SketchPainterRectangleStroke extends CustomPainter {
       final randomY = (random.nextDouble() - 0.5) * 4 + y;
       points.add(Offset(randomX, randomY));
     }
+
+    points.add(end);
 
     for (var i = 0; i < points.length; i++) {
       path.lineTo(points[i].dx, points[i].dy);
