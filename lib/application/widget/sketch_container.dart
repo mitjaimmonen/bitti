@@ -28,15 +28,16 @@ class SketchContainer extends StatelessWidget {
     return CustomPaint(
       painter: SketchPainterRectangleFill(
         key: UniqueKey(),
-        color: fillColor ?? Theme.of(context).colorScheme.surfaceContainer,
+        color: fillColor ?? Theme.of(context).colorScheme.surfaceBright,
         isLineFill: lineFilledBackground ?? false,
         embossSize: embossSize,
-        embossColor: embossColor,
+        embossColor: embossColor ??
+            Theme.of(context).colorScheme.surfaceContainerHighest,
       ),
       child: CustomPaint(
         painter: SketchPainterRectangleStroke(
           key: UniqueKey(),
-          boxEmbossSize: embossSize,
+          embossSize: embossSize,
           color: strokeColor ?? Theme.of(context).colorScheme.outline,
         ),
         child: Padding(

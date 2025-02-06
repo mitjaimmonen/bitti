@@ -1,5 +1,6 @@
 import 'package:bitti/application/models/screen_config_model.dart';
 import 'package:bitti/application/screens/topics_screen/topics_screen.dart';
+import 'package:bitti/application/widget/buttons/sketch_button_headline.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -37,12 +38,12 @@ class MainScreenJournalShell extends StatelessWidget {
                   'No topics found',
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
-                const SizedBox(height: 16.0),
-                ElevatedButton(
+                const SizedBox(height: 32.0),
+                SketchButtonHeadline(
+                  text: 'Edit topics',
                   onPressed: () {
                     GoRouter.of(context).push(TopicsScreen.config.routePath);
                   },
-                  child: const Text('Edit topics'),
                 ),
               ],
             ),

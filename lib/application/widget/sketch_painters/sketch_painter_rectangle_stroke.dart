@@ -6,15 +6,17 @@ class SketchPainterRectangleStroke extends CustomPainter {
   final Key key;
   final Color color;
   final double embossSize;
+  late Random random;
 
   SketchPainterRectangleStroke({
     required this.key,
     required this.color,
-    double? boxEmbossSize,
-  }) : embossSize = boxEmbossSize ?? 0;
+    double? embossSize,
+  }) : embossSize = embossSize ?? 0;
 
   @override
   void paint(Canvas canvas, Size size) {
+    random = Random(key.hashCode);
     final paint = Paint()
       ..style = PaintingStyle.stroke
       ..color = color
@@ -23,7 +25,7 @@ class SketchPainterRectangleStroke extends CustomPainter {
 
     final path = Path()..moveTo(0, 0);
 
-    for (int i = 0; i < 1; i++) {
+    for (int i = 0; i < 2; i++) {
       sketchLine(
         Offset(0, 0),
         Offset(size.width - embossSize, 0),
@@ -47,33 +49,35 @@ class SketchPainterRectangleStroke extends CustomPainter {
     }
 
     if (embossSize > 0) {
-      path.moveTo(size.width - embossSize, 0);
-      sketchLine(
-        Offset(size.width - embossSize, 0),
-        Offset(size.width, embossSize),
-        path,
-      );
-      sketchLine(
-        Offset(size.width, embossSize),
-        Offset(size.width, size.height),
-        path,
-      );
-      path.moveTo(size.width - embossSize, size.height - embossSize);
-      sketchLine(
-        Offset(size.width - embossSize, size.height - embossSize),
-        Offset(size.width, size.height),
-        path,
-      );
-      sketchLine(
-        Offset(size.width, size.height),
-        Offset(embossSize, size.height),
-        path,
-      );
-      sketchLine(
-        Offset(embossSize, size.height),
-        Offset(0, size.height - embossSize),
-        path,
-      );
+      for (int i = 0; i < 2; i++) {
+        path.moveTo(size.width - embossSize, 0);
+        sketchLine(
+          Offset(size.width - embossSize, 0),
+          Offset(size.width, embossSize),
+          path,
+        );
+        sketchLine(
+          Offset(size.width, embossSize),
+          Offset(size.width, size.height),
+          path,
+        );
+        path.moveTo(size.width - embossSize, size.height - embossSize);
+        sketchLine(
+          Offset(size.width - embossSize, size.height - embossSize),
+          Offset(size.width, size.height),
+          path,
+        );
+        sketchLine(
+          Offset(size.width, size.height),
+          Offset(embossSize, size.height),
+          path,
+        );
+        sketchLine(
+          Offset(embossSize, size.height),
+          Offset(0, size.height - embossSize),
+          path,
+        );
+      }
     }
 
     canvas.drawPath(path, paint);
@@ -85,7 +89,6 @@ class SketchPainterRectangleStroke extends CustomPainter {
   void sketchLine(Offset start, Offset end, Path path) {
     final pointCount = ((start - end).distance / 100).ceil();
     final step = 1 / pointCount;
-    final random = Random(key.hashCode);
 
     final List<Offset> points = [];
 

@@ -127,50 +127,92 @@ class TopicEditorScreenState extends State<TopicEditorScreen> {
               ),
               SizedBox(height: 16),
               SketchContainer(
+                lineFilledBackground: true,
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: TextField(
                   minLines: 1,
                   maxLines: 4,
                   decoration: const InputDecoration(
                     labelText: 'Description',
-                    hintText: 'A reminder for what you track and why.',
+                    hintText: 'For example: What do you track and why?',
                     border: InputBorder.none,
                   ),
                   onSubmitted: (value) => description = value,
                 ),
               ),
+              SizedBox(height: 16),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text('Start Date'),
-                  TextButton(
-                    onPressed: () async {
-                      final date = await showDatePicker(
-                        context: context,
-                        initialDate: startDate,
-                        firstDate: DateTime(2000),
-                        lastDate: DateTime(2100),
-                      );
-                      if (date != null) {
-                        setState(() {
-                          startDate = date;
-                        });
-                      }
-                    },
-                    child: Builder(builder: (context) {
-                      String locale =
-                          Localizations.localeOf(context).languageCode;
-                      return Text(DateFormat.yMd(locale).format(startDate));
-                    }),
+                  SketchContainer(
+                    embossSize: 6,
+                    child: TextButton(
+                      onPressed: () async {
+                        final date = await showDatePicker(
+                          context: context,
+                          initialDate: startDate,
+                          firstDate: DateTime(2000),
+                          lastDate:
+                              DateTime.now().add(const Duration(seconds: 1)),
+                        );
+                        if (date != null) {
+                          setState(() {
+                            startDate = date;
+                          });
+                        }
+                      },
+                      child: Builder(builder: (context) {
+                        String locale =
+                            Localizations.localeOf(context).languageCode;
+                        return Text(DateFormat.yMd(locale).format(startDate));
+                      }),
+                    ),
                   ),
                 ],
               ),
+              SizedBox(height: 16),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text('Icon'),
-                  // TODO Icon picker
+                  SketchContainer(
+                    embossSize: 6,
+                    child: TextButton(
+                      onPressed: () async {
+                        final newIconName = await showDialog<String>(
+                          context: context,
+                          builder: (context) => SimpleDialog(
+                            title: const Text('Select Icon'),
+                            children: [
+                              for (var iconName in [
+                                'default',
+                                'home',
+                                'work',
+                              ])
+                                ListTile(
+                                  title: Text(iconName),
+                                  onTap: () {
+                                    Navigator.pop(context, iconName);
+                                  },
+                                ),
+                            ],
+                          ),
+                        );
+                        if (newIconName != null) {
+                          setState(() {
+                            iconName = newIconName;
+                          });
+                        }
+                      },
+                      child: Icon(Icons.ac_unit),
+                    ),
+                  ),
                 ],
               ),
+              SizedBox(height: 16),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text('Color'),
                   TextButton(
@@ -191,10 +233,10 @@ class TopicEditorScreenState extends State<TopicEditorScreen> {
                         });
                       }
                     },
-                    child: Container(
-                      width: 50,
-                      height: 50,
-                      color: color,
+                    child: SketchContainer(
+                      fillColor: color,
+                      embossSize: 6,
+                      child: const SizedBox(width: 32, height: 32),
                     ),
                   ),
                 ],

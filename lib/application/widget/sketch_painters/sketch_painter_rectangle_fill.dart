@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class SketchPainterRectangleFill extends CustomPainter {
@@ -8,6 +9,10 @@ class SketchPainterRectangleFill extends CustomPainter {
   final bool isLineFill;
   final double embossSize;
   final Color embossColor;
+
+  late Random random;
+
+  List<(Paint, Path)>? cache;
 
   SketchPainterRectangleFill({
     required this.key,
@@ -20,6 +25,19 @@ class SketchPainterRectangleFill extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    if (cache != null) {
+      for (final (paint, path) in cache!) {
+        canvas.drawPath(path, paint);
+      }
+      if (kDebugMode) {
+        // https://github.com/flutter/flutter/issues/28814
+        print('Unnecessary repaint due to Flutter bug');
+      }
+      return;
+    }
+
+    random = Random(key.hashCode);
+
     final fillPaint = Paint()..color = color;
     final embossPaint = Paint()..color = embossColor;
     final Path fillPath = Path();
@@ -42,7 +60,7 @@ class SketchPainterRectangleFill extends CustomPainter {
     ];
 
     if (isLineFill) {
-      fillPaint.strokeWidth = 0.5;
+      fillPaint.strokeWidth = 0.2;
       fillPaint.strokeCap = StrokeCap.round;
       fillPaint.style = PaintingStyle.stroke;
 
@@ -112,7 +130,6 @@ class SketchPainterRectangleFill extends CustomPainter {
         ];
 
         embossPath.moveTo(embossFillPoints[0].dx, embossFillPoints[0].dy);
-        final random = Random(key.hashCode);
 
         for (int i = 1; i < embossFillPoints.length / 2; i++) {
           if (random.nextBool()) {
@@ -142,13 +159,13 @@ class SketchPainterRectangleFill extends CustomPainter {
 
       if (embossSize > 0) {
         embossPaint.style = PaintingStyle.fill;
-        fillPath.moveTo(embossPoints[0].dx, embossPoints[0].dy);
-        fillPath.lineTo(embossPoints[1].dx, embossPoints[1].dy);
-        fillPath.lineTo(embossPoints[2].dx, embossPoints[2].dy);
-        fillPath.lineTo(embossPoints[3].dx, embossPoints[3].dy);
-        fillPath.lineTo(embossPoints[4].dx, embossPoints[4].dy);
-        fillPath.lineTo(embossPoints[5].dx, embossPoints[5].dy);
-        fillPath.lineTo(embossPoints[0].dx, embossPoints[0].dy);
+        embossPath.moveTo(embossPoints[0].dx, embossPoints[0].dy);
+        embossPath.lineTo(embossPoints[1].dx, embossPoints[1].dy);
+        embossPath.lineTo(embossPoints[2].dx, embossPoints[2].dy);
+        embossPath.lineTo(embossPoints[3].dx, embossPoints[3].dy);
+        embossPath.lineTo(embossPoints[4].dx, embossPoints[4].dy);
+        embossPath.lineTo(embossPoints[5].dx, embossPoints[5].dy);
+        embossPath.lineTo(embossPoints[0].dx, embossPoints[0].dy);
       }
     }
 
@@ -156,6 +173,11 @@ class SketchPainterRectangleFill extends CustomPainter {
     if (embossSize > 0) {
       canvas.drawPath(embossPath, embossPaint);
     }
+
+    cache = [
+      (fillPaint, fillPath),
+      if (embossSize > 0) (embossPaint, embossPath),
+    ];
   }
 
   Offset randomizePoint(
@@ -163,7 +185,6 @@ class SketchPainterRectangleFill extends CustomPainter {
     double y, {
     double randomRange = 2,
   }) {
-    final random = Random(key.hashCode);
     final randomX = ((random.nextDouble() * 2) - 1) * randomRange + x;
     final randomY = ((random.nextDouble() * 2) - 1) * randomRange + y;
     return Offset(randomX, randomY);
@@ -180,7 +201,6 @@ class SketchPainterRectangleFill extends CustomPainter {
   }) {
     final pointCount = ((start - end).distance / pointInterval).ceil();
     final step = 1 / pointCount;
-    final random = Random(key.hashCode);
     final List<Offset> points = [];
 
     for (var i = 0; i < pointCount; i++) {
