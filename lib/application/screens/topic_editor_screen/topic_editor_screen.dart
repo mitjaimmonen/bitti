@@ -110,212 +110,218 @@ class TopicEditorScreenState extends State<TopicEditorScreen> {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              SketchContainer(
-                elevation: -4,
-                lineFilledBackground: true,
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: TextField(
-                  decoration: const InputDecoration(
-                    labelText: 'Name',
-                    hintText: 'For example: "Cooking at home"',
-                    border: InputBorder.none,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                SketchContainer(
+                  elevation: -4,
+                  lineFilledBackground: true,
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: TextField(
+                    decoration: const InputDecoration(
+                      labelText: 'Name',
+                      hintText: 'For example: "Cooking at home"',
+                      border: InputBorder.none,
+                    ),
+                    onSubmitted: (value) => name = value,
                   ),
-                  onSubmitted: (value) => name = value,
                 ),
-              ),
-              SizedBox(height: 16),
-              SketchContainer(
-                elevation: -4,
-                lineFilledBackground: true,
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: TextField(
-                  minLines: 1,
-                  maxLines: 4,
-                  decoration: const InputDecoration(
-                    labelText: 'Description',
-                    hintText: 'For example: What do you track and why?',
-                    border: InputBorder.none,
+                SizedBox(height: 16),
+                SketchContainer(
+                  elevation: -4,
+                  lineFilledBackground: true,
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: TextField(
+                    minLines: 1,
+                    maxLines: 4,
+                    decoration: const InputDecoration(
+                      labelText: 'Description',
+                      hintText: 'For example: What do you track and why?',
+                      border: InputBorder.none,
+                    ),
+                    onSubmitted: (value) => description = value,
                   ),
-                  onSubmitted: (value) => description = value,
                 ),
-              ),
-              SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text('Type'),
-                  SketchContainer(
-                    elevation: 6,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: DropdownButton<TopicType>(
+                SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('Type'),
+                    SketchContainer(
+                      elevation: 6,
+                      child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8),
-                        value: topicType,
-                        onChanged: (value) {
-                          setState(() {
-                            topicType = value!;
-                          });
-                        },
-                        items: [
-                          DropdownMenuItem(
-                            value: TopicType.toggle,
-                            child: Text('Toggle'),
-                          ),
-                          DropdownMenuItem(
-                            value: TopicType.number,
-                            child: Text('Number'),
-                          ),
-                          DropdownMenuItem(
-                            value: TopicType.note,
-                            child: Text('Note'),
-                          ),
-                        ],
+                        child: DropdownButton<TopicType>(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          value: topicType,
+                          onChanged: (value) {
+                            setState(() {
+                              topicType = value!;
+                            });
+                          },
+                          items: [
+                            DropdownMenuItem(
+                              value: TopicType.toggle,
+                              child: Text('Toggle'),
+                            ),
+                            DropdownMenuItem(
+                              value: TopicType.number,
+                              child: Text('Number'),
+                            ),
+                            DropdownMenuItem(
+                              value: TopicType.note,
+                              child: Text('Note'),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 16),
-              _topicSettings(context),
-              SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text('Start Date'),
-                  SketchContainer(
-                    elevation: 6,
-                    child: TextButton(
-                      onPressed: () async {
-                        final date = await showDialog(
-                          context: context,
-                          builder: (context) {
-                            DateTime output = startDate;
-                            return SketchDialog(
-                              title: 'Select Date',
-                              children: [
-                                Material(
-                                  child: DatePickerTheme(
-                                    data: DatePickerThemeData(),
-                                    child: CalendarDatePicker(
-                                      initialDate: startDate,
-                                      firstDate: DateTime(2000),
-                                      lastDate: DateTime.now()
-                                          .add(const Duration(seconds: 1)),
-                                      onDateChanged: (date) {
-                                        output = date;
-                                      },
+                  ],
+                ),
+                SizedBox(height: 16),
+                Row(
+                  children: [
+                    Expanded(child: _topicSettings(context)),
+                  ],
+                ),
+                SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('Start Date'),
+                    SketchContainer(
+                      elevation: 6,
+                      child: TextButton(
+                        onPressed: () async {
+                          final date = await showDialog(
+                            context: context,
+                            builder: (context) {
+                              DateTime output = startDate;
+                              return SketchDialog(
+                                title: 'Select Date',
+                                children: [
+                                  Material(
+                                    child: DatePickerTheme(
+                                      data: DatePickerThemeData(),
+                                      child: CalendarDatePicker(
+                                        initialDate: startDate,
+                                        firstDate: DateTime(2000),
+                                        lastDate: DateTime.now()
+                                            .add(const Duration(seconds: 1)),
+                                        onDateChanged: (date) {
+                                          output = date;
+                                        },
+                                      ),
                                     ),
                                   ),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context, output);
-                                  },
-                                  child: const Text('OK'),
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                        if (date != null) {
-                          setState(() {
-                            startDate = date;
-                          });
-                        }
-                      },
-                      child: Builder(builder: (context) {
-                        String locale =
-                            Localizations.localeOf(context).languageCode;
-                        return Text(DateFormat.yMd(locale).format(startDate));
-                      }),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text('Icon'),
-                  SketchContainer(
-                    elevation: 6,
-                    child: IconButton(
-                      onPressed: () async {
-                        final newIconName = await showDialog<String>(
-                          context: context,
-                          builder: (context) => SketchDialog(
-                            title: 'Select Icon',
-                            children: [
-                              for (var iconName in [
-                                'default',
-                                'home',
-                                'work',
-                              ])
-                                ListTile(
-                                  title: Text(iconName),
-                                  onTap: () {
-                                    Navigator.pop(context, iconName);
-                                  },
-                                ),
-                            ],
-                          ),
-                        );
-                        if (newIconName != null) {
-                          setState(() {
-                            iconName = newIconName;
-                          });
-                        }
-                      },
-                      icon: Icon(Icons.ac_unit),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text('Color'),
-                  SketchContainer(
-                    fillColor: color,
-                    elevation: 6,
-                    child: IconButton(
-                      onPressed: () async {
-                        final newColor = await showDialog<Color>(
-                          context: context,
-                          builder: (context) => SketchColorPickerDialog(
-                            color: color,
-                            onDismiss: () {
-                              Navigator.pop(context);
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context, output);
+                                    },
+                                    child: const Text('OK'),
+                                  ),
+                                ],
+                              );
                             },
-                            onColorChanged: (newColor) {
-                              Navigator.pop(context, newColor);
-                            },
-                          ),
-                        );
-                        if (newColor != null) {
-                          setState(() {
-                            color = newColor;
-                          });
-                        }
-                      },
-                      icon: const SizedBox(),
+                          );
+                          if (date != null) {
+                            setState(() {
+                              startDate = date;
+                            });
+                          }
+                        },
+                        child: Builder(builder: (context) {
+                          String locale =
+                              Localizations.localeOf(context).languageCode;
+                          return Text(DateFormat.yMd(locale).format(startDate));
+                        }),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              if (widget.extra.topicEntry != null)
-                ElevatedButton(
-                  onPressed: _delete,
-                  child: const Text('Delete'),
+                  ],
                 ),
-            ],
+                SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('Icon'),
+                    SketchContainer(
+                      elevation: 6,
+                      child: IconButton(
+                        onPressed: () async {
+                          final newIconName = await showDialog<String>(
+                            context: context,
+                            builder: (context) => SketchDialog(
+                              title: 'Select Icon',
+                              children: [
+                                for (var iconName in [
+                                  'default',
+                                  'home',
+                                  'work',
+                                ])
+                                  ListTile(
+                                    title: Text(iconName),
+                                    onTap: () {
+                                      Navigator.pop(context, iconName);
+                                    },
+                                  ),
+                              ],
+                            ),
+                          );
+                          if (newIconName != null) {
+                            setState(() {
+                              iconName = newIconName;
+                            });
+                          }
+                        },
+                        icon: Icon(Icons.ac_unit),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('Color'),
+                    SketchContainer(
+                      fillColor: color,
+                      elevation: 6,
+                      child: IconButton(
+                        onPressed: () async {
+                          final newColor = await showDialog<Color>(
+                            context: context,
+                            builder: (context) => SketchColorPickerDialog(
+                              color: color,
+                              onDismiss: () {
+                                Navigator.pop(context);
+                              },
+                              onColorChanged: (newColor) {
+                                Navigator.pop(context, newColor);
+                              },
+                            ),
+                          );
+                          if (newColor != null) {
+                            setState(() {
+                              color = newColor;
+                            });
+                          }
+                        },
+                        icon: const SizedBox(),
+                      ),
+                    ),
+                  ],
+                ),
+                if (widget.extra.topicEntry != null)
+                  ElevatedButton(
+                    onPressed: _delete,
+                    child: const Text('Delete'),
+                  ),
+              ],
+            ),
           ),
         ),
       ),
@@ -325,7 +331,11 @@ class TopicEditorScreenState extends State<TopicEditorScreen> {
   Widget _topicSettings(BuildContext context) {
     if (topicType == TopicType.toggle) {
       return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Text('Toggle Settings',
+              style: Theme.of(context).textTheme.labelMedium),
+          SizedBox(height: 16),
           for (var i = 0;
               i < topicTypeSettings.toggleSettings!.values.length;
               i++)
@@ -457,19 +467,23 @@ class TopicEditorScreenState extends State<TopicEditorScreen> {
                 ),
               ],
             ),
-          TextButton(
-            onPressed: () {
-              setState(() {
-                topicTypeSettings.toggleSettings!.values
-                    .add(TopicSettingValueToggleEntity(
-                  iconName: IconName.check.value,
-                  label:
-                      'Toggle State ${topicTypeSettings.toggleSettings!.values.length + 1}',
-                  color: color,
-                ));
-              });
-            },
-            child: const Text('Add Value'),
+          SizedBox(height: 16),
+          SketchContainer(
+            elevation: 6,
+            child: IconButton(
+              onPressed: () {
+                setState(() {
+                  topicTypeSettings.toggleSettings!.values
+                      .add(TopicSettingValueToggleEntity(
+                    iconName: IconName.check.value,
+                    label:
+                        'Toggle State ${topicTypeSettings.toggleSettings!.values.length + 1}',
+                    color: color,
+                  ));
+                });
+              },
+              icon: const Text('Add Toggle Value'),
+            ),
           ),
         ],
       );

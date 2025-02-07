@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class SketchPainterRectangleStroke extends CustomPainter {
@@ -9,7 +8,7 @@ class SketchPainterRectangleStroke extends CustomPainter {
   final double elevation;
   late Random random;
 
-  (Paint, Path)? cache;
+  (Paint, Path, Size)? cache;
 
   SketchPainterRectangleStroke({
     required this.key,
@@ -20,13 +19,14 @@ class SketchPainterRectangleStroke extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     if (cache != null) {
-      final (paint, path) = cache!;
-      canvas.drawPath(path, paint);
-      if (kDebugMode) {
-        // https://github.com/flutter/flutter/issues/28814
-        print('Unnecessary repaint');
+      final (paint, path, cacheSize) = cache!;
+      if (cacheSize != size) {
+        cache = null;
+      } else {
+        canvas.drawPath(path, paint);
       }
-      return;
+
+      if (cache != null) return;
     }
 
     random = Random(key.hashCode);
@@ -174,7 +174,7 @@ class SketchPainterRectangleStroke extends CustomPainter {
     }
 
     canvas.drawPath(path, paint);
-    cache = (paint, path);
+    cache = (paint, path, size);
   }
 
   @override

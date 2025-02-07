@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class SketchPainterRectangleFill extends CustomPainter {
@@ -12,7 +11,7 @@ class SketchPainterRectangleFill extends CustomPainter {
 
   late Random random;
 
-  List<(Paint, Path)>? cache;
+  List<(Paint, Path, Size)>? cache;
 
   SketchPainterRectangleFill({
     required this.key,
@@ -26,14 +25,15 @@ class SketchPainterRectangleFill extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     if (cache != null) {
-      for (final (paint, path) in cache!) {
-        canvas.drawPath(path, paint);
+      for (final (paint, path, cacheSize) in cache!) {
+        if (cacheSize != size) {
+          cache = null;
+          break;
+        } else {
+          canvas.drawPath(path, paint);
+        }
       }
-      if (kDebugMode) {
-        // https://github.com/flutter/flutter/issues/28814
-        print('Unnecessary repaint');
-      }
-      return;
+      if (cache != null) return;
     }
 
     random = Random(key.hashCode);
@@ -218,8 +218,8 @@ class SketchPainterRectangleFill extends CustomPainter {
     }
 
     cache = [
-      (fillPaint, fillPath),
-      if (elevation != 0) (embossPaint, embossPath),
+      (fillPaint, fillPath, size),
+      if (elevation != 0) (embossPaint, embossPath, size),
     ];
   }
 
