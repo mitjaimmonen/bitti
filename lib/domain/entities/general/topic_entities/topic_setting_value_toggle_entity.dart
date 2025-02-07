@@ -11,4 +11,16 @@ class TopicSettingValueToggleEntity extends Entity {
     required this.label,
     required this.color,
   });
+
+  TopicSettingValueToggleEntity copyWith({
+    String? iconName,
+    String? label,
+    Color? color,
+  }) {
+    return TopicSettingValueToggleEntity(
+      iconName: iconName ?? this.iconName,
+      label: label ?? this.label,
+      color: color ?? this.color,
+    );
+  }
 }

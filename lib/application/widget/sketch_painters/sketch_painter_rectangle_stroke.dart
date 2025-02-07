@@ -1,21 +1,34 @@
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class SketchPainterRectangleStroke extends CustomPainter {
   final Key key;
   final Color color;
-  final double embossSize;
+  final double elevation;
   late Random random;
+
+  (Paint, Path)? cache;
 
   SketchPainterRectangleStroke({
     required this.key,
     required this.color,
-    double? embossSize,
-  }) : embossSize = embossSize ?? 0;
+    double? elevation,
+  }) : elevation = elevation ?? 0;
 
   @override
   void paint(Canvas canvas, Size size) {
+    if (cache != null) {
+      final (paint, path) = cache!;
+      canvas.drawPath(path, paint);
+      if (kDebugMode) {
+        // https://github.com/flutter/flutter/issues/28814
+        print('Unnecessary repaint');
+      }
+      return;
+    }
+
     random = Random(key.hashCode);
     final paint = Paint()
       ..style = PaintingStyle.stroke
@@ -23,64 +36,145 @@ class SketchPainterRectangleStroke extends CustomPainter {
       ..strokeWidth = 1
       ..strokeCap = StrokeCap.round;
 
-    final path = Path()..moveTo(0, 0);
+    final path = Path();
 
-    for (int i = 0; i < 2; i++) {
-      sketchLine(
-        Offset(0, 0),
-        Offset(size.width - embossSize, 0),
-        path,
-      );
-      sketchLine(
-        Offset(size.width - embossSize, 0),
-        Offset(size.width - embossSize, size.height - embossSize),
-        path,
-      );
-      sketchLine(
-        Offset(size.width - embossSize, size.height - embossSize),
-        Offset(0, size.height - embossSize),
-        path,
-      );
-      sketchLine(
-        Offset(0, size.height - embossSize),
-        Offset(0, 0),
-        path,
-      );
-    }
-
-    if (embossSize > 0) {
+    if (elevation > 0) {
       for (int i = 0; i < 2; i++) {
-        path.moveTo(size.width - embossSize, 0);
+        // Draw box
+        path.moveTo(0, 0);
         sketchLine(
-          Offset(size.width - embossSize, 0),
-          Offset(size.width, embossSize),
+          Offset(0, 0),
+          Offset(size.width - elevation, 0),
           path,
         );
         sketchLine(
-          Offset(size.width, embossSize),
+          Offset(size.width - elevation, 0),
+          Offset(size.width - elevation, size.height - elevation),
+          path,
+        );
+        sketchLine(
+          Offset(size.width - elevation, size.height - elevation),
+          Offset(0, size.height - elevation),
+          path,
+        );
+        sketchLine(
+          Offset(0, size.height - elevation),
+          Offset(0, 0),
+          path,
+        );
+
+        // Draw emboss
+        path.moveTo(size.width - elevation, 0);
+        sketchLine(
+          Offset(size.width - elevation, 0),
+          Offset(size.width, elevation),
+          path,
+        );
+        sketchLine(
+          Offset(size.width, elevation),
           Offset(size.width, size.height),
           path,
         );
-        path.moveTo(size.width - embossSize, size.height - embossSize);
+        path.moveTo(size.width - elevation, size.height - elevation);
         sketchLine(
-          Offset(size.width - embossSize, size.height - embossSize),
+          Offset(size.width - elevation, size.height - elevation),
           Offset(size.width, size.height),
           path,
         );
         sketchLine(
           Offset(size.width, size.height),
-          Offset(embossSize, size.height),
+          Offset(elevation, size.height),
           path,
         );
         sketchLine(
-          Offset(embossSize, size.height),
-          Offset(0, size.height - embossSize),
+          Offset(elevation, size.height),
+          Offset(0, size.height - elevation),
+          path,
+        );
+      }
+    } else if (elevation < 0) {
+      for (int i = 0; i < 2; i++) {
+        // Draw box
+        path.moveTo(-elevation, -elevation);
+        sketchLine(
+          Offset(-elevation, -elevation),
+          Offset(size.width, -elevation),
+          path,
+        );
+        sketchLine(
+          Offset(size.width, -elevation),
+          Offset(size.width, size.height),
+          path,
+        );
+        sketchLine(
+          Offset(size.width, size.height),
+          Offset(-elevation, size.height),
+          path,
+        );
+        sketchLine(
+          Offset(-elevation, size.height),
+          Offset(-elevation, -elevation),
+          path,
+        );
+
+        // Draw emboss
+        path.moveTo(-elevation, size.height);
+        sketchLine(
+          Offset(-elevation, size.height),
+          Offset(0, size.height),
+          path,
+        );
+        sketchLine(
+          Offset(0, size.height),
+          Offset(0, 0),
+          path,
+        );
+        path.moveTo(-elevation, -elevation);
+        sketchLine(
+          Offset(-elevation, -elevation),
+          Offset(0, 0),
+          path,
+        );
+        sketchLine(
+          Offset(0, 0),
+          Offset(size.width, 0),
+          path,
+        );
+        sketchLine(
+          Offset(size.width, 0),
+          Offset(size.width, -elevation),
+          path,
+        );
+      }
+    } else {
+      for (int i = 0; i < 2; i++) {
+        // Draw box
+        path.moveTo(0, 0);
+        sketchLine(
+          Offset(0, 0),
+          Offset(size.width, 0),
+          path,
+        );
+        sketchLine(
+          Offset(size.width, 0),
+          Offset(size.width, size.height),
+          path,
+        );
+        sketchLine(
+          Offset(size.width, size.height),
+          Offset(0, size.height),
+          path,
+        );
+        sketchLine(
+          Offset(0, size.height),
+          Offset(0, 0),
           path,
         );
       }
     }
 
     canvas.drawPath(path, paint);
+    cache = (paint, path);
   }
 
   @override

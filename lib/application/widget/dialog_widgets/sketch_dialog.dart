@@ -19,7 +19,7 @@ class SketchDialog extends StatelessWidget {
       backgroundColor: Colors.transparent,
       shape: ContinuousRectangleBorder(),
       child: SketchContainer(
-        embossSize: 8,
+        elevation: 8,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(

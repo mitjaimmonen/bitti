@@ -3,8 +3,10 @@ import 'package:bitti/application/widget/dialog_widgets/sketch_color_picker_dial
 import 'package:bitti/application/widget/dialog_widgets/sketch_dialog.dart';
 import 'package:bitti/application/widget/sketch_container.dart';
 import 'package:bitti/domain/entities/general/topic_entities/topic_entry_entity.dart';
+import 'package:bitti/domain/entities/general/topic_entities/topic_setting_value_toggle_entity.dart';
 import 'package:bitti/domain/entities/general/topic_entities/topic_type_settings_entity.dart';
 import 'package:bitti/domain/entities/general/topic_entities/topic_type_toggle_settings_entity.dart';
+import 'package:bitti/domain/enums/icon_name.dart';
 import 'package:bitti/domain/enums/topic_type.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -115,6 +117,7 @@ class TopicEditorScreenState extends State<TopicEditorScreen> {
           child: Column(
             children: [
               SketchContainer(
+                elevation: -4,
                 lineFilledBackground: true,
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: TextField(
@@ -128,6 +131,7 @@ class TopicEditorScreenState extends State<TopicEditorScreen> {
               ),
               SizedBox(height: 16),
               SketchContainer(
+                elevation: -4,
                 lineFilledBackground: true,
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: TextField(
@@ -147,7 +151,7 @@ class TopicEditorScreenState extends State<TopicEditorScreen> {
                 children: [
                   const Text('Type'),
                   SketchContainer(
-                    embossSize: 6,
+                    elevation: 6,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8),
                       child: DropdownButton<TopicType>(
@@ -178,12 +182,14 @@ class TopicEditorScreenState extends State<TopicEditorScreen> {
                 ],
               ),
               SizedBox(height: 16),
+              _topicSettings(context),
+              SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text('Start Date'),
                   SketchContainer(
-                    embossSize: 6,
+                    elevation: 6,
                     child: TextButton(
                       onPressed: () async {
                         final date = await showDialog(
@@ -238,7 +244,7 @@ class TopicEditorScreenState extends State<TopicEditorScreen> {
                 children: [
                   const Text('Icon'),
                   SketchContainer(
-                    embossSize: 6,
+                    elevation: 6,
                     child: IconButton(
                       onPressed: () async {
                         final newIconName = await showDialog<String>(
@@ -278,7 +284,7 @@ class TopicEditorScreenState extends State<TopicEditorScreen> {
                   const Text('Color'),
                   SketchContainer(
                     fillColor: color,
-                    embossSize: 6,
+                    elevation: 6,
                     child: IconButton(
                       onPressed: () async {
                         final newColor = await showDialog<Color>(
@@ -314,5 +320,161 @@ class TopicEditorScreenState extends State<TopicEditorScreen> {
         ),
       ),
     );
+  }
+
+  Widget _topicSettings(BuildContext context) {
+    if (topicType == TopicType.toggle) {
+      return Column(
+        children: [
+          for (var i = 0;
+              i < topicTypeSettings.toggleSettings!.values.length;
+              i++)
+            Row(
+              children: [
+                Expanded(
+                  child: SketchContainer(
+                      lineFilledBackground: true,
+                      padding: const EdgeInsets.all(8),
+                      child: Column(
+                        children: [
+                          SketchContainer(
+                            padding: const EdgeInsets.symmetric(horizontal: 4),
+                            elevation: -4,
+                            child: TextField(
+                              decoration: InputDecoration(
+                                labelText: topicTypeSettings
+                                    .toggleSettings!.values[i].label,
+                                hintText: 'For example: "Done"',
+                                border: InputBorder.none,
+                              ),
+                              onSubmitted: (value) {
+                                setState(() {
+                                  topicTypeSettings.toggleSettings!.values[i] =
+                                      topicTypeSettings
+                                          .toggleSettings!.values[i]
+                                          .copyWith(label: value);
+                                });
+                              },
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text('Icon'),
+                              SketchContainer(
+                                elevation: 6,
+                                child: IconButton(
+                                  onPressed: () async {
+                                    final newIconName =
+                                        await showDialog<String>(
+                                      context: context,
+                                      builder: (context) => SketchDialog(
+                                        title: 'Select Icon',
+                                        children: [
+                                          for (var iconName in [
+                                            'default',
+                                            'home',
+                                            'work',
+                                          ])
+                                            ListTile(
+                                              title: Text(iconName),
+                                              onTap: () {
+                                                Navigator.pop(
+                                                    context, iconName);
+                                              },
+                                            ),
+                                        ],
+                                      ),
+                                    );
+                                    if (newIconName != null) {
+                                      setState(() {
+                                        topicTypeSettings
+                                                .toggleSettings!.values[i] =
+                                            topicTypeSettings
+                                                .toggleSettings!.values[i]
+                                                .copyWith(
+                                          iconName: newIconName,
+                                        );
+                                      });
+                                    }
+                                  },
+                                  icon: Icon(Icons.ac_unit),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text('Color'),
+                              SketchContainer(
+                                fillColor: topicTypeSettings
+                                    .toggleSettings!.values[i].color,
+                                elevation: 6,
+                                child: IconButton(
+                                  onPressed: () async {
+                                    final newColor = await showDialog<Color>(
+                                      context: context,
+                                      builder: (context) =>
+                                          SketchColorPickerDialog(
+                                        color: topicTypeSettings
+                                            .toggleSettings!.values[i].color,
+                                        onDismiss: () {
+                                          Navigator.pop(context);
+                                        },
+                                        onColorChanged: (newColor) {
+                                          Navigator.pop(context, newColor);
+                                        },
+                                      ),
+                                    );
+                                    if (newColor != null) {
+                                      setState(() {
+                                        topicTypeSettings
+                                                .toggleSettings!.values[i] =
+                                            topicTypeSettings
+                                                .toggleSettings!.values[i]
+                                                .copyWith(
+                                          color: newColor,
+                                        );
+                                      });
+                                    }
+                                  },
+                                  icon: const SizedBox(),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      )),
+                ),
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      topicTypeSettings.toggleSettings!.values.removeAt(i);
+                    });
+                  },
+                  icon: const Icon(Icons.delete),
+                ),
+              ],
+            ),
+          TextButton(
+            onPressed: () {
+              setState(() {
+                topicTypeSettings.toggleSettings!.values
+                    .add(TopicSettingValueToggleEntity(
+                  iconName: IconName.check.value,
+                  label:
+                      'Toggle State ${topicTypeSettings.toggleSettings!.values.length + 1}',
+                  color: color,
+                ));
+              });
+            },
+            child: const Text('Add Value'),
+          ),
+        ],
+      );
+    }
+
+    return SizedBox();
   }
 }

@@ -7,8 +7,8 @@ class SketchContainer extends StatelessWidget {
   final Color? strokeColor;
   final Color? fillColor;
   final bool? lineFilledBackground;
-  final double? embossSize;
-  final Color? embossColor;
+  final double? elevation;
+  final Color? elevationColor;
 
   final Widget? child;
 
@@ -17,8 +17,8 @@ class SketchContainer extends StatelessWidget {
     this.padding,
     this.strokeColor,
     this.fillColor,
-    this.embossSize,
-    this.embossColor,
+    this.elevation,
+    this.elevationColor,
     this.lineFilledBackground,
     this.child,
   });
@@ -30,33 +30,42 @@ class SketchContainer extends StatelessWidget {
         key: UniqueKey(),
         color: fillColor ?? Theme.of(context).colorScheme.surfaceBright,
         isLineFill: lineFilledBackground ?? false,
-        embossSize: embossSize,
-        embossColor: embossColor ??
+        elevation: elevation,
+        elevationColor: elevationColor ??
             Theme.of(context).colorScheme.surfaceContainerHighest,
       ),
       child: CustomPaint(
         painter: SketchPainterRectangleStroke(
           key: UniqueKey(),
-          embossSize: embossSize,
+          elevation: elevation,
           color: strokeColor ?? Theme.of(context).colorScheme.outline,
         ),
         child: Padding(
-          padding: combinePaddingWithEmboss(padding, embossSize),
+          padding: combinePaddingWithEmboss(padding, elevation),
           child: child,
         ),
       ),
     );
   }
 
-  EdgeInsets combinePaddingWithEmboss(EdgeInsets? padding, double? embossSize) {
-    if (embossSize == null || embossSize == 0) {
+  EdgeInsets combinePaddingWithEmboss(EdgeInsets? padding, double? elevation) {
+    if (elevation == null || elevation == 0) {
       return padding ?? EdgeInsets.zero;
     }
-    return EdgeInsets.fromLTRB(
-      padding?.left ?? 0,
-      padding?.top ?? 0,
-      (padding?.right ?? 0) + embossSize,
-      (padding?.bottom ?? 0) + embossSize,
-    );
+    if (elevation > 0) {
+      return EdgeInsets.fromLTRB(
+        padding?.left ?? 0,
+        padding?.top ?? 0,
+        (padding?.right ?? 0) + elevation,
+        (padding?.bottom ?? 0) + elevation,
+      );
+    } else {
+      return EdgeInsets.fromLTRB(
+        (padding?.left ?? 0) - elevation,
+        (padding?.top ?? 0) - elevation,
+        padding?.right ?? 0,
+        padding?.bottom ?? 0,
+      );
+    }
   }
 }

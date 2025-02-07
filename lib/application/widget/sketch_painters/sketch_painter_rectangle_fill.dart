@@ -7,8 +7,8 @@ class SketchPainterRectangleFill extends CustomPainter {
   final Key key;
   final Color color;
   final bool isLineFill;
-  final double embossSize;
-  final Color embossColor;
+  final double elevation;
+  final Color elevationColor;
 
   late Random random;
 
@@ -18,10 +18,10 @@ class SketchPainterRectangleFill extends CustomPainter {
     required this.key,
     required this.color,
     required this.isLineFill,
-    double? embossSize,
-    Color? embossColor,
-  })  : embossSize = embossSize ?? 0,
-        embossColor = embossColor ?? color;
+    double? elevation,
+    Color? elevationColor,
+  })  : elevation = elevation ?? 0,
+        elevationColor = elevationColor ?? color;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -31,7 +31,7 @@ class SketchPainterRectangleFill extends CustomPainter {
       }
       if (kDebugMode) {
         // https://github.com/flutter/flutter/issues/28814
-        print('Unnecessary repaint due to Flutter bug');
+        print('Unnecessary repaint');
       }
       return;
     }
@@ -39,25 +39,49 @@ class SketchPainterRectangleFill extends CustomPainter {
     random = Random(key.hashCode);
 
     final fillPaint = Paint()..color = color;
-    final embossPaint = Paint()..color = embossColor;
+    final embossPaint = Paint()..color = elevationColor;
     final Path fillPath = Path();
     final Path embossPath = Path();
 
-    final rectanglePoints = [
-      randomizePoint(0, 0),
-      randomizePoint(size.width - embossSize, 0),
-      randomizePoint(size.width - embossSize, size.height - embossSize),
-      randomizePoint(0, size.height - embossSize),
-    ];
+    final List<Offset> rectanglePoints;
 
-    final embossPoints = [
-      randomizePoint(size.width, embossSize),
-      randomizePoint(size.width, size.height),
-      randomizePoint(embossSize, size.height),
-      randomizePoint(0, size.height - embossSize),
-      randomizePoint(size.width - embossSize, size.height - embossSize),
-      randomizePoint(size.width - embossSize, 0),
-    ];
+    if (elevation > 0) {
+      rectanglePoints = [
+        randomizePoint(0, 0),
+        randomizePoint(size.width - elevation, 0),
+        randomizePoint(size.width - elevation, size.height - elevation),
+        randomizePoint(0, size.height - elevation),
+      ];
+    } else {
+      rectanglePoints = [
+        randomizePoint(-elevation, -elevation),
+        randomizePoint(size.width, -elevation),
+        randomizePoint(size.width, size.height),
+        randomizePoint(-elevation, size.height),
+      ];
+    }
+
+    final List<Offset> embossPoints;
+
+    if (elevation > 0) {
+      embossPoints = [
+        randomizePoint(size.width, elevation),
+        randomizePoint(size.width, size.height),
+        randomizePoint(elevation, size.height),
+        randomizePoint(0, size.height - elevation),
+        randomizePoint(size.width - elevation, size.height - elevation),
+        randomizePoint(size.width - elevation, 0),
+      ];
+    } else {
+      embossPoints = [
+        randomizePoint(0, size.height),
+        randomizePoint(0, 0),
+        randomizePoint(size.width, 0),
+        randomizePoint(size.width, -elevation),
+        randomizePoint(-elevation, -elevation),
+        randomizePoint(-elevation, size.height),
+      ];
+    }
 
     if (isLineFill) {
       fillPaint.strokeWidth = 0.2;
@@ -101,7 +125,7 @@ class SketchPainterRectangleFill extends CustomPainter {
         fillPath.lineTo(lineFillPoints[i].dx, lineFillPoints[i].dy);
       }
 
-      if (embossSize > 0) {
+      if (elevation != 0) {
         embossPaint.strokeWidth = 0.2;
         embossPaint.strokeCap = StrokeCap.round;
         embossPaint.style = PaintingStyle.stroke;
@@ -119,6 +143,12 @@ class SketchPainterRectangleFill extends CustomPainter {
             pointInterval: 2,
             randomRange: 0.5,
           ),
+          // Note that one segment is skipped to keep line fill direction
+          // consistent. This causes a bug where negative elevation emboss
+          // has one corner not filled. (Line fill is drawn along the stroke,
+          // instead of across the surface)
+          // A more sophisticated approach is to define two lists of points,
+          // taking into account the lengths of each side of the emboss.
           ...addPointsAlongPath(
             embossPoints[3],
             embossPoints[4],
@@ -131,6 +161,15 @@ class SketchPainterRectangleFill extends CustomPainter {
             pointInterval: 2,
             randomRange: 0.5,
           ),
+          if (elevation < 0)
+            // This helps keeping the line fill direction consistent
+            // for both negative and positive elevations.
+            ...addPointsAlongPath(
+              embossPoints[5],
+              embossPoints[0],
+              pointInterval: 2,
+              randomRange: 0.5,
+            ),
         ];
 
         embossPath.moveTo(embossFillPoints[0].dx, embossFillPoints[0].dy);
@@ -161,7 +200,7 @@ class SketchPainterRectangleFill extends CustomPainter {
       fillPath.lineTo(rectanglePoints[3].dx, rectanglePoints[3].dy);
       fillPath.lineTo(rectanglePoints[0].dx, rectanglePoints[0].dy);
 
-      if (embossSize > 0) {
+      if (elevation != 0) {
         embossPaint.style = PaintingStyle.fill;
         embossPath.moveTo(embossPoints[0].dx, embossPoints[0].dy);
         embossPath.lineTo(embossPoints[1].dx, embossPoints[1].dy);
@@ -174,13 +213,13 @@ class SketchPainterRectangleFill extends CustomPainter {
     }
 
     canvas.drawPath(fillPath, fillPaint);
-    if (embossSize > 0) {
+    if (elevation != 0) {
       canvas.drawPath(embossPath, embossPaint);
     }
 
     cache = [
       (fillPaint, fillPath),
-      if (embossSize > 0) (embossPaint, embossPath),
+      if (elevation != 0) (embossPaint, embossPath),
     ];
   }
 

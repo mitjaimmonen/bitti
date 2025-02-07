@@ -16,8 +16,8 @@ class SketchButtonHeadline extends StatelessWidget {
     return SketchContainer(
       padding: const EdgeInsets.all(8),
       lineFilledBackground: true,
-      embossSize: 6,
-      embossColor: Theme.of(context).colorScheme.primary,
+      elevation: 6,
+      elevationColor: Theme.of(context).colorScheme.primary,
       fillColor: Theme.of(context).colorScheme.primaryContainer,
       child: TextButton(
         onPressed: onPressed,
