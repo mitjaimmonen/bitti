@@ -23,4 +23,26 @@ class TopicEntryEntity extends Entity {
     required this.topicType,
     required this.topicTypeSettings,
   });
+
+  TopicEntryEntity copyWith({
+    int? id,
+    String? name,
+    String? description,
+    DateTime? startDate,
+    String? iconName,
+    Color? color,
+    TopicType? topicType,
+    TopicTypeSettingsEntity? topicTypeSettings,
+  }) {
+    return TopicEntryEntity(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      description: description ?? this.description,
+      startDate: startDate ?? this.startDate,
+      iconName: iconName ?? this.iconName,
+      color: color ?? this.color,
+      topicType: topicType ?? this.topicType,
+      topicTypeSettings: topicTypeSettings ?? this.topicTypeSettings,
+    );
+  }
 }

@@ -1,4 +1,5 @@
 import 'package:bitti/application/models/screen_config_model.dart';
+import 'package:bitti/application/screens/topic_editor_screen/entities/topic_editor_extra_entity.dart';
 import 'package:bitti/application/screens/topic_editor_screen/topic_editor_screen.dart';
 import 'package:bitti/application/screens/topics_screen/bloc_topics/topics_bloc.dart';
 import 'package:bitti/application/widget/buttons/sketch_button_headline.dart';
@@ -41,7 +42,7 @@ class TopicsScreen extends StatelessWidget {
                     onPressed: () async {
                       final data = await context.push(
                         TopicEditorScreen.config.routePath,
-                        extra: const TopicEditorExtraData(),
+                        extra: const TopicEditorExtraEntity(),
                       );
                       if (kDebugMode) print(data);
                     },

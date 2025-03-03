@@ -1,11 +1,16 @@
 import 'package:bitti/application/models/screen_config_model.dart';
+import 'package:bitti/application/screens/error_screen/error_screen.dart';
 import 'package:bitti/application/screens/main_screen/main_screen.dart';
 import 'package:bitti/application/screens/main_screen/main_screen_journal_shell.dart';
 import 'package:bitti/application/screens/main_screen/main_screen_notes_shell.dart';
 import 'package:bitti/application/screens/main_screen/main_screen_settings_shell.dart';
 import 'package:bitti/application/screens/main_screen/main_screen_stats_shell.dart';
+import 'package:bitti/application/screens/topic_editor_screen/entities/date_dialog_extra_entity.dart';
+import 'package:bitti/application/screens/topic_editor_screen/entities/topic_editor_extra_entity.dart';
+import 'package:bitti/application/screens/topic_editor_screen/routes/date_dialog.dart';
 import 'package:bitti/application/screens/topic_editor_screen/topic_editor_screen.dart';
 import 'package:bitti/application/screens/topics_screen/topics_screen.dart';
+import 'package:bitti/application/widget/dialog_widgets/dialog_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -60,7 +65,11 @@ final List<StatefulShellBranch> _mainScreenShellBranches = [
 final router = GoRouter(
   navigatorKey: _rootNavigatorKey,
   initialLocation: _mainScreenShellConfigs.first.routePath,
-  routes: [
+  errorBuilder: (context, state) => ErrorScreen(
+    state: state,
+    homePath: _mainScreenShellConfigs.first.routePath,
+  ),
+  routes: <RouteBase>[
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
         return MainScreen(
@@ -79,9 +88,19 @@ final router = GoRouter(
       path: TopicEditorScreen.config.routePath,
       name: TopicEditorScreen.config.title,
       builder: (context, state) {
-        final extra = state.extra as TopicEditorExtraData;
+        final extra = state.extra as TopicEditorExtraEntity;
         return TopicEditorScreen(extra: extra);
       },
+      routes: [
+        GoRoute(
+          path: 'date_dialog',
+          name: 'Date Dialog',
+          pageBuilder: (BuildContext context, GoRouterState state) {
+            final extra = state.extra as DateDialogExtraEntity;
+            return DialogPage(builder: (_) => DateDialog(extra: extra));
+          },
+        ),
+      ],
     ),
   ],
 );

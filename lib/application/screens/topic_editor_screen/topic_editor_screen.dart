@@ -1,6 +1,12 @@
 import 'package:bitti/application/models/screen_config_model.dart';
+import 'package:bitti/application/screens/topic_editor_screen/cubit/topic_editor_cubit.dart';
+import 'package:bitti/application/screens/topic_editor_screen/entities/date_dialog_extra_entity.dart';
+import 'package:bitti/application/screens/topic_editor_screen/entities/topic_editor_extra_entity.dart';
+import 'package:bitti/application/screens/topic_editor_screen/routes/date_dialog.dart';
+import 'package:bitti/application/screens/topic_editor_screen/widgets/type_settings_dropdown.dart';
 import 'package:bitti/application/widget/dialog_widgets/sketch_color_picker_dialog.dart';
 import 'package:bitti/application/widget/dialog_widgets/sketch_dialog.dart';
+import 'package:bitti/application/widget/inputs/sketch_text_field.dart';
 import 'package:bitti/application/widget/sketch_container.dart';
 import 'package:bitti/domain/entities/general/topic_entities/topic_entry_entity.dart';
 import 'package:bitti/domain/entities/general/topic_entities/topic_setting_value_toggle_entity.dart';
@@ -9,29 +15,12 @@ import 'package:bitti/domain/entities/general/topic_entities/topic_type_toggle_s
 import 'package:bitti/domain/enums/icon_name.dart';
 import 'package:bitti/domain/enums/topic_type.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
-class TopicEditorExtraData {
-  final TopicEntryEntity? topicEntry;
-
-  const TopicEditorExtraData({
-    this.topicEntry,
-  });
-}
-
-class TopicEditorReturnData {
-  final TopicEntryEntity? topicEntry;
-  final bool delete;
-
-  const TopicEditorReturnData({
-    this.topicEntry,
-    this.delete = false,
-  });
-}
-
 class TopicEditorScreen extends StatefulWidget {
-  final TopicEditorExtraData extra;
+  final TopicEditorExtraEntity extra;
 
   static const config = ScreenConfigModel(
     title: 'Topic Editor',
@@ -110,219 +99,172 @@ class TopicEditorScreenState extends State<TopicEditorScreen> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                SketchContainer(
-                  elevation: -4,
-                  lineFilledBackground: true,
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: TextField(
-                    decoration: const InputDecoration(
-                      labelText: 'Name',
-                      hintText: 'For example: "Cooking at home"',
-                      border: InputBorder.none,
-                    ),
-                    onSubmitted: (value) => name = value,
-                  ),
-                ),
-                SizedBox(height: 16),
-                SketchContainer(
-                  elevation: -4,
-                  lineFilledBackground: true,
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: TextField(
-                    minLines: 1,
-                    maxLines: 4,
-                    decoration: const InputDecoration(
-                      labelText: 'Description',
-                      hintText: 'For example: What do you track and why?',
-                      border: InputBorder.none,
-                    ),
-                    onSubmitted: (value) => description = value,
-                  ),
-                ),
-                SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text('Type'),
-                    SketchContainer(
-                      elevation: 6,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: DropdownButton<TopicType>(
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                          value: topicType,
-                          onChanged: (value) {
-                            setState(() {
-                              topicType = value!;
-                            });
-                          },
-                          items: [
-                            DropdownMenuItem(
-                              value: TopicType.toggle,
-                              child: Text('Toggle'),
+      body: BlocProvider(
+        create: (context) => TopicEditorCubit(),
+        child: BlocBuilder<TopicEditorCubit, TopicEditorState>(
+          builder: (context, state) {
+            return SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      SketchTextField(
+                        labelText: 'Name',
+                        hintText: 'For example: "Cooking at home"',
+                        padding: EdgeInsets.only(bottom: 16),
+                        onSubmitted: (value) => context
+                            .read<TopicEditorCubit>()
+                            .updateTopicEntry(name: value),
+                      ),
+                      SketchTextField(
+                        minLines: 1,
+                        maxLines: 4,
+                        labelText: 'Description',
+                        hintText: 'For example: What do you track and why?',
+                        padding: EdgeInsets.only(bottom: 16),
+                        onSubmitted: (value) => context
+                            .read<TopicEditorCubit>()
+                            .updateTopicEntry(description: value),
+                      ),
+                      TypeSettingsDropdown(
+                        value: topicType,
+                        onChanged: (value) => topicType = value!,
+                        onOpenSettings: (topicType) {
+                          switch (topicType) {
+                            case TopicType.note:
+                              break;
+                            case TopicType.number:
+                              break;
+                            case TopicType.toggle:
+                              break;
+                            default:
+                              break;
+                          }
+                        },
+                        padding: EdgeInsets.only(bottom: 16),
+                      ),
+                      Row(
+                        children: [
+                          Expanded(child: _topicSettings(context)),
+                        ],
+                      ),
+                      SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text('Start Date'),
+                          SketchContainer(
+                            elevation: 6,
+                            child: TextButton(
+                              onPressed: () async {
+                                final DateDialogReturnEntity? output =
+                                    await context.push(
+                                        DateDialog.config.routePath,
+                                        extra: DateDialogExtraEntity(
+                                          initialDate: startDate,
+                                        ));
+                                if (output?.date != null && context.mounted) {
+                                  context
+                                      .read<TopicEditorCubit>()
+                                      .updateTopicEntry(
+                                          startDate: output!.date!);
+                                }
+                              },
+                              child: Builder(builder: (context) {
+                                String locale = Localizations.localeOf(context)
+                                    .languageCode;
+                                return Text(
+                                    DateFormat.yMd(locale).format(startDate));
+                              }),
                             ),
-                            DropdownMenuItem(
-                              value: TopicType.number,
-                              child: Text('Number'),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text('Icon'),
+                          SketchContainer(
+                            elevation: 6,
+                            child: IconButton(
+                              onPressed: () async {
+                                final newIconName = await showDialog<String>(
+                                  context: context,
+                                  builder: (context) => SketchDialog(
+                                    title: 'Select Icon',
+                                    children: [
+                                      for (var iconName in [
+                                        'default',
+                                        'home',
+                                        'work',
+                                      ])
+                                        ListTile(
+                                          title: Text(iconName),
+                                          onTap: () {
+                                            Navigator.pop(context, iconName);
+                                          },
+                                        ),
+                                    ],
+                                  ),
+                                );
+                                if (newIconName != null) {
+                                  setState(() {
+                                    iconName = newIconName;
+                                  });
+                                }
+                              },
+                              icon: Icon(Icons.ac_unit),
                             ),
-                            DropdownMenuItem(
-                              value: TopicType.note,
-                              child: Text('Note'),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text('Color'),
+                          SketchContainer(
+                            fillColor: color,
+                            elevation: 6,
+                            child: IconButton(
+                              onPressed: () async {
+                                final newColor = await showDialog<Color>(
+                                  context: context,
+                                  builder: (context) => SketchColorPickerDialog(
+                                    color: color,
+                                    onDismiss: () {
+                                      Navigator.pop(context);
+                                    },
+                                    onColorChanged: (newColor) {
+                                      Navigator.pop(context, newColor);
+                                    },
+                                  ),
+                                );
+                                if (newColor != null) {
+                                  setState(() {
+                                    color = newColor;
+                                  });
+                                }
+                              },
+                              icon: const SizedBox(),
                             ),
-                          ],
+                          ),
+                        ],
+                      ),
+                      if (widget.extra.topicEntry != null)
+                        ElevatedButton(
+                          onPressed: _delete,
+                          child: const Text('Delete'),
                         ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 16),
-                Row(
-                  children: [
-                    Expanded(child: _topicSettings(context)),
-                  ],
-                ),
-                SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text('Start Date'),
-                    SketchContainer(
-                      elevation: 6,
-                      child: TextButton(
-                        onPressed: () async {
-                          final date = await showDialog(
-                            context: context,
-                            builder: (context) {
-                              DateTime output = startDate;
-                              return SketchDialog(
-                                title: 'Select Date',
-                                children: [
-                                  Material(
-                                    child: DatePickerTheme(
-                                      data: DatePickerThemeData(),
-                                      child: CalendarDatePicker(
-                                        initialDate: startDate,
-                                        firstDate: DateTime(2000),
-                                        lastDate: DateTime.now()
-                                            .add(const Duration(seconds: 1)),
-                                        onDateChanged: (date) {
-                                          output = date;
-                                        },
-                                      ),
-                                    ),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.pop(context, output);
-                                    },
-                                    child: const Text('OK'),
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                          if (date != null) {
-                            setState(() {
-                              startDate = date;
-                            });
-                          }
-                        },
-                        child: Builder(builder: (context) {
-                          String locale =
-                              Localizations.localeOf(context).languageCode;
-                          return Text(DateFormat.yMd(locale).format(startDate));
-                        }),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text('Icon'),
-                    SketchContainer(
-                      elevation: 6,
-                      child: IconButton(
-                        onPressed: () async {
-                          final newIconName = await showDialog<String>(
-                            context: context,
-                            builder: (context) => SketchDialog(
-                              title: 'Select Icon',
-                              children: [
-                                for (var iconName in [
-                                  'default',
-                                  'home',
-                                  'work',
-                                ])
-                                  ListTile(
-                                    title: Text(iconName),
-                                    onTap: () {
-                                      Navigator.pop(context, iconName);
-                                    },
-                                  ),
-                              ],
-                            ),
-                          );
-                          if (newIconName != null) {
-                            setState(() {
-                              iconName = newIconName;
-                            });
-                          }
-                        },
-                        icon: Icon(Icons.ac_unit),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text('Color'),
-                    SketchContainer(
-                      fillColor: color,
-                      elevation: 6,
-                      child: IconButton(
-                        onPressed: () async {
-                          final newColor = await showDialog<Color>(
-                            context: context,
-                            builder: (context) => SketchColorPickerDialog(
-                              color: color,
-                              onDismiss: () {
-                                Navigator.pop(context);
-                              },
-                              onColorChanged: (newColor) {
-                                Navigator.pop(context, newColor);
-                              },
-                            ),
-                          );
-                          if (newColor != null) {
-                            setState(() {
-                              color = newColor;
-                            });
-                          }
-                        },
-                        icon: const SizedBox(),
-                      ),
-                    ),
-                  ],
-                ),
-                if (widget.extra.topicEntry != null)
-                  ElevatedButton(
-                    onPressed: _delete,
-                    child: const Text('Delete'),
+                    ],
                   ),
-              ],
-            ),
-          ),
+                ),
+              ),
+            );
+          },
         ),
       ),
     );
