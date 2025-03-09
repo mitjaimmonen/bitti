@@ -11,20 +11,16 @@ final class TopicEditorInitial extends TopicEditorState {
 
 final class TopicEditorLoaded extends TopicEditorState {
   final TopicEntryEntity topicEntry;
-  final TopicTypeSettingsEntity settings;
 
   const TopicEditorLoaded({
     required this.topicEntry,
-    required this.settings,
   });
 
   TopicEditorLoaded copyWith({
     TopicEntryEntity? topicEntry,
-    TopicTypeSettingsEntity? settings,
   }) {
     return TopicEditorLoaded(
       topicEntry: topicEntry ?? this.topicEntry,
-      settings: settings ?? this.settings,
     );
   }
 }

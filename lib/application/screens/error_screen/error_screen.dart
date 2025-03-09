@@ -16,6 +16,7 @@ class ErrorScreen extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text('Page not found: ${state.uri}'),
             ElevatedButton(

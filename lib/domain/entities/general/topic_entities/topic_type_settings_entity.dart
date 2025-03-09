@@ -12,9 +12,7 @@ class TopicTypeSettingsEntity extends Entity {
     required this.noteSettings,
     required this.numberSettings,
     required this.toggleSettings,
-  }) : assert(noteSettings != null ||
-            numberSettings != null ||
-            toggleSettings != null);
+  });
 
   TopicTypeSettingsEntity copyWith({
     TopicTypeNoteSettingsEntity? noteSettings,

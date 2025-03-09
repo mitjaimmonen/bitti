@@ -1,7 +1,8 @@
 import 'package:bitti/application/models/screen_config_model.dart';
-import 'package:bitti/application/screens/topic_editor_screen/entities/date_dialog_extra_entity.dart';
+import 'package:bitti/application/screens/topic_editor_screen/entities/date_dialog_entities.dart';
 import 'package:bitti/application/widget/dialog_widgets/sketch_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class DateDialog extends StatelessWidget {
   final DateDialogExtraEntity extra;
@@ -38,7 +39,9 @@ class DateDialog extends StatelessWidget {
         ),
         TextButton(
           onPressed: () {
-            Navigator.pop(context, output);
+            GoRouter.of(context).pop(DateDialogReturnEntity(
+              date: output,
+            ));
           },
           child: const Text('OK'),
         ),

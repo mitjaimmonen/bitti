@@ -5,9 +5,11 @@ import 'package:bitti/application/screens/main_screen/main_screen_journal_shell.
 import 'package:bitti/application/screens/main_screen/main_screen_notes_shell.dart';
 import 'package:bitti/application/screens/main_screen/main_screen_settings_shell.dart';
 import 'package:bitti/application/screens/main_screen/main_screen_stats_shell.dart';
-import 'package:bitti/application/screens/topic_editor_screen/entities/date_dialog_extra_entity.dart';
+import 'package:bitti/application/screens/topic_editor_screen/entities/date_dialog_entities.dart';
+import 'package:bitti/application/screens/topic_editor_screen/entities/toggle_settings_dialog_entities.dart';
 import 'package:bitti/application/screens/topic_editor_screen/entities/topic_editor_extra_entity.dart';
 import 'package:bitti/application/screens/topic_editor_screen/routes/date_dialog.dart';
+import 'package:bitti/application/screens/topic_editor_screen/routes/toggle_settings_dialog.dart';
 import 'package:bitti/application/screens/topic_editor_screen/topic_editor_screen.dart';
 import 'package:bitti/application/screens/topics_screen/topics_screen.dart';
 import 'package:bitti/application/widget/dialog_widgets/dialog_page.dart';
@@ -91,16 +93,21 @@ final router = GoRouter(
         final extra = state.extra as TopicEditorExtraEntity;
         return TopicEditorScreen(extra: extra);
       },
-      routes: [
-        GoRoute(
-          path: 'date_dialog',
-          name: 'Date Dialog',
-          pageBuilder: (BuildContext context, GoRouterState state) {
-            final extra = state.extra as DateDialogExtraEntity;
-            return DialogPage(builder: (_) => DateDialog(extra: extra));
-          },
-        ),
-      ],
     ),
+    GoRoute(
+      path: DateDialog.config.routePath,
+      name: DateDialog.config.title,
+      pageBuilder: (BuildContext context, GoRouterState state) {
+        final extra = state.extra as DateDialogExtraEntity;
+        return DialogPage(builder: (_) => DateDialog(extra: extra));
+      },
+    ),
+    GoRoute(
+        path: ToggleSettingsDialog.config.routePath,
+        name: ToggleSettingsDialog.config.title,
+        pageBuilder: (BuildContext context, GoRouterState state) {
+          final extra = state.extra as ToggleSettingsDialogExtraEntity;
+          return DialogPage(builder: (_) => ToggleSettingsDialog(extra: extra));
+        }),
   ],
 );

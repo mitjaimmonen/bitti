@@ -1,18 +1,15 @@
 import 'package:bitti/application/models/screen_config_model.dart';
 import 'package:bitti/application/screens/topic_editor_screen/cubit/topic_editor_cubit.dart';
-import 'package:bitti/application/screens/topic_editor_screen/entities/date_dialog_extra_entity.dart';
+import 'package:bitti/application/screens/topic_editor_screen/entities/date_dialog_entities.dart';
+import 'package:bitti/application/screens/topic_editor_screen/entities/toggle_settings_dialog_entities.dart';
 import 'package:bitti/application/screens/topic_editor_screen/entities/topic_editor_extra_entity.dart';
 import 'package:bitti/application/screens/topic_editor_screen/routes/date_dialog.dart';
+import 'package:bitti/application/screens/topic_editor_screen/routes/toggle_settings_dialog.dart';
 import 'package:bitti/application/screens/topic_editor_screen/widgets/type_settings_dropdown.dart';
 import 'package:bitti/application/widget/dialog_widgets/sketch_color_picker_dialog.dart';
 import 'package:bitti/application/widget/dialog_widgets/sketch_dialog.dart';
 import 'package:bitti/application/widget/inputs/sketch_text_field.dart';
 import 'package:bitti/application/widget/sketch_container.dart';
-import 'package:bitti/domain/entities/general/topic_entities/topic_entry_entity.dart';
-import 'package:bitti/domain/entities/general/topic_entities/topic_setting_value_toggle_entity.dart';
-import 'package:bitti/domain/entities/general/topic_entities/topic_type_settings_entity.dart';
-import 'package:bitti/domain/entities/general/topic_entities/topic_type_toggle_settings_entity.dart';
-import 'package:bitti/domain/enums/icon_name.dart';
 import 'package:bitti/domain/enums/topic_type.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,48 +35,13 @@ class TopicEditorScreen extends StatefulWidget {
 
 class TopicEditorScreenState extends State<TopicEditorScreen> {
   final _formKey = GlobalKey<FormState>();
-  late int id;
-  late String name;
-  late String description;
-  late DateTime startDate;
-  late String iconName;
-  late Color color;
-  late TopicType topicType;
-  late TopicTypeSettingsEntity topicTypeSettings;
 
-  @override
-  void initState() {
-    super.initState();
-    final topicEntry = widget.extra.topicEntry;
-    id = topicEntry?.id ?? DateTime.now().millisecondsSinceEpoch;
-    name = topicEntry?.name ?? '';
-    description = topicEntry?.description ?? '';
-    startDate = topicEntry?.startDate ?? DateTime.now();
-    iconName = topicEntry?.iconName ?? 'default';
-    color = topicEntry?.color ?? Colors.blue;
-    topicType = topicEntry?.topicType ?? TopicType.toggle;
-    topicTypeSettings = topicEntry?.topicTypeSettings ??
-        TopicTypeSettingsEntity(
-          noteSettings: null,
-          numberSettings: null,
-          toggleSettings: TopicTypeToggleSettingsEntity(values: []),
-        );
-  }
-
-  void _save() {
+  void _save(BuildContext context) {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      final topicEntry = TopicEntryEntity(
-        id: id,
-        name: name,
-        description: description,
-        startDate: startDate,
-        iconName: iconName,
-        color: color,
-        topicType: topicType,
-        topicTypeSettings: topicTypeSettings,
-      );
-      context.pop(TopicEditorReturnData(topicEntry: topicEntry));
+      final cubit = context.read<TopicEditorCubit>();
+      final state = cubit.state as TopicEditorLoaded;
+      context.pop(TopicEditorReturnData(topicEntry: state.topicEntry));
     }
   }
 
@@ -94,15 +56,21 @@ class TopicEditorScreenState extends State<TopicEditorScreen> {
         title: const Text('Topic Editor'),
         actions: [
           TextButton(
-            onPressed: _save,
+            onPressed: () => _save(context),
             child: const Text('Save'),
           ),
         ],
       ),
       body: BlocProvider(
-        create: (context) => TopicEditorCubit(),
+        create: (context) => TopicEditorCubit()
+          ..init(
+            widget.extra.topicEntry,
+          ),
         child: BlocBuilder<TopicEditorCubit, TopicEditorState>(
           builder: (context, state) {
+            if (state is! TopicEditorLoaded) {
+              return const Center(child: CircularProgressIndicator());
+            }
             return SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -129,15 +97,37 @@ class TopicEditorScreenState extends State<TopicEditorScreen> {
                             .updateTopicEntry(description: value),
                       ),
                       TypeSettingsDropdown(
-                        value: topicType,
-                        onChanged: (value) => topicType = value!,
-                        onOpenSettings: (topicType) {
+                        value: state.topicEntry.topicType,
+                        onChanged: (value) => context
+                            .read<TopicEditorCubit>()
+                            .updateTopicEntry(topicType: value),
+                        onOpenSettings: (topicType) async {
                           switch (topicType) {
                             case TopicType.note:
                               break;
                             case TopicType.number:
                               break;
                             case TopicType.toggle:
+                              final ToggleSettingsDialogReturnEntity? result =
+                                  await GoRouter.of(context).push(
+                                ToggleSettingsDialog.config.routePath,
+                                extra: ToggleSettingsDialogExtraEntity(
+                                  toggleSettings: state.topicEntry
+                                      .topicTypeSettings.toggleSettings,
+                                  color: state.topicEntry.color,
+                                ),
+                              );
+
+                              if (result != null && context.mounted) {
+                                final cubit = context.read<TopicEditorCubit>();
+                                final state = cubit.state as TopicEditorLoaded;
+                                cubit.updateTopicEntry(
+                                    topicTypeSettings: state
+                                        .topicEntry.topicTypeSettings
+                                        .copyWith(
+                                  toggleSettings: result.toggleSettings,
+                                ));
+                              }
                               break;
                             default:
                               break;
@@ -160,11 +150,12 @@ class TopicEditorScreenState extends State<TopicEditorScreen> {
                             child: TextButton(
                               onPressed: () async {
                                 final DateDialogReturnEntity? output =
-                                    await context.push(
-                                        DateDialog.config.routePath,
-                                        extra: DateDialogExtraEntity(
-                                          initialDate: startDate,
-                                        ));
+                                    await GoRouter.of(context)
+                                        .push(DateDialog.config.routePath,
+                                            extra: DateDialogExtraEntity(
+                                              initialDate:
+                                                  state.topicEntry.startDate,
+                                            ));
                                 if (output?.date != null && context.mounted) {
                                   context
                                       .read<TopicEditorCubit>()
@@ -175,8 +166,8 @@ class TopicEditorScreenState extends State<TopicEditorScreen> {
                               child: Builder(builder: (context) {
                                 String locale = Localizations.localeOf(context)
                                     .languageCode;
-                                return Text(
-                                    DateFormat.yMd(locale).format(startDate));
+                                return Text(DateFormat.yMd(locale)
+                                    .format(state.topicEntry.startDate));
                               }),
                             ),
                           ),
@@ -210,10 +201,10 @@ class TopicEditorScreenState extends State<TopicEditorScreen> {
                                     ],
                                   ),
                                 );
-                                if (newIconName != null) {
-                                  setState(() {
-                                    iconName = newIconName;
-                                  });
+                                if (newIconName != null && context.mounted) {
+                                  context
+                                      .read<TopicEditorCubit>()
+                                      .updateTopicEntry(iconName: newIconName);
                                 }
                               },
                               icon: Icon(Icons.ac_unit),
@@ -227,14 +218,14 @@ class TopicEditorScreenState extends State<TopicEditorScreen> {
                         children: [
                           const Text('Color'),
                           SketchContainer(
-                            fillColor: color,
+                            fillColor: state.topicEntry.color,
                             elevation: 6,
                             child: IconButton(
                               onPressed: () async {
                                 final newColor = await showDialog<Color>(
                                   context: context,
                                   builder: (context) => SketchColorPickerDialog(
-                                    color: color,
+                                    color: state.topicEntry.color,
                                     onDismiss: () {
                                       Navigator.pop(context);
                                     },
@@ -243,10 +234,10 @@ class TopicEditorScreenState extends State<TopicEditorScreen> {
                                     },
                                   ),
                                 );
-                                if (newColor != null) {
-                                  setState(() {
-                                    color = newColor;
-                                  });
+                                if (newColor != null && context.mounted) {
+                                  context
+                                      .read<TopicEditorCubit>()
+                                      .updateTopicEntry(color: newColor);
                                 }
                               },
                               icon: const SizedBox(),
@@ -271,168 +262,6 @@ class TopicEditorScreenState extends State<TopicEditorScreen> {
   }
 
   Widget _topicSettings(BuildContext context) {
-    if (topicType == TopicType.toggle) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('Toggle Settings',
-              style: Theme.of(context).textTheme.labelMedium),
-          SizedBox(height: 16),
-          for (var i = 0;
-              i < topicTypeSettings.toggleSettings!.values.length;
-              i++)
-            SketchContainer(
-              lineFilledBackground: true,
-              padding: const EdgeInsets.all(8),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Column(
-                      children: [
-                        SketchContainer(
-                          padding: const EdgeInsets.symmetric(horizontal: 4),
-                          elevation: -4,
-                          child: TextField(
-                            decoration: InputDecoration(
-                              labelText: topicTypeSettings
-                                  .toggleSettings!.values[i].label,
-                              hintText: 'For example: "Done"',
-                              border: InputBorder.none,
-                            ),
-                            onSubmitted: (value) {
-                              setState(() {
-                                topicTypeSettings.toggleSettings!.values[i] =
-                                    topicTypeSettings.toggleSettings!.values[i]
-                                        .copyWith(label: value);
-                              });
-                            },
-                          ),
-                        ),
-                        SizedBox(height: 8),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text('Icon'),
-                            SketchContainer(
-                              elevation: 6,
-                              child: IconButton(
-                                onPressed: () async {
-                                  final newIconName = await showDialog<String>(
-                                    context: context,
-                                    builder: (context) => SketchDialog(
-                                      title: 'Select Icon',
-                                      children: [
-                                        for (var iconName in [
-                                          'default',
-                                          'home',
-                                          'work',
-                                        ])
-                                          ListTile(
-                                            title: Text(iconName),
-                                            onTap: () {
-                                              Navigator.pop(context, iconName);
-                                            },
-                                          ),
-                                      ],
-                                    ),
-                                  );
-                                  if (newIconName != null) {
-                                    setState(() {
-                                      topicTypeSettings
-                                              .toggleSettings!.values[i] =
-                                          topicTypeSettings
-                                              .toggleSettings!.values[i]
-                                              .copyWith(
-                                        iconName: newIconName,
-                                      );
-                                    });
-                                  }
-                                },
-                                icon: Icon(Icons.ac_unit),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 8),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text('Color'),
-                            SketchContainer(
-                              fillColor: topicTypeSettings
-                                  .toggleSettings!.values[i].color,
-                              elevation: 6,
-                              child: IconButton(
-                                onPressed: () async {
-                                  final newColor = await showDialog<Color>(
-                                    context: context,
-                                    builder: (context) =>
-                                        SketchColorPickerDialog(
-                                      color: topicTypeSettings
-                                          .toggleSettings!.values[i].color,
-                                      onDismiss: () {
-                                        Navigator.pop(context);
-                                      },
-                                      onColorChanged: (newColor) {
-                                        Navigator.pop(context, newColor);
-                                      },
-                                    ),
-                                  );
-                                  if (newColor != null) {
-                                    setState(() {
-                                      topicTypeSettings
-                                              .toggleSettings!.values[i] =
-                                          topicTypeSettings
-                                              .toggleSettings!.values[i]
-                                              .copyWith(
-                                        color: newColor,
-                                      );
-                                    });
-                                  }
-                                },
-                                icon: const SizedBox(),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(width: 8),
-                  IconButton(
-                    onPressed: () {
-                      setState(() {
-                        topicTypeSettings.toggleSettings!.values.removeAt(i);
-                      });
-                    },
-                    icon: const Icon(Icons.close),
-                  ),
-                ],
-              ),
-            ),
-          SizedBox(height: 16),
-          SketchContainer(
-            elevation: 6,
-            child: IconButton(
-              onPressed: () {
-                setState(() {
-                  topicTypeSettings.toggleSettings!.values
-                      .add(TopicSettingValueToggleEntity(
-                    iconName: IconName.check.value,
-                    label:
-                        'Toggle State ${topicTypeSettings.toggleSettings!.values.length + 1}',
-                    color: color,
-                  ));
-                });
-              },
-              icon: const Text('Add Toggle Value'),
-            ),
-          ),
-        ],
-      );
-    }
-
     return SizedBox();
   }
 }
