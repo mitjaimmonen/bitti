@@ -16,7 +16,7 @@ class MainScreen extends StatelessWidget {
   });
 
   final StatefulNavigationShell shell;
-  final List<ScreenShellConfigEntity> shellConfigs;
+  final List<ShellConfigModel> shellConfigs;
 
   void _onItemTapped(int index) {
     shell.goBranch(index);

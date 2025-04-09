@@ -11,7 +11,7 @@ import 'bloc_journal/journal_bloc.dart';
 class MainScreenJournalShell extends StatelessWidget {
   const MainScreenJournalShell({super.key});
 
-  static const config = ScreenShellConfigEntity(
+  static const config = ShellConfigModel(
     title: 'Journal',
     routePath: '/journal',
     icon: Icons.book,

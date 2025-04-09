@@ -19,7 +19,7 @@ import 'package:intl/intl.dart';
 class TopicEditorScreen extends StatefulWidget {
   final TopicEditorExtraEntity extra;
 
-  static const config = ScreenConfigModel(
+  static const config = RouteConfigModel(
     title: 'Topic Editor',
     routePath: '/topic-editor',
   );

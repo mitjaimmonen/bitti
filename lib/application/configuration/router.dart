@@ -18,7 +18,7 @@ import 'package:go_router/go_router.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 
-final List<ScreenShellConfigEntity> _mainScreenShellConfigs = [
+final List<ShellConfigModel> _mainScreenShellConfigs = [
   MainScreenJournalShell.config,
   MainScreenNotesShell.config,
   MainScreenStatsShell.config,
@@ -87,13 +87,27 @@ final router = GoRouter(
       builder: (context, state) => const TopicsScreen(),
     ),
     GoRoute(
-      path: TopicEditorScreen.config.routePath,
-      name: TopicEditorScreen.config.title,
-      builder: (context, state) {
-        final extra = state.extra as TopicEditorExtraEntity;
-        return TopicEditorScreen(extra: extra);
-      },
-    ),
+        path: TopicEditorScreen.config.routePath,
+        name: TopicEditorScreen.config.title,
+        builder: (context, state) {
+          final extra = state.extra as TopicEditorExtraEntity;
+          return TopicEditorScreen(extra: extra);
+        },
+        routes: [
+          GoRoute(
+            path: ToggleSettingsDialog.config.relativePath,
+            name: ToggleSettingsDialog.config.title,
+            pageBuilder: (BuildContext context, GoRouterState state) {
+              final extra = state.extra as ToggleSettingsDialogExtraEntity;
+              return DialogPage(
+                barrierColor: Colors.transparent,
+                useSafeArea: false,
+                barrierDismissible: false,
+                builder: (_) => ToggleSettingsDialog(extra: extra),
+              );
+            },
+          ),
+        ]),
     GoRoute(
       path: DateDialog.config.routePath,
       name: DateDialog.config.title,
@@ -104,17 +118,5 @@ final router = GoRouter(
         );
       },
     ),
-    GoRoute(
-        path: ToggleSettingsDialog.config.routePath,
-        name: ToggleSettingsDialog.config.title,
-        pageBuilder: (BuildContext context, GoRouterState state) {
-          final extra = state.extra as ToggleSettingsDialogExtraEntity;
-          return DialogPage(
-            barrierColor: Colors.transparent,
-            useSafeArea: false,
-            barrierDismissible: false,
-            builder: (_) => ToggleSettingsDialog(extra: extra),
-          );
-        }),
   ],
 );

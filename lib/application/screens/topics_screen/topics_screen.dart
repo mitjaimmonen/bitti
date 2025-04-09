@@ -12,7 +12,7 @@ import 'package:go_router/go_router.dart';
 class TopicsScreen extends StatelessWidget {
   const TopicsScreen({super.key});
 
-  static const config = ScreenConfigModel(
+  static const config = RouteConfigModel(
     title: 'Topics',
     routePath: '/topics',
   );

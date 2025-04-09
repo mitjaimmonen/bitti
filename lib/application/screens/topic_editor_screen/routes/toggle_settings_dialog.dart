@@ -1,5 +1,6 @@
 import 'package:bitti/application/models/screen_config_model.dart';
 import 'package:bitti/application/screens/topic_editor_screen/entities/toggle_settings_dialog_entities.dart';
+import 'package:bitti/application/screens/topic_editor_screen/topic_editor_screen.dart';
 import 'package:bitti/application/widget/dialog_widgets/sketch_color_picker_dialog.dart';
 import 'package:bitti/application/widget/dialog_widgets/sketch_dialog.dart';
 import 'package:bitti/application/widget/sketch_container.dart';
@@ -17,9 +18,10 @@ class ToggleSettingsDialog extends StatefulWidget {
     required this.extra,
   });
 
-  static const config = ScreenDialogConfigEntity(
+  static final config = SubRouteConfigModel(
     title: 'Toggle Settings',
-    routePath: '/toggle_settings',
+    routePath: '${TopicEditorScreen.config.routePath}/toggle_settings',
+    relativePath: 'toggle_settings',
   );
 
   @override

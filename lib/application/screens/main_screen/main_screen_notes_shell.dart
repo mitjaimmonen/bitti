@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class MainScreenNotesShell extends StatelessWidget {
   const MainScreenNotesShell({super.key});
 
-  static const config = ScreenShellConfigEntity(
+  static const config = ShellConfigModel(
     title: 'Notes',
     routePath: '/notes',
     icon: Icons.note,

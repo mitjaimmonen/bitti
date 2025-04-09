@@ -7,7 +7,7 @@ import 'package:go_router/go_router.dart';
 class DateDialog extends StatelessWidget {
   final DateDialogExtraEntity extra;
 
-  static const config = ScreenDialogConfigEntity(
+  static const config = DialogConfigModel(
     title: 'Date Dialog',
     routePath: '/date_dialog',
   );

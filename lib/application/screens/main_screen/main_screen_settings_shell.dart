@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class MainScreenSettingsShell extends StatelessWidget {
   const MainScreenSettingsShell({super.key});
 
-  static const config = ScreenShellConfigEntity(
+  static const config = ShellConfigModel(
     title: 'Settings',
     routePath: '/settings',
     icon: Icons.settings,

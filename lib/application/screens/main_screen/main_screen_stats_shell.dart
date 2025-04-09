@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class MainScreenStatsShell extends StatelessWidget {
   const MainScreenStatsShell({super.key});
 
-  static const config = ScreenShellConfigEntity(
+  static const config = ShellConfigModel(
     title: 'Stats',
     routePath: '/stats',
     icon: Icons.bar_chart,

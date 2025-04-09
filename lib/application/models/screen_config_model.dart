@@ -1,28 +1,38 @@
 import 'package:flutter/cupertino.dart';
 
-class ScreenConfigModel {
+class RouteConfigModel {
   final String title;
   final String routePath;
 
-  const ScreenConfigModel({
+  const RouteConfigModel({
     required this.title,
     required this.routePath,
   });
 }
 
-class ScreenShellConfigEntity extends ScreenConfigModel {
+class ShellConfigModel extends RouteConfigModel {
   final IconData icon;
 
-  const ScreenShellConfigEntity({
+  const ShellConfigModel({
     required super.title,
     required super.routePath,
     required this.icon,
   });
 }
 
-class ScreenDialogConfigEntity extends ScreenConfigModel {
-  const ScreenDialogConfigEntity({
+class DialogConfigModel extends RouteConfigModel {
+  const DialogConfigModel({
     required super.title,
     required super.routePath,
+  });
+}
+
+class SubRouteConfigModel extends RouteConfigModel {
+  final String relativePath;
+
+  const SubRouteConfigModel({
+    required super.title,
+    required super.routePath,
+    required this.relativePath,
   });
 }
