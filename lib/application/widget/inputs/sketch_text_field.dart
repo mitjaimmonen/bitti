@@ -8,6 +8,7 @@ class SketchTextField extends StatelessWidget {
   final int? minLines;
   final EdgeInsets? padding;
   final Function(String)? onSubmitted;
+  final Function(String)? onChanged;
 
   const SketchTextField({
     required this.labelText,
@@ -15,7 +16,8 @@ class SketchTextField extends StatelessWidget {
     this.maxLines,
     this.minLines,
     this.padding,
-    required this.onSubmitted,
+    this.onChanged,
+    this.onSubmitted,
     super.key,
   });
 
@@ -35,6 +37,7 @@ class SketchTextField extends StatelessWidget {
             hintText: hintText,
             border: InputBorder.none,
           ),
+          onChanged: onChanged,
           onSubmitted: onSubmitted,
         ),
       ),

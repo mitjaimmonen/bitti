@@ -9,6 +9,8 @@ class SketchContainer extends StatelessWidget {
   final bool? lineFilledBackground;
   final double? elevation;
   final Color? elevationColor;
+  final double? width;
+  final double? height;
 
   final Widget? child;
 
@@ -20,29 +22,35 @@ class SketchContainer extends StatelessWidget {
     this.elevation,
     this.elevationColor,
     this.lineFilledBackground,
+    this.width,
+    this.height,
     this.child,
   });
 
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(
-      painter: SketchPainterRectangleFill(
-        key: UniqueKey(),
-        color: fillColor ?? Theme.of(context).colorScheme.surfaceBright,
-        isLineFill: lineFilledBackground ?? false,
-        elevation: elevation,
-        elevationColor: elevationColor ??
-            Theme.of(context).colorScheme.surfaceContainerHighest,
-      ),
+    return SizedBox(
+      width: width,
+      height: height,
       child: CustomPaint(
-        painter: SketchPainterRectangleStroke(
+        painter: SketchPainterRectangleFill(
           key: UniqueKey(),
+          color: fillColor ?? Theme.of(context).colorScheme.surfaceBright,
+          isLineFill: lineFilledBackground ?? false,
           elevation: elevation,
-          color: strokeColor ?? Theme.of(context).colorScheme.outline,
+          elevationColor: elevationColor ??
+              Theme.of(context).colorScheme.surfaceContainerHighest,
         ),
-        child: Padding(
-          padding: combinePaddingWithEmboss(padding, elevation),
-          child: child,
+        child: CustomPaint(
+          painter: SketchPainterRectangleStroke(
+            key: UniqueKey(),
+            elevation: elevation,
+            color: strokeColor ?? Theme.of(context).colorScheme.outline,
+          ),
+          child: Padding(
+            padding: combinePaddingWithEmboss(padding, elevation),
+            child: child,
+          ),
         ),
       ),
     );

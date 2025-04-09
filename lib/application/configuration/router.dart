@@ -99,7 +99,9 @@ final router = GoRouter(
       name: DateDialog.config.title,
       pageBuilder: (BuildContext context, GoRouterState state) {
         final extra = state.extra as DateDialogExtraEntity;
-        return DialogPage(builder: (_) => DateDialog(extra: extra));
+        return DialogPage(
+          builder: (_) => DateDialog(extra: extra),
+        );
       },
     ),
     GoRoute(
@@ -107,7 +109,12 @@ final router = GoRouter(
         name: ToggleSettingsDialog.config.title,
         pageBuilder: (BuildContext context, GoRouterState state) {
           final extra = state.extra as ToggleSettingsDialogExtraEntity;
-          return DialogPage(builder: (_) => ToggleSettingsDialog(extra: extra));
+          return DialogPage(
+            barrierColor: Colors.transparent,
+            useSafeArea: false,
+            barrierDismissible: false,
+            builder: (_) => ToggleSettingsDialog(extra: extra),
+          );
         }),
   ],
 );

@@ -40,11 +40,12 @@ class TopicsScreen extends StatelessWidget {
                   SketchButtonHeadline(
                     text: 'Add Topic',
                     onPressed: () async {
-                      final data = await context.push(
+                      final data = await context.push<TopicEditorReturnData>(
                         TopicEditorScreen.config.routePath,
                         extra: const TopicEditorExtraEntity(),
                       );
-                      if (kDebugMode) print(data);
+                      if (kDebugMode && data?.topicEntry != null)
+                        print(data!.topicEntry!.name);
                     },
                   )
                 ],
