@@ -9,6 +9,9 @@ class SketchTextField extends StatelessWidget {
   final EdgeInsets? padding;
   final Function(String)? onSubmitted;
   final Function(String)? onChanged;
+  final TextInputType? keyboardType;
+  final TextEditingController? controller;
+  final String? Function(String?)? validator;
 
   const SketchTextField({
     required this.labelText,
@@ -18,6 +21,9 @@ class SketchTextField extends StatelessWidget {
     this.padding,
     this.onChanged,
     this.onSubmitted,
+    this.keyboardType,
+    this.controller,
+    this.validator,
     super.key,
   });
 
@@ -28,8 +34,11 @@ class SketchTextField extends StatelessWidget {
       child: SketchContainer(
         elevation: -4,
         lineFilledBackground: true,
+        fillColor: Theme.of(context).colorScheme.surfaceContainer,
         padding: const EdgeInsets.symmetric(horizontal: 8),
-        child: TextField(
+        child: TextFormField(
+          controller: controller,
+          keyboardType: keyboardType,
           maxLines: maxLines,
           minLines: minLines,
           decoration: InputDecoration(
@@ -38,7 +47,8 @@ class SketchTextField extends StatelessWidget {
             border: InputBorder.none,
           ),
           onChanged: onChanged,
-          onSubmitted: onSubmitted,
+          onFieldSubmitted: onSubmitted,
+          validator: validator,
         ),
       ),
     );

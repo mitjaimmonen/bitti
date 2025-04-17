@@ -1,4 +1,3 @@
-import 'package:bitti/data/models/general/topic_models/topic_setting_value_note_model.dart';
 import 'package:bitti/data/models/model.dart';
 import 'package:bitti/domain/entities/general/topic_entities/topic_type_note_settings_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -7,10 +6,12 @@ part '.generated/topic_type_note_settings_model.g.dart';
 
 @JsonSerializable()
 class TopicTypeNoteSettingsModel extends Model<TopicTypeNoteSettingsEntity> {
-  final List<TopicSettingValueNoteModel> values;
+  final bool displayInJournal;
+  final bool displayInNotes;
 
   const TopicTypeNoteSettingsModel({
-    required this.values,
+    required this.displayInJournal,
+    required this.displayInNotes,
   });
 
   Map<String, dynamic> toJson() => _$TopicTypeNoteSettingsModelToJson(this);
@@ -20,16 +21,16 @@ class TopicTypeNoteSettingsModel extends Model<TopicTypeNoteSettingsEntity> {
 
   TopicTypeNoteSettingsEntity toEntity() {
     return TopicTypeNoteSettingsEntity(
-      values: values.map((e) => e.toEntity()).toList(),
+      displayInJournal: displayInJournal,
+      displayInNotes: displayInNotes,
     );
   }
 
   factory TopicTypeNoteSettingsModel.fromEntity(
       TopicTypeNoteSettingsEntity entity) {
     return TopicTypeNoteSettingsModel(
-      values: entity.values
-          .map((e) => TopicSettingValueNoteModel.fromEntity(e))
-          .toList(),
+      displayInJournal: entity.displayInJournal,
+      displayInNotes: entity.displayInNotes,
     );
   }
 }

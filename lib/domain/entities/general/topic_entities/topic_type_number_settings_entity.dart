@@ -1,10 +1,21 @@
 import 'package:bitti/domain/entities/entity.dart';
-import 'package:bitti/domain/entities/general/topic_entities/topic_setting_value_number_entity.dart';
 
 class TopicTypeNumberSettingsEntity extends Entity {
-  final List<TopicSettingValueNumberEntity> values;
+  final int min;
+  final int max;
 
   const TopicTypeNumberSettingsEntity({
-    required this.values,
+    required this.min,
+    required this.max,
   });
+
+  TopicTypeNumberSettingsEntity copyWith({
+    int? min,
+    int? max,
+  }) {
+    return TopicTypeNumberSettingsEntity(
+      min: min ?? this.min,
+      max: max ?? this.max,
+    );
+  }
 }

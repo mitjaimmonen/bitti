@@ -1,20 +1,20 @@
 import 'package:bitti/domain/entities/general/topic_entities/topic_type_toggle_settings_entity.dart';
 import 'package:flutter/material.dart';
 
-class ToggleSettingsDialogExtraEntity {
+class ToggleSettingsDialogExtraViewModel {
   final TopicTypeToggleSettingsEntity? toggleSettings;
   final Color? color;
 
-  const ToggleSettingsDialogExtraEntity({
+  const ToggleSettingsDialogExtraViewModel({
     this.toggleSettings,
     this.color,
   });
 }
 
-class ToggleSettingsDialogReturnEntity {
+class ToggleSettingsDialogReturnViewModel {
   final TopicTypeToggleSettingsEntity toggleSettings;
 
-  const ToggleSettingsDialogReturnEntity({
+  const ToggleSettingsDialogReturnViewModel({
     required this.toggleSettings,
   });
 }

@@ -5,12 +5,16 @@ import 'package:bitti/application/screens/main_screen/main_screen_journal_shell.
 import 'package:bitti/application/screens/main_screen/main_screen_notes_shell.dart';
 import 'package:bitti/application/screens/main_screen/main_screen_settings_shell.dart';
 import 'package:bitti/application/screens/main_screen/main_screen_stats_shell.dart';
-import 'package:bitti/application/screens/topic_editor_screen/entities/date_dialog_entities.dart';
-import 'package:bitti/application/screens/topic_editor_screen/entities/toggle_settings_dialog_entities.dart';
-import 'package:bitti/application/screens/topic_editor_screen/entities/topic_editor_extra_entity.dart';
+import 'package:bitti/application/screens/topic_editor_screen/routes/color_dialog.dart';
 import 'package:bitti/application/screens/topic_editor_screen/routes/date_dialog.dart';
+import 'package:bitti/application/screens/topic_editor_screen/routes/number_settings_dialog.dart';
 import 'package:bitti/application/screens/topic_editor_screen/routes/toggle_settings_dialog.dart';
 import 'package:bitti/application/screens/topic_editor_screen/topic_editor_screen.dart';
+import 'package:bitti/application/screens/topic_editor_screen/view_models/color_dialog_view_model.dart';
+import 'package:bitti/application/screens/topic_editor_screen/view_models/date_dialog_view_model.dart';
+import 'package:bitti/application/screens/topic_editor_screen/view_models/number_settings_dialog_view_model.dart';
+import 'package:bitti/application/screens/topic_editor_screen/view_models/toggle_settings_dialog_view_model.dart';
+import 'package:bitti/application/screens/topic_editor_screen/view_models/topic_editor_view_model.dart';
 import 'package:bitti/application/screens/topics_screen/topics_screen.dart';
 import 'package:bitti/application/widget/dialog_widgets/dialog_page.dart';
 import 'package:flutter/material.dart';
@@ -90,7 +94,7 @@ final router = GoRouter(
         path: TopicEditorScreen.config.routePath,
         name: TopicEditorScreen.config.title,
         builder: (context, state) {
-          final extra = state.extra as TopicEditorExtraEntity;
+          final extra = state.extra as TopicEditorExtraViewModel;
           return TopicEditorScreen(extra: extra);
         },
         routes: [
@@ -98,7 +102,7 @@ final router = GoRouter(
             path: ToggleSettingsDialog.config.relativePath,
             name: ToggleSettingsDialog.config.title,
             pageBuilder: (BuildContext context, GoRouterState state) {
-              final extra = state.extra as ToggleSettingsDialogExtraEntity;
+              final extra = state.extra as ToggleSettingsDialogExtraViewModel;
               return DialogPage(
                 barrierColor: Colors.transparent,
                 useSafeArea: false,
@@ -107,12 +111,38 @@ final router = GoRouter(
               );
             },
           ),
+          GoRoute(
+            path: NumberSettingsDialog.config.relativePath,
+            name: NumberSettingsDialog.config.title,
+            pageBuilder: (BuildContext context, GoRouterState state) {
+              final extra = state.extra as NumberSettingsDialogExtraViewModel;
+              return DialogPage(
+                barrierColor: Colors.transparent,
+                useSafeArea: false,
+                barrierDismissible: false,
+                builder: (_) => NumberSettingsDialog(extra: extra),
+              );
+            },
+          ),
+          GoRoute(
+            path: ColorDialog.config.relativePath,
+            name: ColorDialog.config.title,
+            pageBuilder: (BuildContext context, GoRouterState state) {
+              final extra = state.extra as ColorDialogExtraViewModel?;
+              return DialogPage(
+                barrierColor: Colors.transparent,
+                useSafeArea: false,
+                barrierDismissible: false,
+                builder: (_) => ColorDialog(extra: extra),
+              );
+            },
+          ),
         ]),
     GoRoute(
       path: DateDialog.config.routePath,
       name: DateDialog.config.title,
       pageBuilder: (BuildContext context, GoRouterState state) {
-        final extra = state.extra as DateDialogExtraEntity;
+        final extra = state.extra as DateDialogExtraViewModel;
         return DialogPage(
           builder: (_) => DateDialog(extra: extra),
         );

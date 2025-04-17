@@ -1,18 +1,18 @@
 import 'package:bitti/domain/entities/general/topic_entities/topic_entry_entity.dart';
 
-class TopicEditorExtraEntity {
+class TopicEditorExtraViewModel {
   final TopicEntryEntity? topicEntry;
 
-  const TopicEditorExtraEntity({
+  const TopicEditorExtraViewModel({
     this.topicEntry,
   });
 }
 
-class TopicEditorReturnData {
+class TopicEditorReturnViewModel {
   final TopicEntryEntity? topicEntry;
   final bool delete;
 
-  const TopicEditorReturnData({
+  const TopicEditorReturnViewModel({
     this.topicEntry,
     this.delete = false,
   });

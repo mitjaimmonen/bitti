@@ -1,6 +1,6 @@
 import 'package:bitti/application/models/screen_config_model.dart';
-import 'package:bitti/application/screens/topic_editor_screen/entities/topic_editor_extra_entity.dart';
 import 'package:bitti/application/screens/topic_editor_screen/topic_editor_screen.dart';
+import 'package:bitti/application/screens/topic_editor_screen/view_models/topic_editor_view_model.dart';
 import 'package:bitti/application/screens/topics_screen/bloc_topics/topics_bloc.dart';
 import 'package:bitti/application/widget/buttons/sketch_button_headline.dart';
 import 'package:flutter/foundation.dart';
@@ -40,12 +40,17 @@ class TopicsScreen extends StatelessWidget {
                   SketchButtonHeadline(
                     text: 'Add Topic',
                     onPressed: () async {
-                      final data = await context.push<TopicEditorReturnData>(
+                      final data =
+                          await context.push<TopicEditorReturnViewModel>(
                         TopicEditorScreen.config.routePath,
-                        extra: const TopicEditorExtraEntity(),
+                        extra: const TopicEditorExtraViewModel(),
                       );
-                      if (kDebugMode && data?.topicEntry != null)
-                        print(data!.topicEntry!.name);
+
+                      if (data?.topicEntry != null) {
+                        if (kDebugMode) {
+                          print(data!.topicEntry!.name);
+                        }
+                      }
                     },
                   )
                 ],
