@@ -7,4 +7,12 @@ class TopicTypeToggleSettingsEntity extends Entity {
   const TopicTypeToggleSettingsEntity({
     required this.values,
   });
+
+  TopicTypeToggleSettingsEntity copyWith({
+    List<TopicSettingValueToggleEntity>? values,
+  }) {
+    return TopicTypeToggleSettingsEntity(
+      values: values ?? this.values.map((e) => e.copyWith()).toList(),
+    );
+  }
 }

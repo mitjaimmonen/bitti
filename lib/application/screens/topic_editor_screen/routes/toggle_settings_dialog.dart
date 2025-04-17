@@ -42,7 +42,7 @@ class _ToggleSettingsDialogState extends State<ToggleSettingsDialog> {
   @override
   void initState() {
     super.initState();
-    toggleSettings = widget.extra.toggleSettings ??
+    toggleSettings = widget.extra.toggleSettings?.copyWith() ??
         TopicTypeToggleSettingsEntity(
           values: [
             TopicSettingValueToggleEntity(
@@ -77,29 +77,64 @@ class _ToggleSettingsDialogState extends State<ToggleSettingsDialog> {
               height: double.infinity,
               padding: const EdgeInsets.all(16.0),
               fillColor: Theme.of(context).colorScheme.surface,
-              child: SingleChildScrollView(
-                child: Material(
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        _buildToggleSettingsContent(),
-                        SizedBox(height: 16),
-                        SketchButtonHeadline(
-                          text: 'Save',
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              _formKey.currentState!.save();
-                              GoRouter.of(context).pop(
-                                ToggleSettingsDialogReturnViewModel(
-                                  toggleSettings: toggleSettings,
-                                ),
-                              );
-                            }
-                          },
-                        ),
-                      ],
-                    ),
+              child: Material(
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text('Toggle Settings',
+                                style:
+                                    Theme.of(context).textTheme.headlineSmall),
+                          ),
+                          if (confirmingCancel)
+                            TextButton(
+                              onPressed: () {
+                                GoRouter.of(context).pop();
+                              },
+                              child: Text('Cancel changes?',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelLarge!
+                                      .copyWith(
+                                        color:
+                                            Theme.of(context).colorScheme.error,
+                                      )),
+                            )
+                          else
+                            IconButton(
+                              onPressed: () {
+                                if (isDirty) {
+                                  setState(() {
+                                    confirmingCancel = true;
+                                  });
+                                } else {
+                                  GoRouter.of(context).pop();
+                                }
+                              },
+                              icon: const Icon(Icons.close),
+                            ),
+                        ],
+                      ),
+                      SizedBox(height: 16),
+                      Expanded(child: _buildToggleSettingsContent()),
+                      SizedBox(height: 16),
+                      SketchButtonHeadline(
+                        text: 'Save',
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            _formKey.currentState!.save();
+                            GoRouter.of(context).pop(
+                              ToggleSettingsDialogReturnViewModel(
+                                toggleSettings: toggleSettings,
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -111,179 +146,150 @@ class _ToggleSettingsDialogState extends State<ToggleSettingsDialog> {
   }
 
   Widget _buildToggleSettingsContent() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Expanded(
-              child: Text('Toggle Settings',
-                  style: Theme.of(context).textTheme.headlineSmall),
-            ),
-            if (confirmingCancel)
-              TextButton(
-                onPressed: () {
-                  GoRouter.of(context).pop();
-                },
-                child: Text('Cancel changes?',
-                    style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                          color: Theme.of(context).colorScheme.error,
-                        )),
-              )
-            else
-              IconButton(
-                onPressed: () {
-                  if (isDirty) {
-                    setState(() {
-                      confirmingCancel = true;
-                    });
-                  } else {
-                    GoRouter.of(context).pop();
-                  }
-                },
-                icon: const Icon(Icons.close),
-              ),
-          ],
-        ),
-        SizedBox(height: 16),
-        for (var i = 0; i < toggleSettings.values.length; i++)
-          SketchContainer(
-            lineFilledBackground: true,
-            padding: const EdgeInsets.all(8),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Column(
-                    children: [
-                      SketchContainer(
-                        padding: const EdgeInsets.symmetric(horizontal: 4),
-                        elevation: -4,
-                        child: TextField(
-                          decoration: InputDecoration(
-                            labelText: toggleSettings.values[i].label,
-                            hintText: 'For example: "Done"',
-                            border: InputBorder.none,
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          for (var i = 0; i < toggleSettings.values.length; i++)
+            SketchContainer(
+              lineFilledBackground: true,
+              padding: const EdgeInsets.all(8),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Column(
+                      children: [
+                        SketchContainer(
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          elevation: -4,
+                          child: TextField(
+                            decoration: InputDecoration(
+                              labelText: toggleSettings.values[i].label,
+                              hintText: 'For example: "Done"',
+                              border: InputBorder.none,
+                            ),
+                            onSubmitted: (value) {
+                              setState(() {
+                                toggleSettings.values[i] = toggleSettings
+                                    .values[i]
+                                    .copyWith(label: value);
+                                isDirty = true;
+                              });
+                            },
                           ),
-                          onSubmitted: (value) {
-                            setState(() {
-                              toggleSettings.values[i] = toggleSettings
-                                  .values[i]
-                                  .copyWith(label: value);
-                              isDirty = true;
-                            });
-                          },
                         ),
-                      ),
-                      SizedBox(height: 8),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text('Icon'),
-                          SketchContainer(
-                            elevation: 6,
-                            child: IconButton(
-                              onPressed: () async {
-                                final newIconName = await showDialog<String>(
-                                  context: context,
-                                  builder: (context) => SketchDialog(
-                                    title: 'Select Icon',
-                                    children: [
-                                      for (var iconName in [
-                                        'default',
-                                        'home',
-                                        'work',
-                                      ])
-                                        ListTile(
-                                          title: Text(iconName),
-                                          onTap: () {
-                                            GoRouter.of(context).pop(iconName);
-                                          },
-                                        ),
-                                    ],
-                                  ),
-                                );
-                                if (newIconName != null) {
-                                  setState(() {
-                                    toggleSettings.values[i] =
-                                        toggleSettings.values[i].copyWith(
-                                      iconName: newIconName,
-                                    );
-                                    isDirty = true;
-                                  });
-                                }
-                              },
-                              icon: Icon(Icons.ac_unit),
+                        SizedBox(height: 8),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text('Icon'),
+                            SketchContainer(
+                              elevation: 6,
+                              child: IconButton(
+                                onPressed: () async {
+                                  final newIconName = await showDialog<String>(
+                                    context: context,
+                                    builder: (context) => SketchDialog(
+                                      title: 'Select Icon',
+                                      children: [
+                                        for (var iconName in [
+                                          'default',
+                                          'home',
+                                          'work',
+                                        ])
+                                          ListTile(
+                                            title: Text(iconName),
+                                            onTap: () {
+                                              GoRouter.of(context)
+                                                  .pop(iconName);
+                                            },
+                                          ),
+                                      ],
+                                    ),
+                                  );
+                                  if (newIconName != null) {
+                                    setState(() {
+                                      toggleSettings.values[i] =
+                                          toggleSettings.values[i].copyWith(
+                                        iconName: newIconName,
+                                      );
+                                      isDirty = true;
+                                    });
+                                  }
+                                },
+                                icon: Icon(Icons.ac_unit),
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 8),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text('Color'),
-                          SketchContainer(
-                            fillColor: toggleSettings.values[i].color,
-                            elevation: 6,
-                            child: IconButton(
-                              onPressed: () async {
-                                final ColorDialogReturnViewModel? result =
-                                    await GoRouter.of(context).push(
-                                        ColorDialog.config.routePath,
-                                        extra: ColorDialogExtraViewModel(
-                                          initialColor:
-                                              toggleSettings.values[i].color,
-                                        ));
-                                if (result != null) {
-                                  setState(() {
-                                    toggleSettings.values[i] =
-                                        toggleSettings.values[i].copyWith(
-                                      color: result.color,
-                                    );
-                                    isDirty = true;
-                                  });
-                                }
-                              },
-                              icon: const SizedBox(),
+                          ],
+                        ),
+                        SizedBox(height: 8),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text('Color'),
+                            SketchContainer(
+                              fillColor: toggleSettings.values[i].color,
+                              elevation: 6,
+                              child: IconButton(
+                                onPressed: () async {
+                                  final ColorDialogReturnViewModel? result =
+                                      await GoRouter.of(context).push(
+                                          ColorDialog.config.routePath,
+                                          extra: ColorDialogExtraViewModel(
+                                            initialColor:
+                                                toggleSettings.values[i].color,
+                                          ));
+                                  if (result != null) {
+                                    setState(() {
+                                      toggleSettings.values[i] =
+                                          toggleSettings.values[i].copyWith(
+                                        color: result.color,
+                                      );
+                                      isDirty = true;
+                                    });
+                                  }
+                                },
+                                icon: const SizedBox(),
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                SizedBox(width: 8),
-                IconButton(
-                  onPressed: () {
-                    setState(() {
-                      toggleSettings.values.removeAt(i);
-                      isDirty = true;
-                    });
-                  },
-                  icon: const Icon(Icons.close),
-                ),
-              ],
+                  SizedBox(width: 8),
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        toggleSettings.values.removeAt(i);
+                        isDirty = true;
+                      });
+                    },
+                    icon: const Icon(Icons.close),
+                  ),
+                ],
+              ),
+            ),
+          SizedBox(height: 16),
+          SketchContainer(
+            elevation: 6,
+            child: IconButton(
+              onPressed: () {
+                setState(() {
+                  toggleSettings.values.add(TopicSettingValueToggleEntity(
+                    iconName: IconName.check.value,
+                    label: 'Toggle State ${toggleSettings.values.length + 1}',
+                    color: widget.extra.color ?? Colors.grey,
+                  ));
+                  isDirty = true;
+                });
+              },
+              icon: const Text('Add Toggle Value'),
             ),
           ),
-        SizedBox(height: 16),
-        SketchContainer(
-          elevation: 6,
-          child: IconButton(
-            onPressed: () {
-              setState(() {
-                toggleSettings.values.add(TopicSettingValueToggleEntity(
-                  iconName: IconName.check.value,
-                  label: 'Toggle State ${toggleSettings.values.length + 1}',
-                  color: widget.extra.color ?? Colors.grey,
-                ));
-                isDirty = true;
-              });
-            },
-            icon: const Text('Add Toggle Value'),
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

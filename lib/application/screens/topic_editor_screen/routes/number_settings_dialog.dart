@@ -39,7 +39,7 @@ class _NumberSettingsDialogState extends State<NumberSettingsDialog> {
   @override
   void initState() {
     super.initState();
-    numberSettings = widget.extra.numberSettings ??
+    numberSettings = widget.extra.numberSettings?.copyWith() ??
         TopicTypeNumberSettingsEntity(
           min: 0,
           max: 5,
@@ -72,6 +72,45 @@ class _NumberSettingsDialogState extends State<NumberSettingsDialog> {
                   child: Material(
                     child: Column(
                       children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text('Number Settings',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineSmall),
+                            ),
+                            if (confirmingCancel)
+                              TextButton(
+                                onPressed: () {
+                                  GoRouter.of(context).pop();
+                                },
+                                child: Text('Cancel changes?',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .labelLarge!
+                                        .copyWith(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .error,
+                                        )),
+                              )
+                            else
+                              IconButton(
+                                onPressed: () {
+                                  if (isDirty) {
+                                    setState(() {
+                                      confirmingCancel = true;
+                                    });
+                                  } else {
+                                    GoRouter.of(context).pop();
+                                  }
+                                },
+                                icon: const Icon(Icons.close),
+                              ),
+                          ],
+                        ),
+                        SizedBox(height: 16),
                         _buildToggleSettingsContent(),
                         const SizedBox(height: 16),
                         SketchButtonHeadline(
@@ -103,38 +142,6 @@ class _NumberSettingsDialogState extends State<NumberSettingsDialog> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            Expanded(
-              child: Text('Number Settings',
-                  style: Theme.of(context).textTheme.headlineSmall),
-            ),
-            if (confirmingCancel)
-              TextButton(
-                onPressed: () {
-                  GoRouter.of(context).pop();
-                },
-                child: Text('Cancel changes?',
-                    style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                          color: Theme.of(context).colorScheme.error,
-                        )),
-              )
-            else
-              IconButton(
-                onPressed: () {
-                  if (isDirty) {
-                    setState(() {
-                      confirmingCancel = true;
-                    });
-                  } else {
-                    GoRouter.of(context).pop();
-                  }
-                },
-                icon: const Icon(Icons.close),
-              ),
-          ],
-        ),
-        SizedBox(height: 16),
         SketchTextField(
           controller: _minController,
           keyboardType: TextInputType.number,
