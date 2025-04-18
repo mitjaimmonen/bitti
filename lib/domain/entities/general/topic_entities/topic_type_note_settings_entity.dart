@@ -8,4 +8,14 @@ class TopicTypeNoteSettingsEntity extends Entity {
     required this.displayInJournal,
     required this.displayInNotes,
   });
+
+  TopicTypeNoteSettingsEntity copyWith({
+    bool? displayInJournal,
+    bool? displayInNotes,
+  }) {
+    return TopicTypeNoteSettingsEntity(
+      displayInJournal: displayInJournal ?? this.displayInJournal,
+      displayInNotes: displayInNotes ?? this.displayInNotes,
+    );
+  }
 }
