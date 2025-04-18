@@ -6,6 +6,7 @@ class SketchPainterRectangleStroke extends CustomPainter {
   final Key key;
   final Color color;
   final double elevation;
+  final double radius;
   late Random random;
 
   (Paint, Path, Size)? cache;
@@ -13,8 +14,10 @@ class SketchPainterRectangleStroke extends CustomPainter {
   SketchPainterRectangleStroke({
     required this.key,
     required this.color,
+    double? radius,
     double? elevation,
-  }) : elevation = elevation ?? 0;
+  })  : elevation = elevation ?? 0,
+        radius = radius ?? 0;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -38,32 +41,62 @@ class SketchPainterRectangleStroke extends CustomPainter {
 
     final path = Path();
 
+    final adjustedRadius = radius.clamp(0.0, min(size.width, size.height) / 2);
+
     if (elevation > 0) {
       for (int i = 0; i < 2; i++) {
-        // Draw box
-        path.moveTo(0, 0);
+        // Draw box with rounded corners
+        path.moveTo(adjustedRadius, 0);
         sketchLine(
-          Offset(0, 0),
+          Offset(adjustedRadius, 0),
+          Offset(size.width - elevation - adjustedRadius, 0),
+          path,
+        );
+        sketchCurve(
+          Offset(size.width - elevation - adjustedRadius, 0),
           Offset(size.width - elevation, 0),
+          Offset(size.width - elevation, adjustedRadius),
           path,
         );
         sketchLine(
-          Offset(size.width - elevation, 0),
+          Offset(size.width - elevation, adjustedRadius),
+          Offset(
+              size.width - elevation, size.height - elevation - adjustedRadius),
+          path,
+        );
+        sketchCurve(
+          Offset(
+              size.width - elevation, size.height - elevation - adjustedRadius),
           Offset(size.width - elevation, size.height - elevation),
+          Offset(
+              size.width - elevation - adjustedRadius, size.height - elevation),
           path,
         );
         sketchLine(
-          Offset(size.width - elevation, size.height - elevation),
+          Offset(
+              size.width - elevation - adjustedRadius, size.height - elevation),
+          Offset(adjustedRadius, size.height - elevation),
+          path,
+        );
+        sketchCurve(
+          Offset(adjustedRadius, size.height - elevation),
           Offset(0, size.height - elevation),
+          Offset(0, size.height - elevation - adjustedRadius),
           path,
         );
         sketchLine(
-          Offset(0, size.height - elevation),
+          Offset(0, size.height - elevation - adjustedRadius),
+          Offset(0, adjustedRadius),
+          path,
+        );
+        sketchCurve(
+          Offset(0, adjustedRadius),
           Offset(0, 0),
+          Offset(adjustedRadius, 0),
           path,
         );
 
-        // Draw emboss
+        // Draw emboss for positive elevation (3D box effect on bottom and right)
         path.moveTo(size.width - elevation, 0);
         sketchLine(
           Offset(size.width - elevation, 0),
@@ -75,12 +108,15 @@ class SketchPainterRectangleStroke extends CustomPainter {
           Offset(size.width, size.height),
           path,
         );
-        path.moveTo(size.width - elevation, size.height - elevation);
-        sketchLine(
-          Offset(size.width - elevation, size.height - elevation),
-          Offset(size.width, size.height),
-          path,
-        );
+        // Draw bottom right corner emboss only if radius is zero
+        if (radius == 0) {
+          path.moveTo(size.width - elevation, size.height - elevation);
+          sketchLine(
+            Offset(size.width - elevation, size.height - elevation),
+            Offset(size.width, size.height),
+            path,
+          );
+        }
         sketchLine(
           Offset(size.width, size.height),
           Offset(elevation, size.height),
@@ -94,30 +130,54 @@ class SketchPainterRectangleStroke extends CustomPainter {
       }
     } else if (elevation < 0) {
       for (int i = 0; i < 2; i++) {
-        // Draw box
-        path.moveTo(-elevation, -elevation);
+        // Draw box with rounded corners
+        path.moveTo(adjustedRadius - elevation, -elevation);
         sketchLine(
-          Offset(-elevation, -elevation),
+          Offset(adjustedRadius - elevation, -elevation),
+          Offset(size.width - adjustedRadius, -elevation),
+          path,
+        );
+        sketchCurve(
+          Offset(size.width - adjustedRadius, -elevation),
           Offset(size.width, -elevation),
+          Offset(size.width, adjustedRadius - elevation),
           path,
         );
         sketchLine(
-          Offset(size.width, -elevation),
+          Offset(size.width, adjustedRadius - elevation),
+          Offset(size.width, size.height - adjustedRadius),
+          path,
+        );
+        sketchCurve(
+          Offset(size.width, size.height - adjustedRadius),
           Offset(size.width, size.height),
+          Offset(size.width - adjustedRadius, size.height),
           path,
         );
         sketchLine(
-          Offset(size.width, size.height),
+          Offset(size.width - adjustedRadius, size.height),
+          Offset(adjustedRadius - elevation, size.height),
+          path,
+        );
+        sketchCurve(
+          Offset(adjustedRadius - elevation, size.height),
           Offset(-elevation, size.height),
+          Offset(-elevation, size.height - adjustedRadius),
           path,
         );
         sketchLine(
-          Offset(-elevation, size.height),
+          Offset(-elevation, size.height - adjustedRadius),
+          Offset(-elevation, adjustedRadius - elevation),
+          path,
+        );
+        sketchCurve(
+          Offset(-elevation, adjustedRadius - elevation),
           Offset(-elevation, -elevation),
+          Offset(adjustedRadius - elevation, -elevation),
           path,
         );
 
-        // Draw emboss
+        // Draw emboss for negative elevation (hole effect)
         path.moveTo(-elevation, size.height);
         sketchLine(
           Offset(-elevation, size.height),
@@ -130,11 +190,14 @@ class SketchPainterRectangleStroke extends CustomPainter {
           path,
         );
         path.moveTo(-elevation, -elevation);
-        sketchLine(
-          Offset(-elevation, -elevation),
-          Offset(0, 0),
-          path,
-        );
+        // Draw top-left corner emboss only if radius is zero
+        if (radius == 0) {
+          sketchLine(
+            Offset(-elevation, -elevation),
+            Offset(0, 0),
+            path,
+          );
+        }
         sketchLine(
           Offset(0, 0),
           Offset(size.width, 0),
@@ -148,26 +211,50 @@ class SketchPainterRectangleStroke extends CustomPainter {
       }
     } else {
       for (int i = 0; i < 2; i++) {
-        // Draw box
-        path.moveTo(0, 0);
+        // Draw box with rounded corners
+        path.moveTo(adjustedRadius, 0);
         sketchLine(
-          Offset(0, 0),
+          Offset(adjustedRadius, 0),
+          Offset(size.width - adjustedRadius, 0),
+          path,
+        );
+        sketchCurve(
+          Offset(size.width - adjustedRadius, 0),
           Offset(size.width, 0),
+          Offset(size.width, adjustedRadius),
           path,
         );
         sketchLine(
-          Offset(size.width, 0),
+          Offset(size.width, adjustedRadius),
+          Offset(size.width, size.height - adjustedRadius),
+          path,
+        );
+        sketchCurve(
+          Offset(size.width, size.height - adjustedRadius),
           Offset(size.width, size.height),
+          Offset(size.width - adjustedRadius, size.height),
           path,
         );
         sketchLine(
-          Offset(size.width, size.height),
+          Offset(size.width - adjustedRadius, size.height),
+          Offset(adjustedRadius, size.height),
+          path,
+        );
+        sketchCurve(
+          Offset(adjustedRadius, size.height),
           Offset(0, size.height),
+          Offset(0, size.height - adjustedRadius),
           path,
         );
         sketchLine(
-          Offset(0, size.height),
+          Offset(0, size.height - adjustedRadius),
+          Offset(0, adjustedRadius),
+          path,
+        );
+        sketchCurve(
+          Offset(0, adjustedRadius),
           Offset(0, 0),
+          Offset(adjustedRadius, 0),
           path,
         );
       }
@@ -200,5 +287,15 @@ class SketchPainterRectangleStroke extends CustomPainter {
     for (var i = 0; i < points.length; i++) {
       path.lineTo(points[i].dx, points[i].dy);
     }
+  }
+
+  void sketchCurve(Offset start, Offset control, Offset end, Path path) {
+    path.moveTo(start.dx, start.dy);
+    path.quadraticBezierTo(
+      control.dx,
+      control.dy,
+      end.dx,
+      end.dy,
+    );
   }
 }

@@ -7,6 +7,7 @@ class SketchContainer extends StatelessWidget {
   final Color? strokeColor;
   final Color? fillColor;
   final bool? lineFilledBackground;
+  final double? radius;
   final double? elevation;
   final Color? elevationColor;
   final double? width;
@@ -19,6 +20,7 @@ class SketchContainer extends StatelessWidget {
     this.padding,
     this.strokeColor,
     this.fillColor,
+    this.radius,
     this.elevation,
     this.elevationColor,
     this.lineFilledBackground,
@@ -43,6 +45,7 @@ class SketchContainer extends StatelessWidget {
         ),
         child: CustomPaint(
           painter: SketchPainterRectangleStroke(
+            radius: radius,
             key: UniqueKey(),
             elevation: elevation,
             color: strokeColor ?? Theme.of(context).colorScheme.outline,

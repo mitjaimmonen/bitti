@@ -156,6 +156,7 @@ class TopicEditorLoadedView extends StatelessWidget {
                 return SketchContainer(
                   fillColor: state.topicEntry.color,
                   elevation: 6,
+                  radius: 16,
                   child: IconButton(
                     onPressed: () async {
                       final ColorDialogReturnViewModel? result =
