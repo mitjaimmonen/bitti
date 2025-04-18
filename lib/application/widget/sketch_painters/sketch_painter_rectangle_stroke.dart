@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
@@ -240,11 +241,23 @@ class SketchPainterRectangleStroke extends CustomPainter {
     double adjustedRadius,
   ) {
     // Draw emboss for negative elevation (hole effect)
+    final controlOffset = -elevation > adjustedRadius
+        ? Offset.zero
+        : calculateControlOffset(
+            Offset(adjustedRadius, size.height),
+            Offset(0, size.height),
+            Offset(0, size.height - adjustedRadius),
+            t: lerpDouble(
+              0,
+              1,
+              (adjustedRadius + elevation) / adjustedRadius,
+            )!,
+          );
 
-    path.moveTo(-elevation, size.height);
+    path.moveTo(-elevation, size.height + controlOffset.dy);
 
     sketchLine(
-      Offset(-elevation, size.height),
+      Offset(-elevation, size.height + controlOffset.dy),
       Offset(-elevation, -elevation + adjustedRadius),
       path,
     );
@@ -309,16 +322,59 @@ class SketchPainterRectangleStroke extends CustomPainter {
     Offset end, {
     double t = 0.5,
   }) {
-    // Calculate the point of the Bézier curve at t
+    // Calculate the point on the Bézier curve at t
+    final pointAtT = Offset(
+      (1 - t) * (1 - t) * start.dx +
+          2 * (1 - t) * t * control.dx +
+          t * t * end.dx,
+      (1 - t) * (1 - t) * start.dy +
+          2 * (1 - t) * t * control.dy +
+          t * t * end.dy,
+    );
+
     // Calculate the offset from the control point to the point at t
-    final dx = (1 - t) * (1 - t) * start.dx +
-        2 * (1 - t) * t * control.dx +
-        t * t * end.dx;
-    final dy = (1 - t) * (1 - t) * start.dy +
-        2 * (1 - t) * t * control.dy +
-        t * t * end.dy;
-    final offsetX = dx - control.dx;
-    final offsetY = dy - control.dy;
-    return Offset(offsetX, offsetY);
+    return pointAtT - control;
+  }
+
+  Path drawBezierSegment(Path path, Offset start, Offset control, Offset end,
+      double startT, double endT) {
+    // Helper function to calculate a point on the Bézier curve at a given t
+    Offset calculatePoint(double t) {
+      final p0Prime = Offset(
+        (1 - t) * start.dx + t * control.dx,
+        (1 - t) * start.dy + t * control.dy,
+      );
+
+      final p1Prime = Offset(
+        (1 - t) * control.dx + t * end.dx,
+        (1 - t) * control.dy + t * end.dy,
+      );
+
+      return Offset(
+        (1 - t) * p0Prime.dx + t * p1Prime.dx,
+        (1 - t) * p0Prime.dy + t * p1Prime.dy,
+      );
+    }
+
+    // Calculate the points at startT and endT
+    final pointStart = calculatePoint(startT);
+    final pointEnd = calculatePoint(endT);
+
+    // Calculate the control point for the segment
+    final controlSegment = Offset(
+      (1 - startT) * control.dx + startT * end.dx,
+      (1 - startT) * control.dy + startT * end.dy,
+    );
+
+    // Create a path for the segment
+    path.moveTo(pointStart.dx, pointStart.dy);
+    path.quadraticBezierTo(
+      controlSegment.dx,
+      controlSegment.dy,
+      pointEnd.dx,
+      pointEnd.dy,
+    );
+
+    return path;
   }
 }

@@ -32,8 +32,8 @@ class SketchTextField extends StatelessWidget {
     return Padding(
       padding: padding ?? EdgeInsets.zero,
       child: SketchContainer(
-        elevation: -4,
-        radius: 8,
+        elevation: -10,
+        radius: 60,
         lineFilledBackground: true,
         fillColor: Theme.of(context).colorScheme.surfaceContainer,
         padding: const EdgeInsets.symmetric(horizontal: 8),
