@@ -45,217 +45,42 @@ class SketchPainterRectangleStroke extends CustomPainter {
 
     if (elevation > 0) {
       for (int i = 0; i < 2; i++) {
-        // Draw box with rounded corners
-        path.moveTo(adjustedRadius, 0);
-        sketchLine(
-          Offset(adjustedRadius, 0),
-          Offset(size.width - elevation - adjustedRadius, 0),
+        elevatedRectangle(
           path,
-        );
-        sketchCurve(
-          Offset(size.width - elevation - adjustedRadius, 0),
-          Offset(size.width - elevation, 0),
-          Offset(size.width - elevation, adjustedRadius),
-          path,
-        );
-        sketchLine(
-          Offset(size.width - elevation, adjustedRadius),
-          Offset(
-              size.width - elevation, size.height - elevation - adjustedRadius),
-          path,
-        );
-        sketchCurve(
-          Offset(
-              size.width - elevation, size.height - elevation - adjustedRadius),
-          Offset(size.width - elevation, size.height - elevation),
-          Offset(
-              size.width - elevation - adjustedRadius, size.height - elevation),
-          path,
-        );
-        sketchLine(
-          Offset(
-              size.width - elevation - adjustedRadius, size.height - elevation),
-          Offset(adjustedRadius, size.height - elevation),
-          path,
-        );
-        sketchCurve(
-          Offset(adjustedRadius, size.height - elevation),
-          Offset(0, size.height - elevation),
-          Offset(0, size.height - elevation - adjustedRadius),
-          path,
-        );
-        sketchLine(
-          Offset(0, size.height - elevation - adjustedRadius),
-          Offset(0, adjustedRadius),
-          path,
-        );
-        sketchCurve(
-          Offset(0, adjustedRadius),
-          Offset(0, 0),
-          Offset(adjustedRadius, 0),
-          path,
+          size,
+          elevation,
+          adjustedRadius,
         );
 
-        // Draw emboss for positive elevation (3D box effect on bottom and right)
-        path.moveTo(size.width - elevation, 0);
-        sketchLine(
-          Offset(size.width - elevation, 0),
-          Offset(size.width, elevation),
+        elevatedEmboss(
           path,
-        );
-        sketchLine(
-          Offset(size.width, elevation),
-          Offset(size.width, size.height),
-          path,
-        );
-        // Draw bottom right corner emboss only if radius is zero
-        if (radius == 0) {
-          path.moveTo(size.width - elevation, size.height - elevation);
-          sketchLine(
-            Offset(size.width - elevation, size.height - elevation),
-            Offset(size.width, size.height),
-            path,
-          );
-        }
-        sketchLine(
-          Offset(size.width, size.height),
-          Offset(elevation, size.height),
-          path,
-        );
-        sketchLine(
-          Offset(elevation, size.height),
-          Offset(0, size.height - elevation),
-          path,
+          size,
+          elevation,
+          adjustedRadius,
         );
       }
     } else if (elevation < 0) {
       for (int i = 0; i < 2; i++) {
-        // Draw box with rounded corners
-        path.moveTo(adjustedRadius - elevation, -elevation);
-        sketchLine(
-          Offset(adjustedRadius - elevation, -elevation),
-          Offset(size.width - adjustedRadius, -elevation),
+        negativeRectangle(
           path,
-        );
-        sketchCurve(
-          Offset(size.width - adjustedRadius, -elevation),
-          Offset(size.width, -elevation),
-          Offset(size.width, adjustedRadius - elevation),
-          path,
-        );
-        sketchLine(
-          Offset(size.width, adjustedRadius - elevation),
-          Offset(size.width, size.height - adjustedRadius),
-          path,
-        );
-        sketchCurve(
-          Offset(size.width, size.height - adjustedRadius),
-          Offset(size.width, size.height),
-          Offset(size.width - adjustedRadius, size.height),
-          path,
-        );
-        sketchLine(
-          Offset(size.width - adjustedRadius, size.height),
-          Offset(adjustedRadius - elevation, size.height),
-          path,
-        );
-        sketchCurve(
-          Offset(adjustedRadius - elevation, size.height),
-          Offset(-elevation, size.height),
-          Offset(-elevation, size.height - adjustedRadius),
-          path,
-        );
-        sketchLine(
-          Offset(-elevation, size.height - adjustedRadius),
-          Offset(-elevation, adjustedRadius - elevation),
-          path,
-        );
-        sketchCurve(
-          Offset(-elevation, adjustedRadius - elevation),
-          Offset(-elevation, -elevation),
-          Offset(adjustedRadius - elevation, -elevation),
-          path,
+          size,
+          elevation,
+          adjustedRadius,
         );
 
-        // Draw emboss for negative elevation (hole effect)
-        path.moveTo(-elevation, size.height);
-        sketchLine(
-          Offset(-elevation, size.height),
-          Offset(0, size.height),
+        negativeEmboss(
           path,
-        );
-        sketchLine(
-          Offset(0, size.height),
-          Offset(0, 0),
-          path,
-        );
-        path.moveTo(-elevation, -elevation);
-        // Draw top-left corner emboss only if radius is zero
-        if (radius == 0) {
-          sketchLine(
-            Offset(-elevation, -elevation),
-            Offset(0, 0),
-            path,
-          );
-        }
-        sketchLine(
-          Offset(0, 0),
-          Offset(size.width, 0),
-          path,
-        );
-        sketchLine(
-          Offset(size.width, 0),
-          Offset(size.width, -elevation),
-          path,
+          size,
+          elevation,
+          adjustedRadius,
         );
       }
     } else {
       for (int i = 0; i < 2; i++) {
-        // Draw box with rounded corners
-        path.moveTo(adjustedRadius, 0);
-        sketchLine(
-          Offset(adjustedRadius, 0),
-          Offset(size.width - adjustedRadius, 0),
+        defaultRectangle(
           path,
-        );
-        sketchCurve(
-          Offset(size.width - adjustedRadius, 0),
-          Offset(size.width, 0),
-          Offset(size.width, adjustedRadius),
-          path,
-        );
-        sketchLine(
-          Offset(size.width, adjustedRadius),
-          Offset(size.width, size.height - adjustedRadius),
-          path,
-        );
-        sketchCurve(
-          Offset(size.width, size.height - adjustedRadius),
-          Offset(size.width, size.height),
-          Offset(size.width - adjustedRadius, size.height),
-          path,
-        );
-        sketchLine(
-          Offset(size.width - adjustedRadius, size.height),
-          Offset(adjustedRadius, size.height),
-          path,
-        );
-        sketchCurve(
-          Offset(adjustedRadius, size.height),
-          Offset(0, size.height),
-          Offset(0, size.height - adjustedRadius),
-          path,
-        );
-        sketchLine(
-          Offset(0, size.height - adjustedRadius),
-          Offset(0, adjustedRadius),
-          path,
-        );
-        sketchCurve(
-          Offset(0, adjustedRadius),
-          Offset(0, 0),
-          Offset(adjustedRadius, 0),
-          path,
+          size,
+          adjustedRadius,
         );
       }
     }
@@ -266,6 +91,241 @@ class SketchPainterRectangleStroke extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+
+  void elevatedRectangle(
+    Path path,
+    Size size,
+    double elevation,
+    double adjustedRadius,
+  ) {
+    // Draw box with rounded corners
+    path.moveTo(adjustedRadius, 0);
+    sketchLine(
+      Offset(adjustedRadius, 0),
+      Offset(size.width - elevation - adjustedRadius, 0),
+      path,
+    );
+    sketchCurve(
+      Offset(size.width - elevation - adjustedRadius, 0),
+      Offset(size.width - elevation, 0),
+      Offset(size.width - elevation, adjustedRadius),
+      path,
+    );
+    sketchLine(
+      Offset(size.width - elevation, adjustedRadius),
+      Offset(size.width - elevation, size.height - elevation - adjustedRadius),
+      path,
+    );
+    sketchCurve(
+      Offset(size.width - elevation, size.height - elevation - adjustedRadius),
+      Offset(size.width - elevation, size.height - elevation),
+      Offset(size.width - elevation - adjustedRadius, size.height - elevation),
+      path,
+    );
+    sketchLine(
+      Offset(size.width - elevation - adjustedRadius, size.height - elevation),
+      Offset(adjustedRadius, size.height - elevation),
+      path,
+    );
+    sketchCurve(
+      Offset(adjustedRadius, size.height - elevation),
+      Offset(0, size.height - elevation),
+      Offset(0, size.height - elevation - adjustedRadius),
+      path,
+    );
+    sketchLine(
+      Offset(0, size.height - elevation - adjustedRadius),
+      Offset(0, adjustedRadius),
+      path,
+    );
+    sketchCurve(
+      Offset(0, adjustedRadius),
+      Offset(0, 0),
+      Offset(adjustedRadius, 0),
+      path,
+    );
+  }
+
+  void elevatedEmboss(
+    Path path,
+    Size size,
+    double elevation,
+    double adjustedRadius,
+  ) {
+    // Draw emboss for positive elevation (3D box effect on bottom and right)
+    path.moveTo(size.width - elevation, 0);
+    sketchLine(
+      Offset(size.width - elevation, 0),
+      Offset(size.width, elevation),
+      path,
+    );
+    sketchLine(
+      Offset(size.width, elevation),
+      Offset(size.width, size.height),
+      path,
+    );
+    // Draw bottom right corner emboss only if radius is zero
+    if (radius == 0) {
+      path.moveTo(size.width - elevation, size.height - elevation);
+      sketchLine(
+        Offset(size.width - elevation, size.height - elevation),
+        Offset(size.width, size.height),
+        path,
+      );
+    }
+    sketchLine(
+      Offset(size.width, size.height),
+      Offset(elevation, size.height),
+      path,
+    );
+    sketchLine(
+      Offset(elevation, size.height),
+      Offset(0, size.height - elevation),
+      path,
+    );
+  }
+
+  void defaultRectangle(Path path, Size size, double adjustedRadius) {
+    // Draw box with rounded corners
+    path.moveTo(adjustedRadius, 0);
+    sketchLine(
+      Offset(adjustedRadius, 0),
+      Offset(size.width - adjustedRadius, 0),
+      path,
+    );
+    sketchCurve(
+      Offset(size.width - adjustedRadius, 0),
+      Offset(size.width, 0),
+      Offset(size.width, adjustedRadius),
+      path,
+    );
+    sketchLine(
+      Offset(size.width, adjustedRadius),
+      Offset(size.width, size.height - adjustedRadius),
+      path,
+    );
+    sketchCurve(
+      Offset(size.width, size.height - adjustedRadius),
+      Offset(size.width, size.height),
+      Offset(size.width - adjustedRadius, size.height),
+      path,
+    );
+    sketchLine(
+      Offset(size.width - adjustedRadius, size.height),
+      Offset(adjustedRadius, size.height),
+      path,
+    );
+    sketchCurve(
+      Offset(adjustedRadius, size.height),
+      Offset(0, size.height),
+      Offset(0, size.height - adjustedRadius),
+      path,
+    );
+    sketchLine(
+      Offset(0, size.height - adjustedRadius),
+      Offset(0, adjustedRadius),
+      path,
+    );
+    sketchCurve(
+      Offset(0, adjustedRadius),
+      Offset(0, 0),
+      Offset(adjustedRadius, 0),
+      path,
+    );
+  }
+
+  void negativeRectangle(
+    Path path,
+    Size size,
+    double elevation,
+    double adjustedRadius,
+  ) {
+// Draw box with rounded corners
+    path.moveTo(adjustedRadius - elevation, -elevation);
+    sketchLine(
+      Offset(adjustedRadius - elevation, -elevation),
+      Offset(size.width - adjustedRadius, -elevation),
+      path,
+    );
+    sketchCurve(
+      Offset(size.width - adjustedRadius, -elevation),
+      Offset(size.width, -elevation),
+      Offset(size.width, adjustedRadius - elevation),
+      path,
+    );
+    sketchLine(
+      Offset(size.width, adjustedRadius - elevation),
+      Offset(size.width, size.height - adjustedRadius),
+      path,
+    );
+    sketchCurve(
+      Offset(size.width, size.height - adjustedRadius),
+      Offset(size.width, size.height),
+      Offset(size.width - adjustedRadius, size.height),
+      path,
+    );
+    sketchLine(
+      Offset(size.width - adjustedRadius, size.height),
+      Offset(adjustedRadius - elevation, size.height),
+      path,
+    );
+    sketchCurve(
+      Offset(adjustedRadius - elevation, size.height),
+      Offset(-elevation, size.height),
+      Offset(-elevation, size.height - adjustedRadius),
+      path,
+    );
+    sketchLine(
+      Offset(-elevation, size.height - adjustedRadius),
+      Offset(-elevation, adjustedRadius - elevation),
+      path,
+    );
+    sketchCurve(
+      Offset(-elevation, adjustedRadius - elevation),
+      Offset(-elevation, -elevation),
+      Offset(adjustedRadius - elevation, -elevation),
+      path,
+    );
+  }
+
+  void negativeEmboss(
+    Path path,
+    Size size,
+    double elevation,
+    double adjustedRadius,
+  ) {
+    // Draw emboss for negative elevation (hole effect)
+    path.moveTo(-elevation, size.height);
+    sketchLine(
+      Offset(-elevation, size.height),
+      Offset(0, size.height),
+      path,
+    );
+    sketchLine(
+      Offset(0, size.height),
+      Offset(0, 0),
+      path,
+    );
+    path.moveTo(-elevation, -elevation);
+    // Draw top-left corner emboss only if radius is zero
+    if (radius == 0) {
+      sketchLine(
+        Offset(-elevation, -elevation),
+        Offset(0, 0),
+        path,
+      );
+    }
+    sketchLine(
+      Offset(0, 0),
+      Offset(size.width, 0),
+      path,
+    );
+    sketchLine(
+      Offset(size.width, 0),
+      Offset(size.width, -elevation),
+      path,
+    );
+  }
 
   void sketchLine(Offset start, Offset end, Path path) {
     final pointCount = ((start - end).distance / 100).ceil();
