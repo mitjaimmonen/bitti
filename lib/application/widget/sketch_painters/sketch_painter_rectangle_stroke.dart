@@ -45,7 +45,7 @@ class SketchPainterRectangleStroke extends CustomPainter {
     final adjustedRadius = radius.clamp(0.0, min(size.width, size.height) / 2);
 
     if (elevation > 0) {
-      for (int i = 0; i < 2; i++) {
+      for (int i = 0; i < 1; i++) {
         elevatedRectangle(
           path,
           size,
@@ -71,7 +71,7 @@ class SketchPainterRectangleStroke extends CustomPainter {
         negativeEmboss(
           path,
           size,
-          elevation,
+          -elevation,
           adjustedRadius,
         );
       }
@@ -146,45 +146,6 @@ class SketchPainterRectangleStroke extends CustomPainter {
     );
   }
 
-  void elevatedEmboss(
-    Path path,
-    Size size,
-    double elevation,
-    double adjustedRadius,
-  ) {
-    // Draw emboss for positive elevation (3D box effect on bottom and right)
-    path.moveTo(size.width - elevation, 0);
-    sketchLine(
-      Offset(size.width - elevation, 0),
-      Offset(size.width, elevation),
-      path,
-    );
-    sketchLine(
-      Offset(size.width, elevation),
-      Offset(size.width, size.height),
-      path,
-    );
-    // Draw bottom right corner emboss only if radius is zero
-    if (radius == 0) {
-      path.moveTo(size.width - elevation, size.height - elevation);
-      sketchLine(
-        Offset(size.width - elevation, size.height - elevation),
-        Offset(size.width, size.height),
-        path,
-      );
-    }
-    sketchLine(
-      Offset(size.width, size.height),
-      Offset(elevation, size.height),
-      path,
-    );
-    sketchLine(
-      Offset(elevation, size.height),
-      Offset(0, size.height - elevation),
-      path,
-    );
-  }
-
   void defaultRectangle(Path path, Size size, double adjustedRadius) {
     // Draw box with rounded corners
     path.moveTo(adjustedRadius, 0);
@@ -234,14 +195,102 @@ class SketchPainterRectangleStroke extends CustomPainter {
     );
   }
 
-  void negativeEmboss(
+  void elevatedEmboss(
     Path path,
     Size size,
     double elevation,
     double adjustedRadius,
   ) {
+    // Draw emboss for positive elevation (3D box effect on bottom and right)
+    final topRightOffset = elevation > adjustedRadius
+        ? Offset.zero
+        : calculateControlOffset(
+            Offset(size.width - elevation - adjustedRadius, 0),
+            Offset(size.width - elevation, 0),
+            Offset(size.width - elevation, adjustedRadius),
+            t: lerpDouble(
+              0,
+              1,
+              0.5,
+            )!,
+          );
+
+    path.moveTo(size.width - elevation + topRightOffset.dx, topRightOffset.dy);
+    sketchLine(
+      Offset(size.width - elevation + topRightOffset.dx, topRightOffset.dy),
+      Offset(size.width + topRightOffset.dx, elevation + topRightOffset.dy),
+      path,
+    );
+    drawBezierSegment(
+      path,
+      Offset(size.width - elevation - adjustedRadius, elevation),
+      Offset(size.width, elevation),
+      Offset(size.width, elevation + adjustedRadius),
+      0.5,
+      1,
+    );
+    sketchLine(
+      Offset(size.width, elevation + adjustedRadius),
+      Offset(size.width, size.height - adjustedRadius),
+      path,
+    );
+    sketchCurve(
+      Offset(size.width, size.height - adjustedRadius),
+      Offset(size.width, size.height),
+      Offset(size.width - adjustedRadius, size.height),
+      path,
+    );
+    // Draw bottom right corner emboss only if radius is zero
+    if (radius == 0) {
+      path.moveTo(size.width - elevation, size.height - elevation);
+      sketchLine(
+        Offset(size.width - elevation, size.height - elevation),
+        Offset(size.width, size.height),
+        path,
+      );
+    }
+    sketchLine(
+      Offset(size.width - adjustedRadius, size.height),
+      Offset(elevation + adjustedRadius, size.height),
+      path,
+    );
+    final end = drawBezierSegment(
+      path,
+      Offset(elevation + adjustedRadius, size.height),
+      Offset(elevation, size.height),
+      Offset(elevation, size.height - adjustedRadius),
+      0.0,
+      0.5,
+    );
+
+    final bottomLeftOffset = elevation > adjustedRadius
+        ? Offset.zero
+        : calculateControlOffset(
+            Offset(elevation, size.height - adjustedRadius),
+            Offset(elevation, size.height),
+            Offset(0, size.height),
+            t: lerpDouble(
+              0,
+              1,
+              0.5,
+            )!,
+          );
+    sketchLine(
+      Offset(end.dx, end.dy),
+      Offset(bottomLeftOffset.dx + elevation,
+          size.height - elevation + bottomLeftOffset.dy),
+      path,
+    );
+  }
+
+  void negativeEmboss(
+    Path path,
+    Size size,
+    double depth,
+    double adjustedRadius,
+  ) {
     // Draw emboss for negative elevation (hole effect)
-    final controlOffset = -elevation > adjustedRadius
+    final bottomLeftOffset = depth > adjustedRadius
         ? Offset.zero
         : calculateControlOffset(
             Offset(adjustedRadius, size.height),
@@ -250,34 +299,49 @@ class SketchPainterRectangleStroke extends CustomPainter {
             t: lerpDouble(
               0,
               1,
-              (adjustedRadius + elevation) / adjustedRadius,
+              (depth) / adjustedRadius,
+              // 0.5,
             )!,
           );
 
-    path.moveTo(-elevation, size.height + controlOffset.dy);
+    path.moveTo(depth, size.height + bottomLeftOffset.dy);
 
     sketchLine(
-      Offset(-elevation, size.height + controlOffset.dy),
-      Offset(-elevation, -elevation + adjustedRadius),
+      Offset(depth, size.height + bottomLeftOffset.dy),
+      Offset(depth, depth + adjustedRadius),
       path,
     );
     sketchCurve(
-      Offset(-elevation, -elevation + adjustedRadius),
-      Offset(-elevation, -elevation),
-      Offset(-elevation + adjustedRadius, -elevation),
+      Offset(depth, depth + adjustedRadius),
+      Offset(depth, depth),
+      Offset(depth + adjustedRadius, depth),
       path,
     );
+
+    final topRightOffset = depth > adjustedRadius
+        ? Offset.zero
+        : calculateControlOffset(
+            Offset(depth, depth + adjustedRadius),
+            Offset(depth, depth),
+            Offset(depth + adjustedRadius, depth),
+            t: lerpDouble(
+              0,
+              1,
+              (depth) / adjustedRadius,
+              // 0.5,
+            )!,
+          );
     sketchLine(
-      Offset(-elevation + adjustedRadius, -elevation),
-      Offset(size.width, -elevation),
+      Offset(depth + adjustedRadius, depth),
+      Offset(size.width - topRightOffset.dx, depth),
       path,
     );
 
     // Draw top-left corner emboss only if radius is zero
     if (radius == 0) {
-      path.moveTo(-elevation, -elevation);
+      path.moveTo(depth, depth);
       sketchLine(
-        Offset(-elevation, -elevation),
+        Offset(depth, depth),
         Offset(0, 0),
         path,
       );
@@ -290,7 +354,9 @@ class SketchPainterRectangleStroke extends CustomPainter {
 
     final List<Offset> points = [];
 
-    for (var i = 0; i < pointCount; i++) {
+    points.add(start);
+
+    for (var i = 1; i < pointCount; i++) {
       final t = i * step;
       final x = start.dx + (end.dx - start.dx) * t;
       final y = start.dy + (end.dy - start.dy) * t;
@@ -309,8 +375,8 @@ class SketchPainterRectangleStroke extends CustomPainter {
   void sketchCurve(Offset start, Offset control, Offset end, Path path) {
     path.moveTo(start.dx, start.dy);
     path.quadraticBezierTo(
-      control.dx,
-      control.dy,
+      (random.nextDouble() * 2 - 1) * 1.5 + control.dx,
+      (random.nextDouble() * 2 - 1) * 1.5 + control.dy,
       end.dx,
       end.dy,
     );
@@ -336,7 +402,7 @@ class SketchPainterRectangleStroke extends CustomPainter {
     return pointAtT - control;
   }
 
-  Path drawBezierSegment(Path path, Offset start, Offset control, Offset end,
+  Offset drawBezierSegment(Path path, Offset start, Offset control, Offset end,
       double startT, double endT) {
     // Helper function to calculate a point on the Bézier curve at a given t
     Offset calculatePoint(double t) {
@@ -375,6 +441,6 @@ class SketchPainterRectangleStroke extends CustomPainter {
       pointEnd.dy,
     );
 
-    return path;
+    return pointEnd;
   }
 }
