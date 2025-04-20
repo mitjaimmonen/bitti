@@ -223,11 +223,10 @@ class SketchPainterRectangleStroke extends CustomPainter {
     );
     drawBezierSegment(
       path,
-      Offset(size.width - elevation - adjustedRadius, elevation),
+      Offset(size.width - adjustedRadius, elevation),
       Offset(size.width, elevation),
       Offset(size.width, elevation + adjustedRadius),
       0.5,
-      1,
     );
     sketchLine(
       Offset(size.width, elevation + adjustedRadius),
@@ -254,12 +253,11 @@ class SketchPainterRectangleStroke extends CustomPainter {
       Offset(elevation + adjustedRadius, size.height),
       path,
     );
-    final end = drawBezierSegment(
+    final start = drawBezierSegment(
       path,
-      Offset(elevation + adjustedRadius, size.height),
-      Offset(elevation, size.height),
       Offset(elevation, size.height - adjustedRadius),
-      0.0,
+      Offset(elevation, size.height),
+      Offset(elevation + adjustedRadius, size.height),
       0.5,
     );
 
@@ -268,17 +266,18 @@ class SketchPainterRectangleStroke extends CustomPainter {
         : calculateControlOffset(
             Offset(elevation, size.height - adjustedRadius),
             Offset(elevation, size.height),
-            Offset(0, size.height),
+            Offset(elevation + adjustedRadius, size.height),
             t: lerpDouble(
               0,
               1,
               0.5,
             )!,
           );
+    path.moveTo(start.dx, start.dy);
     sketchLine(
-      Offset(end.dx, end.dy),
-      Offset(bottomLeftOffset.dx + elevation,
-          size.height - elevation + bottomLeftOffset.dy),
+      Offset(start.dx, start.dy),
+      Offset(
+          bottomLeftOffset.dx, size.height - elevation + bottomLeftOffset.dy),
       path,
     );
   }
@@ -290,24 +289,20 @@ class SketchPainterRectangleStroke extends CustomPainter {
     double adjustedRadius,
   ) {
     // Draw emboss for negative elevation (hole effect)
-    final bottomLeftOffset = depth > adjustedRadius
-        ? Offset.zero
-        : calculateControlOffset(
-            Offset(adjustedRadius, size.height),
-            Offset(0, size.height),
-            Offset(0, size.height - adjustedRadius),
-            t: lerpDouble(
-              0,
-              1,
-              (depth) / adjustedRadius,
-              // 0.5,
-            )!,
-          );
+    if (depth < adjustedRadius) {
+      drawBezierSegment(
+        path,
+        Offset(depth + adjustedRadius, size.height + depth),
+        Offset(depth, size.height + depth),
+        Offset(depth, size.height + depth - adjustedRadius),
+        lerpDouble(0, 1, depth / adjustedRadius)!,
+      );
+    }
 
-    path.moveTo(depth, size.height + bottomLeftOffset.dy);
+    path.moveTo(depth, size.height);
 
     sketchLine(
-      Offset(depth, size.height + bottomLeftOffset.dy),
+      Offset(depth, size.height + depth - adjustedRadius),
       Offset(depth, depth + adjustedRadius),
       path,
     );
@@ -318,23 +313,20 @@ class SketchPainterRectangleStroke extends CustomPainter {
       path,
     );
 
-    final topRightOffset = depth > adjustedRadius
-        ? Offset.zero
-        : calculateControlOffset(
-            Offset(depth, depth + adjustedRadius),
-            Offset(depth, depth),
-            Offset(depth + adjustedRadius, depth),
-            t: lerpDouble(
-              0,
-              1,
-              (depth) / adjustedRadius,
-              // 0.5,
-            )!,
-          );
     sketchLine(
       Offset(depth + adjustedRadius, depth),
-      Offset(size.width - topRightOffset.dx, depth),
+      Offset(size.width - adjustedRadius, depth),
       path,
+    );
+
+    path.moveTo(size.width, depth + adjustedRadius);
+
+    drawBezierSegment(
+      path,
+      Offset(size.width, depth + adjustedRadius),
+      Offset(size.width, depth),
+      Offset(size.width - adjustedRadius, depth),
+      lerpDouble(0, 1, depth / adjustedRadius)!,
     );
 
     // Draw top-left corner emboss only if radius is zero
@@ -402,8 +394,8 @@ class SketchPainterRectangleStroke extends CustomPainter {
     return pointAtT - control;
   }
 
-  Offset drawBezierSegment(Path path, Offset start, Offset control, Offset end,
-      double startT, double endT) {
+  Offset drawBezierSegment(
+      Path path, Offset start, Offset control, Offset end, double startT) {
     // Helper function to calculate a point on the Bézier curve at a given t
     Offset calculatePoint(double t) {
       final p0Prime = Offset(
@@ -424,7 +416,6 @@ class SketchPainterRectangleStroke extends CustomPainter {
 
     // Calculate the points at startT and endT
     final pointStart = calculatePoint(startT);
-    final pointEnd = calculatePoint(endT);
 
     // Calculate the control point for the segment
     final controlSegment = Offset(
@@ -437,10 +428,10 @@ class SketchPainterRectangleStroke extends CustomPainter {
     path.quadraticBezierTo(
       controlSegment.dx,
       controlSegment.dy,
-      pointEnd.dx,
-      pointEnd.dy,
+      end.dx,
+      end.dy,
     );
 
-    return pointEnd;
+    return pointStart;
   }
 }
