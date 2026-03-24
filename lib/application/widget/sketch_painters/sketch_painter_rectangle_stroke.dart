@@ -326,7 +326,7 @@ class SketchPainterRectangleStroke extends CustomPainter {
       Offset(size.width, depth + adjustedRadius),
       Offset(size.width, depth),
       Offset(size.width - adjustedRadius, depth),
-      lerpDouble(0, 1, depth / adjustedRadius)!,
+      lerpDouble(0, 1, clampDouble(depth / adjustedRadius,0,1))!,
     );
 
     // Draw top-left corner emboss only if radius is zero
