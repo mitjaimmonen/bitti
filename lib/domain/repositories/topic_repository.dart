@@ -11,15 +11,18 @@ import 'package:either_dart/either.dart';
 abstract class TopicRepository extends Repository {
   const TopicRepository();
 
-  Future<Either<Failure, TopicsResponseEntity>> readTopics(
-    TopicsReadParamEntity params,
-  );
   Future<Either<Failure, TopicResponseEntity>> createTopic(
     TopicCreateParamEntity params,
   );
+
+  Future<Either<Failure, TopicsResponseEntity>> readTopics(
+    TopicsReadParamEntity params,
+  );
+
   Future<Either<Failure, TopicResponseEntity>> updateTopic(
     TopicUpdateParamEntity params,
   );
+
   Future<Either<Failure, TopicResponseEntity>> deleteTopic(
     TopicDeleteParamEntity params,
   );

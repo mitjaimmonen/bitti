@@ -1,4 +1,7 @@
 import 'package:bitti/data/data_sources/interfaces/topic_data_source.dart';
+import 'package:bitti/data/exceptions/exceptions.dart';
+import 'package:bitti/data/models/param/topic_create_param_model.dart';
+import 'package:bitti/data/models/param/topics_read_param_model.dart';
 import 'package:bitti/domain/entities/param/topic_create_param_entity.dart';
 import 'package:bitti/domain/entities/param/topic_delete_param_entity.dart';
 import 'package:bitti/domain/entities/param/topic_update_param_entity.dart';
@@ -19,9 +22,17 @@ class TopicRepositoryImpl implements TopicRepository {
   @override
   Future<Either<Failure, TopicResponseEntity>> createTopic(
     TopicCreateParamEntity params,
-  ) {
-    // TODO: implement createTopic
-    throw UnimplementedError();
+  ) async {
+    try {
+      final response = await dataSource.create(
+        TopicCreateParamModel.fromEntity(params),
+      );
+      return Right(response.toEntity());
+    } on DataSourceException catch (e) {
+      return Left(DataSourceFailure(message: e.message));
+    } catch (e) {
+      return Left(GeneralFailure(message: e.toString()));
+    }
   }
 
   @override
@@ -35,9 +46,15 @@ class TopicRepositoryImpl implements TopicRepository {
   @override
   Future<Either<Failure, TopicsResponseEntity>> readTopics(
     TopicsReadParamEntity params,
-  ) {
-    // TODO: implement readTopics
-    throw UnimplementedError();
+  ) async {
+    try {
+      final response = await dataSource.readAll(TopicsReadParamModel());
+      return Right(response.toEntity());
+    } on DataSourceException catch (e) {
+      return Left(DataSourceFailure(message: e.message));
+    } catch (e) {
+      return Left(GeneralFailure(message: e.toString()));
+    }
   }
 
   @override

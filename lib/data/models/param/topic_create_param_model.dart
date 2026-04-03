@@ -15,4 +15,10 @@ class TopicCreateParamModel extends ParamModel<TopicCreateParamEntity> {
 
   @override
   Map<String, dynamic> toJson() => _$TopicCreateParamModelToJson(this);
+
+  factory TopicCreateParamModel.fromEntity(TopicCreateParamEntity entity) {
+    return TopicCreateParamModel(
+      topic: TopicEntryModel.fromEntity(entity.topic),
+    );
+  }
 }
