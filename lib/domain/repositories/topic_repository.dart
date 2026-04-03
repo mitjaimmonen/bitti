@@ -12,11 +12,15 @@ abstract class TopicRepository extends Repository {
   const TopicRepository();
 
   Future<Either<Failure, TopicsResponseEntity>> readTopics(
-      TopicsReadParamEntity params);
+    TopicsReadParamEntity params,
+  );
   Future<Either<Failure, TopicResponseEntity>> createTopic(
-      TopicCreateParamEntity params);
+    TopicCreateParamEntity params,
+  );
   Future<Either<Failure, TopicResponseEntity>> updateTopic(
-      TopicUpdateParamEntity params);
+    TopicUpdateParamEntity params,
+  );
   Future<Either<Failure, TopicResponseEntity>> deleteTopic(
-      TopicDeleteParamEntity params);
+    TopicDeleteParamEntity params,
+  );
 }

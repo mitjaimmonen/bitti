@@ -7,7 +7,7 @@ class SketchDropdown<T> extends StatelessWidget {
   final EdgeInsets? padding;
   final T value;
   final List<DropdownMenuItem<T>> items;
-  final Function(T?) onChanged;
+  final void Function(T?) onChanged;
 
   const SketchDropdown({
     this.title,

@@ -5,10 +5,14 @@ sealed class TopicsState {}
 
 final class TopicsInitial extends TopicsState {}
 
-final class TopicsEditingTopic extends TopicsState {
-  final TopicEntryEntity? topic;
+final class TopicsLoading extends TopicsState {}
 
-  TopicsEditingTopic({
-    required this.topic,
+final class TopicsErrored extends TopicsState {}
+
+final class TopicsLoaded extends TopicsState {
+  final List<TopicEntryEntity>? topics;
+
+  TopicsLoaded({
+    required this.topics,
   });
 }

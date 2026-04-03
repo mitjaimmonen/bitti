@@ -3,7 +3,6 @@ import 'package:bitti/application/screens/topic_editor_screen/topic_editor_scree
 import 'package:bitti/application/screens/topic_editor_screen/view_models/topic_editor_view_model.dart';
 import 'package:bitti/application/screens/topics_screen/bloc_topics/topics_bloc.dart';
 import 'package:bitti/application/widget/buttons/sketch_button_headline.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -46,13 +45,14 @@ class TopicsScreen extends StatelessWidget {
                         extra: const TopicEditorExtraViewModel(),
                       );
 
+                      if (!context.mounted) return;
+
                       if (data?.topicEntry != null) {
-                        if (kDebugMode) {
-                          print(data!.topicEntry!.name);
-                        }
+                        final bloc = context.read<TopicsBloc>();
+                        bloc.add(AddTopicEvent(topic: data!.topicEntry!));
                       }
                     },
-                  )
+                  ),
                 ],
               ),
             );

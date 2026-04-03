@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 class TypeSettingsDropdown extends StatelessWidget {
   final TopicType value;
   final EdgeInsets? padding;
-  final Function(TopicType?) onChanged;
-  final Function(TopicType?) onOpenSettings;
+  final void Function(TopicType?) onChanged;
+  final void Function(TopicType?) onOpenSettings;
 
   const TypeSettingsDropdown({
     required this.value,
@@ -25,7 +25,7 @@ class TypeSettingsDropdown extends StatelessWidget {
         children: [
           Expanded(
             child: SketchDropdown<TopicType>(
-              title: "Type",
+              title: 'Type',
               value: value,
               items: [
                 DropdownMenuItem(
@@ -47,7 +47,7 @@ class TypeSettingsDropdown extends StatelessWidget {
           SketchButtonIcon(
             onPressed: () => onOpenSettings(value),
             icon: Icons.settings,
-          )
+          ),
         ],
       ),
     );

@@ -25,33 +25,35 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(shellConfigs[shell.currentIndex].title),
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
-          selectedItemColor: Theme.of(context).colorScheme.primary,
-          unselectedItemColor: Theme.of(context).colorScheme.secondary,
-          currentIndex: shell.currentIndex,
-          onTap: _onItemTapped,
-          items: shellConfigs
-              .map(
-                (config) => BottomNavigationBarItem(
-                  icon: Icon(config.icon),
-                  label: config.title,
-                ),
-              )
-              .toList(),
-        ),
-        body: MultiBlocProvider(
-          providers: [
-            BlocProvider.value(
-                value: GetIt.I<JournalBloc>()..add(const JournalLoadEvent())),
-            BlocProvider.value(value: GetIt.I<NotesBloc>()),
-            BlocProvider.value(value: GetIt.I<SettingsBloc>()),
-            BlocProvider.value(value: GetIt.I<StatsBloc>()),
-          ],
-          child: shell,
-        ));
+      appBar: AppBar(
+        title: Text(shellConfigs[shell.currentIndex].title),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
+        selectedItemColor: Theme.of(context).colorScheme.primary,
+        unselectedItemColor: Theme.of(context).colorScheme.secondary,
+        currentIndex: shell.currentIndex,
+        onTap: _onItemTapped,
+        items: shellConfigs
+            .map(
+              (config) => BottomNavigationBarItem(
+                icon: Icon(config.icon),
+                label: config.title,
+              ),
+            )
+            .toList(),
+      ),
+      body: MultiBlocProvider(
+        providers: [
+          BlocProvider.value(
+            value: GetIt.I<JournalBloc>()..add(const JournalLoadEvent()),
+          ),
+          BlocProvider.value(value: GetIt.I<NotesBloc>()),
+          BlocProvider.value(value: GetIt.I<SettingsBloc>()),
+          BlocProvider.value(value: GetIt.I<StatsBloc>()),
+        ],
+        child: shell,
+      ),
+    );
   }
 }

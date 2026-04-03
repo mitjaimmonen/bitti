@@ -87,19 +87,21 @@ class TopicEditorLoadedView extends StatelessWidget {
                   child: TextButton(
                     onPressed: () async {
                       final DateDialogReturnViewModel? output =
-                          await GoRouter.of(context)
-                              .push(DateDialog.config.routePath,
-                                  extra: DateDialogExtraViewModel(
-                                    initialDate: state.topicEntry.startDate,
-                                  ));
+                          await GoRouter.of(context).push(
+                        DateDialog.config.routePath,
+                        extra: DateDialogExtraViewModel(
+                          initialDate: state.topicEntry.startDate,
+                        ),
+                      );
                       if (output?.date != null && context.mounted) {
                         context
                             .read<TopicEditorCubit>()
                             .updateTopicEntry(startDate: output!.date!);
                       }
                     },
-                    child: Text(DateFormat.yMd(locale)
-                        .format(state.topicEntry.startDate)),
+                    child: Text(
+                      DateFormat.yMd(locale).format(state.topicEntry.startDate),
+                    ),
                   ),
                 );
               },
@@ -202,9 +204,10 @@ class TopicEditorLoadedView extends StatelessWidget {
       final cubit = context.read<TopicEditorCubit>();
       final state = cubit.state as TopicEditorLoaded;
       cubit.updateTopicEntry(
-          topicTypeSettings: state.topicEntry.topicTypeSettings.copyWith(
-        toggleSettings: result.toggleSettings,
-      ));
+        topicTypeSettings: state.topicEntry.topicTypeSettings.copyWith(
+          toggleSettings: result.toggleSettings,
+        ),
+      );
     }
   }
 
@@ -221,9 +224,10 @@ class TopicEditorLoadedView extends StatelessWidget {
       final cubit = context.read<TopicEditorCubit>();
       final state = cubit.state as TopicEditorLoaded;
       cubit.updateTopicEntry(
-          topicTypeSettings: state.topicEntry.topicTypeSettings.copyWith(
-        numberSettings: result.numberSettings,
-      ));
+        topicTypeSettings: state.topicEntry.topicTypeSettings.copyWith(
+          numberSettings: result.numberSettings,
+        ),
+      );
     }
   }
 }

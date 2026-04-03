@@ -7,8 +7,8 @@ class SketchTextField extends StatelessWidget {
   final int? maxLines;
   final int? minLines;
   final EdgeInsets? padding;
-  final Function(String)? onSubmitted;
-  final Function(String)? onChanged;
+  final void Function(String)? onSubmitted;
+  final void Function(String)? onChanged;
   final TextInputType? keyboardType;
   final TextEditingController? controller;
   final String? Function(String?)? validator;

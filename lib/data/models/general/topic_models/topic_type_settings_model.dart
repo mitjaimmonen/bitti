@@ -17,9 +17,11 @@ class TopicTypeSettingsModel extends Model<TopicTypeSettingsEntity> {
     required this.noteSettings,
     required this.numberSettings,
     required this.toggleSettings,
-  }) : assert(noteSettings != null ||
-            numberSettings != null ||
-            toggleSettings != null);
+  }) : assert(
+          noteSettings != null ||
+              numberSettings != null ||
+              toggleSettings != null,
+        );
 
   Map<String, dynamic> toJson() => _$TopicTypeSettingsModelToJson(this);
 

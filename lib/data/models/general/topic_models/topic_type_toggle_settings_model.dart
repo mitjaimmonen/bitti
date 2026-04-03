@@ -26,7 +26,8 @@ class TopicTypeToggleSettingsModel
   }
 
   factory TopicTypeToggleSettingsModel.fromEntity(
-      TopicTypeToggleSettingsEntity entity) {
+    TopicTypeToggleSettingsEntity entity,
+  ) {
     return TopicTypeToggleSettingsModel(
       values: entity.values
           .map((e) => TopicSettingValueToggleModel.fromEntity(e))

@@ -25,7 +25,7 @@ class LocalTopicDataSource extends TopicDataSource {
       final List<TopicEntryModel> topicsData;
 
       if (topicsString != null) {
-        final jsonList = jsonDecode(topicsString) as List;
+        final jsonList = jsonDecode(topicsString) as List<Map<String, dynamic>>;
         topicsData = jsonList.map((e) => TopicEntryModel.fromJson(e)).toList();
       } else {
         topicsData = [];
@@ -33,7 +33,8 @@ class LocalTopicDataSource extends TopicDataSource {
 
       if (topicsData.any((topic) => topic.id == params.topic.id)) {
         throw BadRequestException(
-            'Topic already exists, please update it instead');
+          'Topic already exists, please update it instead',
+        );
       }
 
       topicsData.add(params.topic);
@@ -55,7 +56,7 @@ class LocalTopicDataSource extends TopicDataSource {
       final List<TopicEntryModel> topicsData;
 
       if (topicsString != null) {
-        final jsonList = jsonDecode(topicsString) as List;
+        final jsonList = jsonDecode(topicsString) as List<Map<String, dynamic>>;
         topicsData = jsonList.map((e) => TopicEntryModel.fromJson(e)).toList();
       } else {
         throw NotFoundException('No topics found');
@@ -88,7 +89,7 @@ class LocalTopicDataSource extends TopicDataSource {
       final List<TopicEntryModel> topicsData;
 
       if (topicsString != null) {
-        final jsonList = jsonDecode(topicsString) as List;
+        final jsonList = jsonDecode(topicsString) as List<Map<String, dynamic>>;
         topicsData = jsonList.map((e) => TopicEntryModel.fromJson(e)).toList();
       } else {
         throw NotFoundException('No topics found');
@@ -108,7 +109,7 @@ class LocalTopicDataSource extends TopicDataSource {
       final List<TopicEntryModel> topicsData;
 
       if (topicsString != null) {
-        final jsonList = jsonDecode(topicsString) as List;
+        final jsonList = jsonDecode(topicsString) as List<Map<String, dynamic>>;
         topicsData = jsonList.map((e) => TopicEntryModel.fromJson(e)).toList();
       } else {
         throw NotFoundException('No topics found');

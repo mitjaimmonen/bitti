@@ -16,7 +16,8 @@ class IconRepositoryImpl extends IconRepository {
 
   @override
   Future<Either<Failure, IconResponseEntity>> readIcon(
-      IconReadParamEntity params) async {
+    IconReadParamEntity params,
+  ) async {
     try {
       final response =
           await dataSource.readIcon(IconReadParamModel.fromEntity(params));
@@ -28,7 +29,8 @@ class IconRepositoryImpl extends IconRepository {
 
   @override
   Future<Either<Failure, IconsInfoResponseEntity>> searchIcons(
-      IconsSearchParamEntity params) async {
+    IconsSearchParamEntity params,
+  ) async {
     try {
       final response = await dataSource
           .searchIcons(IconsSearchParamModel.fromEntity(params));

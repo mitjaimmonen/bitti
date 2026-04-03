@@ -54,9 +54,11 @@ class _ToggleSettingsDialogState extends State<ToggleSettingsDialog> {
         );
 
     for (var i = 0; i < toggleSettings.values.length; i++) {
-      _controllers.add(TextEditingController(
-        text: toggleSettings.values[i].label,
-      ));
+      _controllers.add(
+        TextEditingController(
+          text: toggleSettings.values[i].label,
+        ),
+      );
     }
   }
 
@@ -85,23 +87,26 @@ class _ToggleSettingsDialogState extends State<ToggleSettingsDialog> {
                       Row(
                         children: [
                           Expanded(
-                            child: Text('Toggle Settings',
-                                style:
-                                    Theme.of(context).textTheme.headlineSmall),
+                            child: Text(
+                              'Toggle Settings',
+                              style: Theme.of(context).textTheme.headlineSmall,
+                            ),
                           ),
                           if (confirmingCancel)
                             TextButton(
                               onPressed: () {
                                 GoRouter.of(context).pop();
                               },
-                              child: Text('Cancel changes?',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge!
-                                      .copyWith(
-                                        color:
-                                            Theme.of(context).colorScheme.error,
-                                      )),
+                              child: Text(
+                                'Cancel changes?',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(
+                                      color:
+                                          Theme.of(context).colorScheme.error,
+                                    ),
+                              ),
                             )
                           else
                             IconButton(
@@ -235,11 +240,12 @@ class _ToggleSettingsDialogState extends State<ToggleSettingsDialog> {
                                 onPressed: () async {
                                   final ColorDialogReturnViewModel? result =
                                       await GoRouter.of(context).push(
-                                          ColorDialog.config.routePath,
-                                          extra: ColorDialogExtraViewModel(
-                                            initialColor:
-                                                toggleSettings.values[i].color,
-                                          ));
+                                    ColorDialog.config.routePath,
+                                    extra: ColorDialogExtraViewModel(
+                                      initialColor:
+                                          toggleSettings.values[i].color,
+                                    ),
+                                  );
                                   if (result != null) {
                                     setState(() {
                                       toggleSettings.values[i] =
@@ -277,11 +283,13 @@ class _ToggleSettingsDialogState extends State<ToggleSettingsDialog> {
             child: IconButton(
               onPressed: () {
                 setState(() {
-                  toggleSettings.values.add(TopicSettingValueToggleEntity(
-                    iconName: IconName.check.value,
-                    label: 'Toggle State ${toggleSettings.values.length + 1}',
-                    color: widget.extra.color ?? Colors.grey,
-                  ));
+                  toggleSettings.values.add(
+                    TopicSettingValueToggleEntity(
+                      iconName: IconName.check.value,
+                      label: 'Toggle State ${toggleSettings.values.length + 1}',
+                      color: widget.extra.color ?? Colors.grey,
+                    ),
+                  );
                   isDirty = true;
                 });
               },

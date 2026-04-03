@@ -42,50 +42,64 @@ class TopicEditorCubit extends Cubit<TopicEditorState> {
   }) {
     if (state is TopicEditorLoaded) {
       final s = state as TopicEditorLoaded;
-      emit(s.copyWith(
-        topicEntry: s.topicEntry.copyWith(
-          name: name,
-          description: description,
-          startDate: startDate,
-          iconName: iconName,
-          color: color,
-          topicType: topicType,
-          topicTypeSettings: topicTypeSettings,
+      emit(
+        s.copyWith(
+          topicEntry: s.topicEntry.copyWith(
+            name: name,
+            description: description,
+            startDate: startDate,
+            iconName: iconName,
+            color: color,
+            topicType: topicType,
+            topicTypeSettings: topicTypeSettings,
+          ),
         ),
-      ));
+      );
     }
   }
 
   void updateNumberSettings(TopicTypeNumberSettingsEntity settings) {
     if (state is TopicEditorLoaded) {
       final s = state as TopicEditorLoaded;
-      emit(s.copyWith(
+      emit(
+        s.copyWith(
           topicEntry: s.topicEntry.copyWith(
-              topicTypeSettings: s.topicEntry.topicTypeSettings.copyWith(
-        numberSettings: settings,
-      ))));
+            topicTypeSettings: s.topicEntry.topicTypeSettings.copyWith(
+              numberSettings: settings,
+            ),
+          ),
+        ),
+      );
     }
   }
 
   void updateToggleSettings(TopicTypeToggleSettingsEntity settings) {
     if (state is TopicEditorLoaded) {
       final s = state as TopicEditorLoaded;
-      emit(s.copyWith(
+      emit(
+        s.copyWith(
           topicEntry: s.topicEntry.copyWith(
-              topicTypeSettings: s.topicEntry.topicTypeSettings.copyWith(
-        toggleSettings: settings,
-      ))));
+            topicTypeSettings: s.topicEntry.topicTypeSettings.copyWith(
+              toggleSettings: settings,
+            ),
+          ),
+        ),
+      );
     }
   }
 
   void updateNoteSettings(TopicTypeNoteSettingsEntity settings) {
     if (state is TopicEditorLoaded) {
       final s = state as TopicEditorLoaded;
-      emit(s.copyWith(
+      emit(
+        s.copyWith(
           topicEntry: s.topicEntry.copyWith(
-              topicTypeSettings: s.topicEntry.topicTypeSettings.copyWith(
-        noteSettings: settings,
-      ))));
+            topicTypeSettings: s.topicEntry.topicTypeSettings.copyWith(
+              noteSettings: settings,
+            ),
+          ),
+        ),
+      );
     }
   }
 }

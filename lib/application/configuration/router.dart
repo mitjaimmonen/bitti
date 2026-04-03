@@ -91,53 +91,54 @@ final router = GoRouter(
       builder: (context, state) => const TopicsScreen(),
     ),
     GoRoute(
-        path: TopicEditorScreen.config.routePath,
-        name: TopicEditorScreen.config.title,
-        builder: (context, state) {
-          final extra = state.extra as TopicEditorExtraViewModel;
-          return TopicEditorScreen(extra: extra);
-        },
-        routes: [
-          GoRoute(
-            path: ToggleSettingsDialog.config.relativePath,
-            name: ToggleSettingsDialog.config.title,
-            pageBuilder: (BuildContext context, GoRouterState state) {
-              final extra = state.extra as ToggleSettingsDialogExtraViewModel;
-              return DialogPage(
-                barrierColor: Colors.transparent,
-                useSafeArea: false,
-                barrierDismissible: false,
-                builder: (_) => ToggleSettingsDialog(extra: extra),
-              );
-            },
-          ),
-          GoRoute(
-            path: NumberSettingsDialog.config.relativePath,
-            name: NumberSettingsDialog.config.title,
-            pageBuilder: (BuildContext context, GoRouterState state) {
-              final extra = state.extra as NumberSettingsDialogExtraViewModel;
-              return DialogPage(
-                barrierColor: Colors.transparent,
-                useSafeArea: false,
-                barrierDismissible: false,
-                builder: (_) => NumberSettingsDialog(extra: extra),
-              );
-            },
-          ),
-          GoRoute(
-            path: ColorDialog.config.relativePath,
-            name: ColorDialog.config.title,
-            pageBuilder: (BuildContext context, GoRouterState state) {
-              final extra = state.extra as ColorDialogExtraViewModel?;
-              return DialogPage(
-                barrierColor: Colors.transparent,
-                useSafeArea: false,
-                barrierDismissible: false,
-                builder: (_) => ColorDialog(extra: extra),
-              );
-            },
-          ),
-        ]),
+      path: TopicEditorScreen.config.routePath,
+      name: TopicEditorScreen.config.title,
+      builder: (context, state) {
+        final extra = state.extra as TopicEditorExtraViewModel;
+        return TopicEditorScreen(extra: extra);
+      },
+      routes: [
+        GoRoute(
+          path: ToggleSettingsDialog.config.relativePath,
+          name: ToggleSettingsDialog.config.title,
+          pageBuilder: (BuildContext context, GoRouterState state) {
+            final extra = state.extra as ToggleSettingsDialogExtraViewModel;
+            return DialogPage(
+              barrierColor: Colors.transparent,
+              useSafeArea: false,
+              barrierDismissible: false,
+              builder: (_) => ToggleSettingsDialog(extra: extra),
+            );
+          },
+        ),
+        GoRoute(
+          path: NumberSettingsDialog.config.relativePath,
+          name: NumberSettingsDialog.config.title,
+          pageBuilder: (BuildContext context, GoRouterState state) {
+            final extra = state.extra as NumberSettingsDialogExtraViewModel;
+            return DialogPage(
+              barrierColor: Colors.transparent,
+              useSafeArea: false,
+              barrierDismissible: false,
+              builder: (_) => NumberSettingsDialog(extra: extra),
+            );
+          },
+        ),
+        GoRoute(
+          path: ColorDialog.config.relativePath,
+          name: ColorDialog.config.title,
+          pageBuilder: (BuildContext context, GoRouterState state) {
+            final extra = state.extra as ColorDialogExtraViewModel?;
+            return DialogPage(
+              barrierColor: Colors.transparent,
+              useSafeArea: false,
+              barrierDismissible: false,
+              builder: (_) => ColorDialog(extra: extra),
+            );
+          },
+        ),
+      ],
+    ),
     GoRoute(
       path: DateDialog.config.routePath,
       name: DateDialog.config.title,

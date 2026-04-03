@@ -8,7 +8,9 @@ import 'package:either_dart/either.dart';
 
 abstract class IconRepository extends Repository {
   Future<Either<Failure, IconResponseEntity>> readIcon(
-      IconReadParamEntity params);
+    IconReadParamEntity params,
+  );
   Future<Either<Failure, IconsInfoResponseEntity>> searchIcons(
-      IconsSearchParamEntity params);
+    IconsSearchParamEntity params,
+  );
 }

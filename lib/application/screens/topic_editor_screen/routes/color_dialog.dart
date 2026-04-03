@@ -21,9 +21,11 @@ class ColorDialog extends StatelessWidget {
   );
 
   void _onColorChanged(BuildContext context, Color color) {
-    GoRouter.of(context).pop(ColorDialogReturnViewModel(
-      color: color,
-    ));
+    GoRouter.of(context).pop(
+      ColorDialogReturnViewModel(
+        color: color,
+      ),
+    );
   }
 
   @override
@@ -49,37 +51,61 @@ class ColorDialog extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          colorButton(extension.blue,
-                              (color) => _onColorChanged(context, color)),
-                          colorButton(extension.green,
-                              (color) => _onColorChanged(context, color)),
-                          colorButton(extension.red,
-                              (color) => _onColorChanged(context, color)),
-                          colorButton(extension.yellow,
-                              (color) => _onColorChanged(context, color)),
-                          colorButton(extension.purple,
-                              (color) => _onColorChanged(context, color)),
-                          colorButton(extension.orange,
-                              (color) => _onColorChanged(context, color)),
+                          colorButton(
+                            extension.blue,
+                            (color) => _onColorChanged(context, color),
+                          ),
+                          colorButton(
+                            extension.green,
+                            (color) => _onColorChanged(context, color),
+                          ),
+                          colorButton(
+                            extension.red,
+                            (color) => _onColorChanged(context, color),
+                          ),
+                          colorButton(
+                            extension.yellow,
+                            (color) => _onColorChanged(context, color),
+                          ),
+                          colorButton(
+                            extension.purple,
+                            (color) => _onColorChanged(context, color),
+                          ),
+                          colorButton(
+                            extension.orange,
+                            (color) => _onColorChanged(context, color),
+                          ),
                         ],
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          colorButton(extension.blueAccent,
-                              (color) => _onColorChanged(context, color)),
-                          colorButton(extension.greenAccent,
-                              (color) => _onColorChanged(context, color)),
-                          colorButton(extension.redAccent,
-                              (color) => _onColorChanged(context, color)),
-                          colorButton(extension.yellowAccent,
-                              (color) => _onColorChanged(context, color)),
-                          colorButton(extension.purpleAccent,
-                              (color) => _onColorChanged(context, color)),
-                          colorButton(extension.orangeAccent,
-                              (color) => _onColorChanged(context, color)),
+                          colorButton(
+                            extension.blueAccent,
+                            (color) => _onColorChanged(context, color),
+                          ),
+                          colorButton(
+                            extension.greenAccent,
+                            (color) => _onColorChanged(context, color),
+                          ),
+                          colorButton(
+                            extension.redAccent,
+                            (color) => _onColorChanged(context, color),
+                          ),
+                          colorButton(
+                            extension.yellowAccent,
+                            (color) => _onColorChanged(context, color),
+                          ),
+                          colorButton(
+                            extension.purpleAccent,
+                            (color) => _onColorChanged(context, color),
+                          ),
+                          colorButton(
+                            extension.orangeAccent,
+                            (color) => _onColorChanged(context, color),
+                          ),
                         ],
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -91,7 +117,7 @@ class ColorDialog extends StatelessWidget {
     );
   }
 
-  Widget colorButton(Color color, Function(Color p1) onColorChanged) {
+  Widget colorButton(Color color, void Function(Color p1) onColorChanged) {
     return IconButton(
       visualDensity: VisualDensity.compact,
       padding: EdgeInsets.zero,

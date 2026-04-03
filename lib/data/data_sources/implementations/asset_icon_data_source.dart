@@ -19,7 +19,8 @@ class AssetIconDataSource extends IconDataSource {
 
   @override
   Future<IconsInfoResponseModel> searchIcons(
-      IconsSearchParamModel params) async {
+    IconsSearchParamModel params,
+  ) async {
     final query = params.query.toLowerCase();
     final iconsInfo = IconInfoDataMapper.iconsInfo;
 

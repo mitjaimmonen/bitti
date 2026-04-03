@@ -10,10 +10,12 @@ part 'journal_state.dart';
 class JournalBloc extends Bloc<JournalEvent, JournalState> {
   JournalBloc() : super(JournalInitial()) {
     on<JournalLoadEvent>((event, emit) async {
-      emit(const JournalLoaded(
-        topicList: TopicsResponseEntity(topics: []),
-        journalList: JournalsResponseEntity(journals: []),
-      ));
+      emit(
+        const JournalLoaded(
+          topicList: TopicsResponseEntity(topics: []),
+          journalList: JournalsResponseEntity(journals: []),
+        ),
+      );
     });
   }
 }

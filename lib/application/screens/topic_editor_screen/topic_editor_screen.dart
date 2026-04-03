@@ -42,26 +42,27 @@ class TopicEditorScreenState extends State<TopicEditorScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => TopicEditorCubit()
-          ..init(
-            widget.extra.topicEntry,
-          ),
-        child: BlocBuilder<TopicEditorCubit, TopicEditorState>(
-          buildWhen: (previous, current) {
-            return previous.runtimeType != current.runtimeType;
-          },
-          builder: (context, state) {
-            return Scaffold(
-              appBar: AppBar(
-                title: const Text('Topic Editor'),
-                actions: [
-                  TextButton(
-                    onPressed: () => _save(context),
-                    child: const Text('Save'),
-                  ),
-                ],
-              ),
-              body: Builder(builder: (context) {
+      create: (context) => TopicEditorCubit()
+        ..init(
+          widget.extra.topicEntry,
+        ),
+      child: BlocBuilder<TopicEditorCubit, TopicEditorState>(
+        buildWhen: (previous, current) {
+          return previous.runtimeType != current.runtimeType;
+        },
+        builder: (context, state) {
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('Topic Editor'),
+              actions: [
+                TextButton(
+                  onPressed: () => _save(context),
+                  child: const Text('Save'),
+                ),
+              ],
+            ),
+            body: Builder(
+              builder: (context) {
                 if (state is! TopicEditorLoaded) {
                   return const SizedBox();
                 }
@@ -78,9 +79,11 @@ class TopicEditorScreenState extends State<TopicEditorScreen> {
                     ),
                   ),
                 );
-              }),
-            );
-          },
-        ));
+              },
+            ),
+          );
+        },
+      ),
+    );
   }
 }

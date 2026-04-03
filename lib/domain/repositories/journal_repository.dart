@@ -12,11 +12,15 @@ abstract class JournalRepository extends Repository {
   const JournalRepository();
 
   Future<Either<Failure, JournalsResponseEntity>> readJournals(
-      JournalsReadParamEntity params);
+    JournalsReadParamEntity params,
+  );
   Future<Either<Failure, JournalResponseEntity>> createJournal(
-      JournalCreateParamEntity params);
+    JournalCreateParamEntity params,
+  );
   Future<Either<Failure, JournalResponseEntity>> updateJournal(
-      JournalUpdateParamEntity params);
+    JournalUpdateParamEntity params,
+  );
   Future<Either<Failure, JournalResponseEntity>> deleteJournal(
-      JournalDeleteParamEntity params);
+    JournalDeleteParamEntity params,
+  );
 }

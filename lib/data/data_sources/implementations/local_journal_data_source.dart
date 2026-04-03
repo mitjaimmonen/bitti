@@ -25,7 +25,8 @@ class LocalJournalDataSource extends JournalDataSource {
       final List<JournalEntryModel> journalsData;
 
       if (journalsString != null) {
-        final jsonList = jsonDecode(journalsString) as List;
+        final jsonList =
+            jsonDecode(journalsString) as List<Map<String, dynamic>>;
         journalsData =
             jsonList.map((e) => JournalEntryModel.fromJson(e)).toList();
       } else {
@@ -50,7 +51,8 @@ class LocalJournalDataSource extends JournalDataSource {
       final List<JournalEntryModel> journalsData;
 
       if (journalsString != null) {
-        final jsonList = jsonDecode(journalsString) as List;
+        final jsonList =
+            jsonDecode(journalsString) as List<Map<String, dynamic>>;
         journalsData =
             jsonList.map((e) => JournalEntryModel.fromJson(e)).toList();
       } else {
@@ -82,7 +84,8 @@ class LocalJournalDataSource extends JournalDataSource {
       final List<JournalEntryModel> journalsData;
 
       if (journalsString != null) {
-        final jsonList = jsonDecode(journalsString) as List;
+        final jsonList =
+            jsonDecode(journalsString) as List<Map<String, dynamic>>;
         journalsData =
             jsonList.map((e) => JournalEntryModel.fromJson(e)).toList();
       } else {
@@ -103,7 +106,8 @@ class LocalJournalDataSource extends JournalDataSource {
       final List<JournalEntryModel> journalsData;
 
       if (journalsString != null) {
-        final jsonList = jsonDecode(journalsString) as List;
+        final jsonList =
+            jsonDecode(journalsString) as List<Map<String, dynamic>>;
         journalsData =
             jsonList.map((e) => JournalEntryModel.fromJson(e)).toList();
       } else {

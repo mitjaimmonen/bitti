@@ -1,13 +1,19 @@
 part of 'topics_bloc.dart';
 
 @immutable
-sealed class TopicsEvent {}
+sealed class TopicsEvent {
+  const TopicsEvent();
+}
+
+class LoadTopicsEvent extends TopicsEvent {
+  const LoadTopicsEvent();
+}
 
 class ReorderTopicEvent extends TopicsEvent {
   final int oldIndex;
   final int newIndex;
 
-  ReorderTopicEvent({
+  const ReorderTopicEvent({
     required this.oldIndex,
     required this.newIndex,
   });
@@ -16,7 +22,15 @@ class ReorderTopicEvent extends TopicsEvent {
 class DeleteTopicEvent extends TopicsEvent {
   final int index;
 
-  DeleteTopicEvent({
+  const DeleteTopicEvent({
     required this.index,
+  });
+}
+
+class AddTopicEvent extends TopicsEvent {
+  final TopicEntryEntity topic;
+
+  const AddTopicEvent({
+    required this.topic,
   });
 }

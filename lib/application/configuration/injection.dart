@@ -15,36 +15,37 @@ import 'package:bitti/data/repositories/topic_repository_impl.dart';
 import 'package:bitti/domain/repositories/icon_repository.dart';
 import 'package:bitti/domain/repositories/journal_repository.dart';
 import 'package:bitti/domain/repositories/topic_repository.dart';
-import 'package:bitti/domain/use_cases/journals/create_journal_use_case.dart';
-import 'package:bitti/domain/use_cases/journals/delete_journal_use_case.dart';
-import 'package:bitti/domain/use_cases/journals/read_journals_use_case.dart';
-import 'package:bitti/domain/use_cases/journals/update_journal_use_case.dart';
-import 'package:bitti/domain/use_cases/topics/create_topic_use_case.dart';
-import 'package:bitti/domain/use_cases/topics/delete_topic_use_case.dart';
-import 'package:bitti/domain/use_cases/topics/read_topics_use_case.dart';
-import 'package:bitti/domain/use_cases/topics/update_topic_use_case.dart';
 import 'package:get_it/get_it.dart';
 
 final GetIt getIt = GetIt.instance;
 
 Future<void> injectDependencies() async {
-  getIt.registerSingletonAsync<IconDataSource>(() async {
-    final dataSource = AssetIconDataSource();
-    dataSource.open();
-    return dataSource;
-  }, dispose: (dataSource) => dataSource.close());
+  getIt.registerSingletonAsync<IconDataSource>(
+    () async {
+      final dataSource = AssetIconDataSource();
+      dataSource.open();
+      return dataSource;
+    },
+    dispose: (dataSource) => dataSource.close(),
+  );
 
-  getIt.registerSingletonAsync<JournalDataSource>(() async {
-    final dataSource = LocalJournalDataSource();
-    dataSource.open();
-    return dataSource;
-  }, dispose: (dataSource) => dataSource.close());
+  getIt.registerSingletonAsync<JournalDataSource>(
+    () async {
+      final dataSource = LocalJournalDataSource();
+      dataSource.open();
+      return dataSource;
+    },
+    dispose: (dataSource) => dataSource.close(),
+  );
 
-  getIt.registerSingletonAsync<TopicDataSource>(() async {
-    final dataSource = LocalTopicDataSource();
-    dataSource.open();
-    return dataSource;
-  }, dispose: (dataSource) => dataSource.close());
+  getIt.registerSingletonAsync<TopicDataSource>(
+    () async {
+      final dataSource = LocalTopicDataSource();
+      dataSource.open();
+      return dataSource;
+    },
+    dispose: (dataSource) => dataSource.close(),
+  );
 
   getIt.registerSingletonAsync<IconRepository>(() async {
     final repository = IconRepositoryImpl(
@@ -67,66 +68,10 @@ Future<void> injectDependencies() async {
     return repository;
   });
 
-  getIt.registerSingletonAsync<CreateJournalUseCase>(() async {
-    final useCase = CreateJournalUseCase(
-      repository: await getIt.getAsync<JournalRepository>(),
-    );
-    return useCase;
-  });
-
-  getIt.registerSingletonAsync<ReadJournalsUseCase>(() async {
-    final useCase = ReadJournalsUseCase(
-      repository: await getIt.getAsync<JournalRepository>(),
-    );
-    return useCase;
-  });
-
-  getIt.registerSingletonAsync<UpdateJournalUseCase>(() async {
-    final useCase = UpdateJournalUseCase(
-      repository: await getIt.getAsync<JournalRepository>(),
-    );
-    return useCase;
-  });
-
-  getIt.registerSingletonAsync<DeleteJournalUseCase>(() async {
-    final useCase = DeleteJournalUseCase(
-      repository: await getIt.getAsync<JournalRepository>(),
-    );
-    return useCase;
-  });
-
-  getIt.registerSingletonAsync<CreateTopicUseCase>(() async {
-    final useCase = CreateTopicUseCase(
-      repository: await getIt.getAsync<TopicRepository>(),
-    );
-    return useCase;
-  });
-
-  getIt.registerSingletonAsync<ReadTopicsUseCase>(() async {
-    final useCase = ReadTopicsUseCase(
-      repository: await getIt.getAsync<TopicRepository>(),
-    );
-    return useCase;
-  });
-
-  getIt.registerSingletonAsync<UpdateTopicUseCase>(() async {
-    final useCase = UpdateTopicUseCase(
-      repository: await getIt.getAsync<TopicRepository>(),
-    );
-    return useCase;
-  });
-
-  getIt.registerSingletonAsync<DeleteTopicUseCase>(() async {
-    final useCase = DeleteTopicUseCase(
-      repository: await getIt.getAsync<TopicRepository>(),
-    );
-    return useCase;
-  });
-
   await getIt.allReady();
   getIt.registerFactory(() => JournalBloc());
   getIt.registerFactory(() => NotesBloc());
   getIt.registerFactory(() => SettingsBloc());
   getIt.registerFactory(() => StatsBloc());
-  getIt.registerFactory(() => TopicsBloc());
+  getIt.registerFactory(() => TopicsBloc(topicRepository: getIt()));
 }

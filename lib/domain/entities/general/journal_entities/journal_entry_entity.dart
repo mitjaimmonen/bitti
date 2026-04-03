@@ -18,7 +18,7 @@ class JournalEntryEntity extends Entity {
     required this.journalNote,
     required this.journalNumber,
     required this.journalToggle,
-  }) : assert(journalNote != null ||
-            journalNumber != null ||
-            journalToggle != null);
+  }) : assert(
+          journalNote != null || journalNumber != null || journalToggle != null,
+        );
 }

@@ -77,7 +77,9 @@ class SketchColorExtension extends ThemeExtension<SketchColorExtension> {
 
   @override
   ThemeExtension<SketchColorExtension> lerp(
-      covariant ThemeExtension<SketchColorExtension>? other, double t) {
+    covariant ThemeExtension<SketchColorExtension>? other,
+    double t,
+  ) {
     if (other is! SketchColorExtension) {
       return this;
     }

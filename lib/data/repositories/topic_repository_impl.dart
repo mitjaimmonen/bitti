@@ -18,28 +18,32 @@ class TopicRepositoryImpl implements TopicRepository {
 
   @override
   Future<Either<Failure, TopicResponseEntity>> createTopic(
-      TopicCreateParamEntity params) {
+    TopicCreateParamEntity params,
+  ) {
     // TODO: implement createTopic
     throw UnimplementedError();
   }
 
   @override
   Future<Either<Failure, TopicResponseEntity>> deleteTopic(
-      TopicDeleteParamEntity params) {
+    TopicDeleteParamEntity params,
+  ) {
     // TODO: implement deleteTopic
     throw UnimplementedError();
   }
 
   @override
   Future<Either<Failure, TopicsResponseEntity>> readTopics(
-      TopicsReadParamEntity params) {
+    TopicsReadParamEntity params,
+  ) {
     // TODO: implement readTopics
     throw UnimplementedError();
   }
 
   @override
   Future<Either<Failure, TopicResponseEntity>> updateTopic(
-      TopicUpdateParamEntity params) {
+    TopicUpdateParamEntity params,
+  ) {
     // TODO: implement updateTopic
     throw UnimplementedError();
   }

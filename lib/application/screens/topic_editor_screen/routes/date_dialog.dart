@@ -39,9 +39,11 @@ class DateDialog extends StatelessWidget {
         ),
         TextButton(
           onPressed: () {
-            GoRouter.of(context).pop(DateDialogReturnViewModel(
-              date: output,
-            ));
+            GoRouter.of(context).pop(
+              DateDialogReturnViewModel(
+                date: output,
+              ),
+            );
           },
           child: const Text('OK'),
         ),

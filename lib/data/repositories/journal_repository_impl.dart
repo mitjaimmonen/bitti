@@ -20,7 +20,8 @@ class JournalRepositoryImpl extends JournalRepository {
 
   @override
   Future<Either<Failure, JournalResponseEntity>> createJournal(
-      JournalCreateParamEntity params) async {
+    JournalCreateParamEntity params,
+  ) async {
     try {
       final response =
           await dataSource.create(JournalCreateParamModel.fromEntity(params));
@@ -34,21 +35,24 @@ class JournalRepositoryImpl extends JournalRepository {
 
   @override
   Future<Either<Failure, JournalResponseEntity>> deleteJournal(
-      JournalDeleteParamEntity params) {
+    JournalDeleteParamEntity params,
+  ) {
     // TODO: implement deleteJournal
     throw UnimplementedError();
   }
 
   @override
   Future<Either<Failure, JournalsResponseEntity>> readJournals(
-      JournalsReadParamEntity params) {
+    JournalsReadParamEntity params,
+  ) {
     // TODO: implement readJournals
     throw UnimplementedError();
   }
 
   @override
   Future<Either<Failure, JournalResponseEntity>> updateJournal(
-      JournalUpdateParamEntity params) {
+    JournalUpdateParamEntity params,
+  ) {
     // TODO: implement updateJournal
     throw UnimplementedError();
   }

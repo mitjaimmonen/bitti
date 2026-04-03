@@ -25,20 +25,20 @@ class SketchDivider extends StatelessWidget {
         axis == Axis.vertical ? 0 : padding?.bottom ?? 0,
       ),
       child: CustomPaint(
-          painter: SketchPainterDivider(
-            key: UniqueKey(),
-            strokeColor: strokeColor ?? Theme.of(context).colorScheme.outline,
-            strokeThickness: strokeThickness ?? 1,
-            axis: axis,
-          ),
-          child: SizedBox(
-            width: axis == Axis.horizontal
-                ? double.infinity
-                : padding?.horizontal ?? 1,
-            height: axis == Axis.vertical
-                ? double.infinity
-                : padding?.vertical ?? 1,
-          )),
+        painter: SketchPainterDivider(
+          key: UniqueKey(),
+          strokeColor: strokeColor ?? Theme.of(context).colorScheme.outline,
+          strokeThickness: strokeThickness ?? 1,
+          axis: axis,
+        ),
+        child: SizedBox(
+          width: axis == Axis.horizontal
+              ? double.infinity
+              : padding?.horizontal ?? 1,
+          height:
+              axis == Axis.vertical ? double.infinity : padding?.vertical ?? 1,
+        ),
+      ),
     );
   }
 }

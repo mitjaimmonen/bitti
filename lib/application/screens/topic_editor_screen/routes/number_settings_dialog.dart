@@ -75,25 +75,27 @@ class _NumberSettingsDialogState extends State<NumberSettingsDialog> {
                         Row(
                           children: [
                             Expanded(
-                              child: Text('Number Settings',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headlineSmall),
+                              child: Text(
+                                'Number Settings',
+                                style:
+                                    Theme.of(context).textTheme.headlineSmall,
+                              ),
                             ),
                             if (confirmingCancel)
                               TextButton(
                                 onPressed: () {
                                   GoRouter.of(context).pop();
                                 },
-                                child: Text('Cancel changes?',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .labelLarge!
-                                        .copyWith(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .error,
-                                        )),
+                                child: Text(
+                                  'Cancel changes?',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelLarge!
+                                      .copyWith(
+                                        color:
+                                            Theme.of(context).colorScheme.error,
+                                      ),
+                                ),
                               )
                             else
                               IconButton(

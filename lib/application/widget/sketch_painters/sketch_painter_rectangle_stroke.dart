@@ -277,7 +277,9 @@ class SketchPainterRectangleStroke extends CustomPainter {
     sketchLine(
       Offset(start.dx, start.dy),
       Offset(
-          bottomLeftOffset.dx, size.height - elevation + bottomLeftOffset.dy),
+        bottomLeftOffset.dx,
+        size.height - elevation + bottomLeftOffset.dy,
+      ),
       path,
     );
   }
@@ -326,7 +328,7 @@ class SketchPainterRectangleStroke extends CustomPainter {
       Offset(size.width, depth + adjustedRadius),
       Offset(size.width, depth),
       Offset(size.width - adjustedRadius, depth),
-      lerpDouble(0, 1, clampDouble(depth / adjustedRadius,0,1))!,
+      lerpDouble(0, 1, clampDouble(depth / adjustedRadius, 0, 1))!,
     );
 
     // Draw top-left corner emboss only if radius is zero
@@ -395,7 +397,12 @@ class SketchPainterRectangleStroke extends CustomPainter {
   }
 
   Offset drawBezierSegment(
-      Path path, Offset start, Offset control, Offset end, double startT) {
+    Path path,
+    Offset start,
+    Offset control,
+    Offset end,
+    double startT,
+  ) {
     // Helper function to calculate a point on the Bézier curve at a given t
     Offset calculatePoint(double t) {
       final p0Prime = Offset(

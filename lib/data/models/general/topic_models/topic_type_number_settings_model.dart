@@ -28,7 +28,8 @@ class TopicTypeNumberSettingsModel
   }
 
   factory TopicTypeNumberSettingsModel.fromEntity(
-      TopicTypeNumberSettingsEntity entity) {
+    TopicTypeNumberSettingsEntity entity,
+  ) {
     return TopicTypeNumberSettingsModel(
       min: entity.min,
       max: entity.max,

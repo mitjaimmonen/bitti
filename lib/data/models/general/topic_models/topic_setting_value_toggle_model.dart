@@ -33,7 +33,8 @@ class TopicSettingValueToggleModel
   }
 
   factory TopicSettingValueToggleModel.fromEntity(
-      TopicSettingValueToggleEntity entity) {
+    TopicSettingValueToggleEntity entity,
+  ) {
     return TopicSettingValueToggleModel(
       iconName: entity.iconName,
       label: entity.label,

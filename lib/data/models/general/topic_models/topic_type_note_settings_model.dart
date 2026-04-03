@@ -27,7 +27,8 @@ class TopicTypeNoteSettingsModel extends Model<TopicTypeNoteSettingsEntity> {
   }
 
   factory TopicTypeNoteSettingsModel.fromEntity(
-      TopicTypeNoteSettingsEntity entity) {
+    TopicTypeNoteSettingsEntity entity,
+  ) {
     return TopicTypeNoteSettingsModel(
       displayInJournal: entity.displayInJournal,
       displayInNotes: entity.displayInNotes,
