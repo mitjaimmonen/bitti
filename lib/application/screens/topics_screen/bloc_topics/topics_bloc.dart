@@ -37,13 +37,9 @@ class TopicsBloc extends Bloc<TopicsEvent, TopicsState> {
       (right) async {
         final readResult =
             await topicRepository.readTopics(TopicsReadParamEntity());
-        await readResult.fold(
-          (left) {
-            emit(TopicsErrored());
-          },
-          (right) {
-            emit(TopicsLoaded(topics: right.topics));
-          },
+        readResult.fold(
+          (left) => emit(TopicsErrored()),
+          (right) => emit(TopicsLoaded(topics: right.topics)),
         );
       },
     );
