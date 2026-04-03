@@ -14,7 +14,7 @@ class TopicEditorCubit extends Cubit<TopicEditorState> {
 
   void init(TopicEntryEntity? topicEntry) {
     topicEntry ??= TopicEntryEntity(
-      id: 0,
+      id: DateTime.now().millisecondsSinceEpoch,
       name: '',
       description: '',
       startDate: DateTime.now(),

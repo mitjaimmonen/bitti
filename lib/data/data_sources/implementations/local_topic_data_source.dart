@@ -25,8 +25,10 @@ class LocalTopicDataSource extends TopicDataSource {
       final List<TopicEntryModel> topicsData;
 
       if (topicsString != null) {
-        final jsonList = jsonDecode(topicsString) as List<Map<String, dynamic>>;
-        topicsData = jsonList.map((e) => TopicEntryModel.fromJson(e)).toList();
+        final jsonList = jsonDecode(topicsString) as List<dynamic>;
+        topicsData = jsonList
+            .map((e) => TopicEntryModel.fromJson(e as Map<String, dynamic>))
+            .toList();
       } else {
         topicsData = [];
       }
@@ -56,8 +58,10 @@ class LocalTopicDataSource extends TopicDataSource {
       final List<TopicEntryModel> topicsData;
 
       if (topicsString != null) {
-        final jsonList = jsonDecode(topicsString) as List<Map<String, dynamic>>;
-        topicsData = jsonList.map((e) => TopicEntryModel.fromJson(e)).toList();
+        final jsonList = jsonDecode(topicsString) as List<dynamic>;
+        topicsData = jsonList
+            .map((e) => TopicEntryModel.fromJson(e as Map<String, dynamic>))
+            .toList();
       } else {
         throw NotFoundException('No topics found');
       }
@@ -89,8 +93,10 @@ class LocalTopicDataSource extends TopicDataSource {
       final List<TopicEntryModel> topicsData;
 
       if (topicsString != null) {
-        final jsonList = jsonDecode(topicsString) as List<Map<String, dynamic>>;
-        topicsData = jsonList.map((e) => TopicEntryModel.fromJson(e)).toList();
+        final jsonList = jsonDecode(topicsString) as List<dynamic>;
+        topicsData = jsonList
+            .map((e) => TopicEntryModel.fromJson(e as Map<String, dynamic>))
+            .toList();
       } else {
         throw NotFoundException('No topics found');
       }
@@ -109,8 +115,10 @@ class LocalTopicDataSource extends TopicDataSource {
       final List<TopicEntryModel> topicsData;
 
       if (topicsString != null) {
-        final jsonList = jsonDecode(topicsString) as List<Map<String, dynamic>>;
-        topicsData = jsonList.map((e) => TopicEntryModel.fromJson(e)).toList();
+        final jsonList = jsonDecode(topicsString) as List<dynamic>;
+        topicsData = jsonList
+            .map((e) => TopicEntryModel.fromJson(e as Map<String, dynamic>))
+            .toList();
       } else {
         throw NotFoundException('No topics found');
       }

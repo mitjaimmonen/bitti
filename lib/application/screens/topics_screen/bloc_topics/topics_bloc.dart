@@ -5,7 +5,6 @@ import 'package:bitti/domain/entities/param/topic_create_param_entity.dart';
 import 'package:bitti/domain/entities/param/topics_read_param_entity.dart';
 import 'package:bitti/domain/repositories/topic_repository.dart';
 import 'package:bloc/bloc.dart';
-import 'package:either_dart/either.dart';
 import 'package:meta/meta.dart';
 
 part 'topics_event.dart';
@@ -20,25 +19,31 @@ class TopicsBloc extends Bloc<TopicsEvent, TopicsState> {
     on<DeleteTopicEvent>(_deleteTopic);
   }
 
-  FutureOr<void> _loadTopics(LoadTopicsEvent event, Emitter<TopicsState> emit) {
+  Future<void> _loadTopics(
+      LoadTopicsEvent event, Emitter<TopicsState> emit) async {
     emit(TopicsLoading());
-    final result = topicRepository.readTopics(TopicsReadParamEntity());
+    final result = await topicRepository.readTopics(TopicsReadParamEntity());
     result.fold(
       (left) => emit(TopicsErrored()),
       (right) => emit(TopicsLoaded(topics: right.topics)),
     );
   }
 
-  FutureOr<void> _addTopic(AddTopicEvent event, Emitter<TopicsState> emit) {
-    final createResult =
-        topicRepository.createTopic(TopicCreateParamEntity(topic: event.topic));
-    createResult.fold(
+  Future<void> _addTopic(AddTopicEvent event, Emitter<TopicsState> emit) async {
+    final createResult = await topicRepository
+        .createTopic(TopicCreateParamEntity(topic: event.topic));
+    await createResult.fold(
       (left) => null,
-      (right) {
-        final readResult = topicRepository.readTopics(TopicsReadParamEntity());
-        readResult.fold(
-          (left) => emit(TopicsErrored()),
-          (right) => emit(TopicsLoaded(topics: right.topics)),
+      (right) async {
+        final readResult =
+            await topicRepository.readTopics(TopicsReadParamEntity());
+        await readResult.fold(
+          (left) {
+            emit(TopicsErrored());
+          },
+          (right) {
+            emit(TopicsLoaded(topics: right.topics));
+          },
         );
       },
     );
