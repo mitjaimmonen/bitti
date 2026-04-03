@@ -20,7 +20,9 @@ class TopicsBloc extends Bloc<TopicsEvent, TopicsState> {
   }
 
   Future<void> _loadTopics(
-      LoadTopicsEvent event, Emitter<TopicsState> emit) async {
+    LoadTopicsEvent event,
+    Emitter<TopicsState> emit,
+  ) async {
     emit(TopicsLoading());
     final result = await topicRepository.readTopics(TopicsReadParamEntity());
     result.fold(

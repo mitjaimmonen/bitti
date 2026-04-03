@@ -21,54 +21,88 @@ class MainScreenJournalShell extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<JournalBloc, JournalState>(
       builder: (context, state) {
-        if (state is! JournalLoaded) {
-          return const Center(
-            child: CircularProgressIndicator(),
+        switch (state) {
+          case JournalInitial():
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          case JournalLoaded():
+            if (state.journalMap.isEmpty) {
+              return _buildNoJournalsView(context);
+            } else {
+              return _buildJournalsGridView(context, state);
+            }
+          case JournalErrored():
+            return const Center(
+              child: Text('Loading journals failed'),
+            );
+        }
+      },
+    );
+  }
+
+  Widget _buildNoJournalsView(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'No journals found',
+            style: Theme.of(context).textTheme.headlineSmall,
+          ),
+          const SizedBox(height: 32.0),
+          SketchButtonHeadline(
+            text: 'Edit topics',
+            onPressed: () {
+              GoRouter.of(context).push(TopicsScreen.config.routePath);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildJournalsGridView(BuildContext context, JournalLoaded state) {
+    final topicCount = state.journalMap.keys.length;
+
+    return TableView.builder(
+      diagonalDragBehavior: DiagonalDragBehavior.weightedContinuous,
+      pinnedColumnCount: 1,
+      pinnedRowCount: 1,
+      verticalDetails: ScrollableDetails.vertical(
+        reverse: true,
+      ),
+      columnBuilder: (int index) {
+        if (index >= topicCount) return null;
+
+        return const TableSpan(
+          extent: FixedSpanExtent(100.0),
+        );
+      },
+      rowBuilder: (int index) {
+        return const TableSpan(
+          extent: FixedSpanExtent(100.0),
+        );
+      },
+      cellBuilder: (BuildContext context, TableVicinity vicinity) {
+        if (vicinity.row == 0 && vicinity.column == 0) {
+          return TableViewCell(child: SizedBox.shrink());
+        }
+        if (vicinity.row == 0) {
+          // build header row
+          return TableViewCell(
+            child: Text('TOPIC ${vicinity.column - 1}'),
+          );
+        }
+        if (vicinity.column == 0) {
+          // build dates
+          return TableViewCell(
+            child: Text('DATE ${vicinity.row - 1}'),
           );
         }
 
-        final topicCount = state.topicList.topics.length;
-
-        if (topicCount == 0) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'No topics found',
-                  style: Theme.of(context).textTheme.headlineSmall,
-                ),
-                const SizedBox(height: 32.0),
-                SketchButtonHeadline(
-                  text: 'Edit topics',
-                  onPressed: () {
-                    GoRouter.of(context).push(TopicsScreen.config.routePath);
-                  },
-                ),
-              ],
-            ),
-          );
-        }
-
-        return TableView.builder(
-          diagonalDragBehavior: DiagonalDragBehavior.weightedContinuous,
-          pinnedColumnCount: 1,
-          pinnedRowCount: 1,
-          columnBuilder: (int index) {
-            return const TableSpan(
-              extent: FixedSpanExtent(100.0),
-            );
-          },
-          rowBuilder: (int index) {
-            return const TableSpan(
-              extent: FixedSpanExtent(100.0),
-            );
-          },
-          cellBuilder: (BuildContext context, TableVicinity vicinity) {
-            return TableViewCell(
-              child: Text('Cell ${vicinity.row}, ${vicinity.column}'),
-            );
-          },
+        return TableViewCell(
+          child: Text('Cell ${vicinity.row}, ${vicinity.column}'),
         );
       },
     );

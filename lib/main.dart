@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  injectDependencies();
+  await injectDependencies();
   initializeDateFormatting();
 
   runApp(const MyApp());

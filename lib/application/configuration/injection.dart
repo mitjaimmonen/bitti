@@ -69,7 +69,9 @@ Future<void> injectDependencies() async {
   });
 
   await getIt.allReady();
-  getIt.registerFactory(() => JournalBloc());
+  getIt.registerFactory(
+    () => JournalBloc(journalRepository: getIt(), topicRepository: getIt()),
+  );
   getIt.registerFactory(() => NotesBloc());
   getIt.registerFactory(() => SettingsBloc());
   getIt.registerFactory(() => StatsBloc());

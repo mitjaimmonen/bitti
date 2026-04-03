@@ -18,4 +18,12 @@ class JournalsReadParamModel extends ParamModel<JournalsReadParamEntity> {
 
   @override
   Map<String, dynamic> toJson() => _$JournalsReadParamModelToJson(this);
+
+  factory JournalsReadParamModel.fromEntity(JournalsReadParamEntity entity) {
+    return JournalsReadParamModel(
+      topicId: entity.topicId,
+      startDate: entity.startDate,
+      endDate: entity.endDate,
+    );
+  }
 }
