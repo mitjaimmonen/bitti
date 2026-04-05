@@ -25,9 +25,6 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(shellConfigs[shell.currentIndex].title),
-      ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
         selectedItemColor: Theme.of(context).colorScheme.primary,

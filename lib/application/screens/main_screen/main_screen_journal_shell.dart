@@ -19,25 +19,38 @@ class MainScreenJournalShell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<JournalBloc, JournalState>(
-      builder: (context, state) {
-        switch (state) {
-          case JournalInitial():
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          case JournalLoaded():
-            if (state.journalMap.isEmpty) {
-              return _buildNoJournalsView(context);
-            } else {
-              return _buildJournalsGridView(context, state);
-            }
-          case JournalErrored():
-            return const Center(
-              child: Text('Loading journals failed'),
-            );
-        }
-      },
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(config.title),
+        actions: [
+          TextButton(
+            onPressed: () {
+              GoRouter.of(context).push(TopicsScreen.config.routePath);
+            },
+            child: Text('Edit topics'),
+          ),
+        ],
+      ),
+      body: BlocBuilder<JournalBloc, JournalState>(
+        builder: (context, state) {
+          switch (state) {
+            case JournalInitial():
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            case JournalLoaded():
+              if (state.journalMap.isEmpty) {
+                return _buildNoJournalsView(context);
+              } else {
+                return _buildJournalsGridView(context, state);
+              }
+            case JournalErrored():
+              return const Center(
+                child: Text('Loading journals failed'),
+              );
+          }
+        },
+      ),
     );
   }
 
