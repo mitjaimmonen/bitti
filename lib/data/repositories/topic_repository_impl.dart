@@ -1,6 +1,8 @@
 import 'package:bitti/data/data_sources/interfaces/topic_data_source.dart';
 import 'package:bitti/data/exceptions/exceptions.dart';
 import 'package:bitti/data/models/param/topic_create_param_model.dart';
+import 'package:bitti/data/models/param/topic_delete_param_model.dart';
+import 'package:bitti/data/models/param/topic_update_param_model.dart';
 import 'package:bitti/data/models/param/topics_read_param_model.dart';
 import 'package:bitti/domain/entities/param/topic_create_param_entity.dart';
 import 'package:bitti/domain/entities/param/topic_delete_param_entity.dart';
@@ -38,9 +40,17 @@ class TopicRepositoryImpl implements TopicRepository {
   @override
   Future<Either<Failure, TopicResponseEntity>> deleteTopic(
     TopicDeleteParamEntity params,
-  ) {
-    // TODO: implement deleteTopic
-    throw UnimplementedError();
+  ) async {
+    try {
+      final response = await dataSource.delete(
+        TopicDeleteParamModel.fromEntity(params),
+      );
+      return Right(response.toEntity());
+    } on DataSourceException catch (e) {
+      return Left(DataSourceFailure(message: e.message));
+    } catch (e) {
+      return Left(GeneralFailure(message: e.toString()));
+    }
   }
 
   @override
@@ -60,8 +70,16 @@ class TopicRepositoryImpl implements TopicRepository {
   @override
   Future<Either<Failure, TopicResponseEntity>> updateTopic(
     TopicUpdateParamEntity params,
-  ) {
-    // TODO: implement updateTopic
-    throw UnimplementedError();
+  ) async {
+    try {
+      final response = await dataSource.update(
+        TopicUpdateParamModel.fromEntity(params),
+      );
+      return Right(response.toEntity());
+    } on DataSourceException catch (e) {
+      return Left(DataSourceFailure(message: e.message));
+    } catch (e) {
+      return Left(GeneralFailure(message: e.toString()));
+    }
   }
 }

@@ -35,7 +35,7 @@ class LocalJournalDataSource extends JournalDataSource {
 
       journalsData.add(params.journal);
       final json = journalsData.map((e) => e.toJson()).toList();
-      localStorage.setItem('journals', jsonEncode(json));
+      localStorage.setItem('journals${params.topicId}', jsonEncode(json));
 
       return JournalResponseModel(journal: params.journal);
     } catch (e) {
@@ -68,7 +68,7 @@ class LocalJournalDataSource extends JournalDataSource {
 
       final journal = journalsData.removeAt(journalIndex);
       final json = journalsData.map((e) => e.toJson()).toList();
-      localStorage.setItem('journals', jsonEncode(json));
+      localStorage.setItem('journals${params.topicId}', jsonEncode(json));
 
       return JournalResponseModel(journal: journal);
     } catch (e) {
@@ -123,7 +123,7 @@ class LocalJournalDataSource extends JournalDataSource {
 
       journalsData[journalIndex] = params.journalEntry;
       final json = journalsData.map((e) => e.toJson()).toList();
-      localStorage.setItem('journals', jsonEncode(json));
+      localStorage.setItem('journals${params.topicId}', jsonEncode(json));
 
       return JournalResponseModel(journal: params.journalEntry);
     } catch (e) {

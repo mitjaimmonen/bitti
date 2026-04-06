@@ -14,4 +14,8 @@ class TopicDeleteParamModel extends ParamModel<TopicDeleteParamEntity> {
 
   @override
   Map<String, dynamic> toJson() => _$TopicDeleteParamModelToJson(this);
+
+  factory TopicDeleteParamModel.fromEntity(TopicDeleteParamEntity entity) {
+    return TopicDeleteParamModel(id: entity.topicId);
+  }
 }

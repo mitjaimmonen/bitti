@@ -16,4 +16,11 @@ class JournalDeleteParamModel extends ParamModel<JournalDeleteParamEntity> {
 
   @override
   Map<String, dynamic> toJson() => _$JournalDeleteParamModelToJson(this);
+
+  factory JournalDeleteParamModel.fromEntity(JournalDeleteParamEntity entity) {
+    return JournalDeleteParamModel(
+      journalId: entity.journalId,
+      topicId: entity.topicId,
+    );
+  }
 }

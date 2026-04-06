@@ -15,4 +15,10 @@ class TopicUpdateParamModel extends ParamModel<TopicUpdateParamEntity> {
 
   @override
   Map<String, dynamic> toJson() => _$TopicUpdateParamModelToJson(this);
+
+  factory TopicUpdateParamModel.fromEntity(TopicUpdateParamEntity entity) {
+    return TopicUpdateParamModel(
+      topic: TopicEntryModel.fromEntity(entity.topic),
+    );
+  }
 }
